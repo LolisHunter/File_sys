@@ -1,2 +1,3 @@
 ﻿  main.cpp
-  IMG_Management.vcxproj -> C:\Users\Blackmoon\source\repos\code\File_SYS\IMG_Management\Debug\IMG_Management.exe
+C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\img.h(14,10): warning C4101: 'buffer': unreferenced local variable
+  IMG_Management.vcxproj -> C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\Debug\IMG_Management.exe

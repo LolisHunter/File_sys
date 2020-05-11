@@ -1,6 +1,7 @@
 #pragma once
 #include <fstream>
 #include <string>
+#define BUFFER 512
 using namespace std;
 
 bool CreateImageFile(string& name, uint64_t size) {
@@ -10,7 +11,8 @@ bool CreateImageFile(string& name, uint64_t size) {
 	}
 	// template
 	string temp = "hello world";
-	for (auto c : temp) {
+	uint8_t buffer[BUFFER];
+	for (uint8_t c : temp) {
 		fout << c;
 	}
 	
