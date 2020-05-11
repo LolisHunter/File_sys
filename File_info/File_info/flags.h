@@ -1,12 +1,4 @@
 #pragma once
-#include <iostream>
-#include <ctime>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <cerrno>
-#include <cstring>
-#include <string>
-using namespace std;
 #pragma warning(disable : 4996)
 
 uint8_t Flag(char*& flag) {

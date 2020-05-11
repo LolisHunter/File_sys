@@ -19,40 +19,35 @@ static void DebugPrint(string pszMsg);
 #endif
 
 void PrintHelp(string pszAppName);
-void PrintStat(struct stat &fileInfo);
+void PrintStat(struct stat& fileInfo);
 void Run(uint8_t flag, struct stat& fileInfo);
-int main(int argc, char* argv[]){
+auto main(int argc, char* argv[]){
 
     bool flag[10];
     uint8_t c;
-
-    if (argc != 3)
-    {
-        PrintHelp(argv[0]);
-        return 0;
-    }
-
-    c = Flag(argv[1]);
-
     struct stat fileInfo;
 
-    //cout << argv[2] << endl;
+    if (argc == 2) {
 
-    if (stat(argv[2], &fileInfo) != 0) {  // Use stat() to get the info
-        char* buff = new char[200];
-        cerr << "Error: " << strerror_s(buff, 200, errno) << '\n';
-        cout << buff;
-        delete[] buff;
-        return(EXIT_FAILURE);
+    }
+    else{
+        if (argc != 3){
+            PrintHelp(argv[0]);
+            return 0;
+        }
+        c = Flag(argv[1]);
+        //cout << argv[2] << endl;
+
+        if (stat(argv[2], &fileInfo) != 0) {  // Use stat() to get the info
+            char* buff = new char[200];
+            cerr << "Error: " << strerror_s(buff, 200, errno) << '\n';
+            cout << buff;
+            delete[] buff;
+            return(EXIT_FAILURE);
+        }
     }
 
     Run(c, fileInfo);
-
-    //cout << (char)(fileInfo.st_dev+'A') << endl;
-    //cout << fileInfo.st_mode << endl;
-    //cout << fileInfo.st_size << endl;
-    //cout << ctime(&fileInfo.st_mtime) << endl;
-    //cout << ctime(&fileInfo.st_ctime) << endl;
     return EXIT_SUCCESS;
 }
 
@@ -60,22 +55,20 @@ void PrintHelp(string pszAppName) {
     cout << "Usage: File_info -s <file name>   status file\n";
 }
 
-void PrintStat(struct stat &fileInfo) {
-    cout << "Type:         : ";
-    if ((fileInfo.st_mode & S_IFMT) == S_IFDIR) { // From sys/types.h
-        cout << "Directory\n";
-    }
-    else {
-        cout << "File\n";
-    }
-    cout << "Size          : " <<
-        fileInfo.st_size << '\n';               // Size in bytes
-    cout << "Device        : " <<
-        (char)(fileInfo.st_dev + 'A') << '\n';  // Device number
-    cout << "Created       : " <<
-        ctime(&fileInfo.st_ctime);         // Creation time
-    cout << "Modified      : " <<
-        ctime(&fileInfo.st_mtime);         // Last modify time
+void PrintStat(struct stat& fileInfo) {
+    //#define _S_IFMT   0xF000 // File type mask
+    //#define _S_IFDIR  0x4000 // Directory
+    //#define _S_IFCHR  0x2000 // Character special
+    //#define _S_IFIFO  0x1000 // Pipe
+    //#define _S_IFREG  0x8000 // Regular
+    //#define _S_IREAD  0x0100 // Read permission, owner
+    //#define _S_IWRITE 0x0080 // Write permission, owner
+    //#define _S_IEXEC  0x0040 // Execute/search permission, owner
+    cout << "Type:         : " << (((fileInfo.st_mode & S_IFMT) == S_IFDIR) ? "Directory\n" : "File\n"); // From sys/types.h
+    cout << "Size          : " << fileInfo.st_size << '\n';               // Size in bytes
+    cout << "Device        : " << (char)(fileInfo.st_dev + 'A') << '\n';  // Device number
+    cout << "Created       : " << ctime(&fileInfo.st_ctime);         // Creation time
+    cout << "Modified      : " << ctime(&fileInfo.st_mtime);         // Last modify time
 }
 
 void Run(uint8_t flag, struct stat& fileInfo) {
