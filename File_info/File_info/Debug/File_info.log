@@ -1,0 +1,4 @@
+﻿  Source.cpp
+C:\Users\Blackmoon\source\repos\code\File_SYS\File_info\File_info\Source.cpp(18,35): error C4996: 'strerror': This function or variable may be unsafe. Consider using strerror_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Users\Blackmoon\source\repos\code\File_SYS\File_info\File_info\Source.cpp(35,14): error C4996: 'ctime': This function or variable may be unsafe. Consider using ctime_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Users\Blackmoon\source\repos\code\File_SYS\File_info\File_info\Source.cpp(37,14): error C4996: 'ctime': This function or variable may be unsafe. Consider using ctime_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
