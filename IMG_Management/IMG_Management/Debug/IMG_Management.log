@@ -1,4 +1,30 @@
-﻿  DiskImage.cpp
-  main.cpp
-  Generating Code...
-  IMG_Management.vcxproj -> Q:\Homework\Operating System\Project\Project 21\File_sys\IMG_Management\Debug\IMG_Management.exe
+﻿  main.cpp
+C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\root.h(64,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\img.h(16,10): warning C4101: 'buffer': unreferenced local variable
+C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\root.h(39,7): warning C4244: '=': conversion from 'T' to 'char', possible loss of data
+          with
+          [
+              T=uint16_t
+          ]
+C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\root.h(49): message : see reference to function template instantiation 'void SaveByte<uint16_t>(std::ofstream &,T)' being compiled
+          with
+          [
+              T=uint16_t
+          ]
+C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\root.h(41,1): warning C4333: '>>': right shift by too large amount, data loss
+C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\root.h(50): message : see reference to function template instantiation 'void SaveByte<uint8_t>(std::ofstream &,T)' being compiled
+          with
+          [
+              T=uint8_t
+          ]
+C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\root.h(39,7): warning C4244: '=': conversion from 'T' to 'char', possible loss of data
+          with
+          [
+              T=short
+          ]
+C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\root.h(62): message : see reference to function template instantiation 'void SaveByte<short>(std::ofstream &,T)' being compiled
+          with
+          [
+              T=short
+          ]
+  IMG_Management.vcxproj -> C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\Debug\IMG_Management.exe

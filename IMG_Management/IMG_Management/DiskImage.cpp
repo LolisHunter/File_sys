@@ -36,7 +36,7 @@ void DiskImage::InitDisk(const string& dir)
 		throw exception("Can't create file. Can't create disk!");
 	}
 
-	fout << "Oniisama";
+	fout << "1234";
 
 	//-----Boot Sector begin-----
 	fout.write((char*)&size, 4);
@@ -67,19 +67,4 @@ void DiskImage::InitDisk(const string& dir)
 	}
 
 	fout.close();
-}
-
-bool CreateImageFile(string& name, uint64_t size) {
-	ofstream fout(name, ios_base::out | ios_base::binary);
-	if (!fout.is_open()) {
-		return 1;
-	}
-	// template
-	string temp = "hello world";
-	for (auto c : temp) {
-		fout << c;
-	}
-
-	fout.close();
-	return 0;
 }

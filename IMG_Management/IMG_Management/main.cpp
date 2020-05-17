@@ -1,18 +1,12 @@
 #include <iostream>
 #include <string>
-#include "DiskImage.h"
-#include "Volume.h"
-
+//#include "DiskImage.h"
+//#include "Volume.h"
+#include "Debug.h"
+#include "root.h"
+#include "img.h"
 using namespace std;
-#define DEBUG
-#define MAIN
-
-#if defined (DEBUG)
-static void DebugPrint(string pszMsg);
-#define DEBUG_PRINT(pszMsg) DebugPrint(pszMsg)
-#else
-#define DEBUG_PRINT(pszMsg) NULL
-#endif
+//#define TEST
 
 #ifdef TEST
 void main() {
@@ -21,26 +15,22 @@ void main() {
 #endif // TEST
 
 
-#ifdef MAIN
+#ifndef TEST
 int main(int agrc, char* agrv[]) 
 {
 	try
 	{
-		DiskImage dsk("MyDisk.img", 64);
-		dsk.InitDisk("");
+		//DiskImage dsk("MyDisk.img", 64);
+		//dsk.InitDisk("");
 
-		Volume vol("Vol1", 4, 2, 0);
-		vol.InitVolume("MyDisk.img");
+		//Volume vol("Vol1", 4, 2, 0);
+		//vol.InitVolume("MyDisk.img");
+		Root root;
+		root.RootCreate((char*)"a.iso");
 	}
 	catch (exception& e)
 	{
 		cout << e.what();
 	}
 }
-#endif // main
-
-#ifdef DEBUG
-void pLog(string& plain_text) {
-	cout << "[Log] : " << plain_text << endl;
-}
-#endif
+#endif // MAIN

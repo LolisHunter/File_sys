@@ -145,8 +145,14 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cmd.h" />
+    <ClInclude Include="Debug.h" />
     <ClInclude Include="DiskImage.h" />
     <ClInclude Include="Entry.h" />
+    <ClInclude Include="file.h" />
+    <ClInclude Include="folder.h" />
+    <ClInclude Include="GreenPrint.h" />
+    <ClInclude Include="img.h" />
+    <ClInclude Include="root.h" />
     <ClInclude Include="Volume.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
