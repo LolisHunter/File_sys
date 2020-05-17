@@ -4,11 +4,22 @@
 #include "Volume.h"
 
 using namespace std;
-
-#define MAIN
 #define DEBUG
+#define MAIN
 
-void pLog(string& plain_text);
+#if defined (DEBUG)
+static void DebugPrint(string pszMsg);
+#define DEBUG_PRINT(pszMsg) DebugPrint(pszMsg)
+#else
+#define DEBUG_PRINT(pszMsg) NULL
+#endif
+
+#ifdef TEST
+void main() {
+
+}
+#endif // TEST
+
 
 #ifdef MAIN
 int main(int agrc, char* agrv[]) 
@@ -32,8 +43,4 @@ int main(int agrc, char* agrv[])
 void pLog(string& plain_text) {
 	cout << "[Log] : " << plain_text << endl;
 }
-#endif // debug
-
-#ifndef DEBUG
-void pLog(string& plain_text) {}
-#endif // !debug
+#endif
