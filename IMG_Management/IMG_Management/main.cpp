@@ -1,6 +1,8 @@
 #include <iostream>
 #include <string>
-#include "img.h"
+#include "DiskImage.h"
+#include "Volume.h"
+
 using namespace std;
 
 #define MAIN
@@ -9,13 +11,21 @@ using namespace std;
 void pLog(string& plain_text);
 
 #ifdef MAIN
-int main(int agrc, char* agrv[]) {
-	string a = "a.img";
-	bool temp = CreateImageFile(a, 20);
-	return temp;
+int main(int agrc, char* agrv[]) 
+{
+	try
+	{
+		DiskImage dsk("MyDisk.img", 64);
+		dsk.InitDisk("");
+
+		Volume vol("Vol1", 4, 2, 0);
+		vol.InitVolume("MyDisk.img");
+	}
+	catch (exception& e)
+	{
+		cout << e.what();
+	}
 }
-
-
 #endif // main
 
 #ifdef DEBUG

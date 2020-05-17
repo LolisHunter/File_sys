@@ -138,11 +138,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="DiskImage.cpp" />
+    <ClCompile Include="Entry.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Volume.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cmd.h" />
-    <ClInclude Include="img.h" />
+    <ClInclude Include="DiskImage.h" />
+    <ClInclude Include="Entry.h" />
+    <ClInclude Include="Volume.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
