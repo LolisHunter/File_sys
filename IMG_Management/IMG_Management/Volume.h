@@ -47,6 +47,7 @@ protected:
 	uint32_t StCluster = 0; // start cluster / first entry / entry = 2 cluster
 	uint64_t FAT_len; // Sc * Nc / 512
 	bool * FAT;
+	uint64_t startSector;
 	vector<File> file;
 	vector<Folder> folder;
 public:

@@ -49,77 +49,76 @@ ifstream InSector(seeker& pos, char fileName[]) {
 	return fin;
 }
 
-int FindFree(fstream &Disk, int STTvolume, int &vtDau, int &vtCuoi)
+bool Import(string disk, Volume &volume, string path, int vitri)
 {
-	
+	ifstream fin(path, ios_base::in | ios_base::binary);
+	if (fin.is_open()) // la file
+	{
+		system(("dir" + path + ">file.txt").c_str());
+		ifstream file("file.txt");
+		string dir;
+		for (int i = 0; i < 6; i++)
+			getline(file, dir);
+		string ngay = dir.substr(0, 10);
+		string gio = dir.substr(12, 20);
+		string name = dir.substr(38, dir.size());
+		fstream Disk(disk, ios_base::in | ios_base::out | ios_base::binary);
+		int vtDau, vtCuoi;
+		int next;
+		char data[4092];
+		//toi vi tri directory trong
+		string b;
+		while (!fin.eof())
+		{
+			int flag = 1;
+			while (vtDau != vtCuoi && flag)
+			{
+				Disk.seekp(vtDau, Disk.beg());
+				fin.getline(data, 4092);
+				b = data;
+				if (!fin.eof())
+					Disk.write((char*)&next, sizeof(int));
+				else
+				{
+					next = -1;
+					Disk.write((char*)&next, sizeof(int));
+					flag = 0;
+				}
+				Disk << b;
+			}
+		}
+	}
+	else // la thu muc hoac khong ton tai
+	{
+		system(("dir" + path + ">folder.txt").c_str());
+		ifstream file("folder.txt");
+		if (!file.is_open())
+			return false;
+		string dir;
+		for (int i = 0; i < 7; i++)
+			getline(file, dir);
+		if (file.eof())
+			return false; // khong ton tai
+		vector<string> folder;
+		int number = 0;
+		// tao entry table roi add vo (tai a neu a khac 0)
+		fstream Disk(disk, ios_base::in | ios_base::out | ios_base::binary);
+		int vtDau, vtCuoi;
+		while (getline(file, dir) && dir[0] != ' ')
+		{
+			string ngay = dir.substr(0, 10);
+			string gio = dir.substr(12, 20);
+			string name = dir.substr(38, dir.size());
+			
+			// add vo entry table
+			number++;
+			int a;
+			// neu number == max entry table thi tao entry table phu
+			Import(disk, volume, path + "/" + name, a);
+		}
+	}
+	return 1;
 }
-
-//bool Import(string disk, int STTvolume, string path, int vitri)
-//{
-//	ifstream fin(path, ios_base::in | ios_base::binary);
-//	if (fin.is_open()) // la file
-//	{
-//		int FreeVolumeSize; //free volume size
-//		struct stat st;
-//		stat(path.c_str(), &st);
-//		if (st.st_size > FreeVolumeSize)
-//			return 0;
-//		fstream Disk(disk, ios_base::in | ios_base::out | ios_base::binary);
-//		int vtDau, vtCuoi;
-//		int next;
-//		char data[4092];
-//		string b;
-//		while (!fin.eof())
-//		{
-//			FindFree(Disk, STTvolume, vtDau, vtCuoi); // tim toi vi tri tron
-//			int flag = 1;
-//			while (vtDau != vtCuoi && flag)
-//			{
-//				Disk.seekp(vtDau, Disk.beg());
-//				fin.getline(data, 4092);
-//				b = data;
-//				if (!fin.eof())
-//					Disk.write((char*)&next, sizeof(int));
-//				else
-//				{
-//					next = -1;
-//					Disk.write((char*)&next, sizeof(int));
-//					flag = 0;
-//				}
-//				Disk << b;
-//			}
-//		}
-//	}
-//	else // la thu muc hoac khong ton tai
-//	{
-//		system(("dir" + path + ">file.txt").c_str());
-//		ifstream file("file.txt");
-//		if (!file.is_open())
-//			return false;
-//		string dir;
-//		for (int i = 0; i < 7; i++)
-//			getline(file, dir);
-//		if (file.eof())
-//			return false; // khong ton tai
-//		vector<string> folder;
-//		int number = 0;
-//		// tao entry table roi add vo (tai a neu a khac 0)
-//		fstream Disk(disk, ios_base::in | ios_base::out | ios_base::binary);
-//		int vtDau, vtCuoi;
-//		while (getline(file, dir) && dir[0] != ' ')
-//		{
-//			string ngay = dir.substr(0, 10);
-//			string gio = dir.substr(12, 20);
-//			string name = dir.substr(38, dir.size());
-//			int a = FindFree(Disk, STTvolume, vtDau, vtCuoi);
-//			// add vo entry table
-//			number++;
-//			// neu number == max entry table thi tao entry table phu
-//			Import(disk, STTvolume, path + "/" + name, a);
-//		}
-//	}
-//	return 1;
-//}
 
 //bool Export(string Disk, int STTvolume, string FileName)
 //{
