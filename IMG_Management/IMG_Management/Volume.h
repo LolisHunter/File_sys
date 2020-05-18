@@ -32,7 +32,13 @@ using namespace std;
 
 class Volume
 {
+	/*
+			recycle			00000001
+			hidden			00000010
+
+	*/
 public:
+	uint8_t flags = 0;
 	uint8_t Name = 0; // volume letter // ki tu hay chuoi?
 	uint16_t Ss = 0; // byte/sector
 	uint8_t Sc = 0; // sector/cluster
@@ -50,4 +56,5 @@ public:
 	bool Create(vector<uint32_t>& abc, string fileName);
 	Volume() {};
 	~Volume() {};
+	void setFlags();
 };

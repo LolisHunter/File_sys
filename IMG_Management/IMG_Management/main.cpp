@@ -6,11 +6,12 @@
 #include "root.h"
 #include "img.h"
 using namespace std;
+#include "mask.h"
 //#define TEST
 
 #ifdef TEST
 void main() {
-
+	cout << sizeof(ZERO);
 }
 #endif // TEST
 

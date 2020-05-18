@@ -152,6 +152,7 @@
     <ClInclude Include="Entry.h" />
     <ClInclude Include="GreenPrint.h" />
     <ClInclude Include="img.h" />
+    <ClInclude Include="mask.h" />
     <ClInclude Include="root.h" />
     <ClInclude Include="Volume.h" />
   </ItemGroup>

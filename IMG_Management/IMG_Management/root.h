@@ -3,6 +3,7 @@
 #include "Volume.h"
 #include <vector>
 #include "img.h"
+#include "mask.h"
 #define BUFFER 512
 
 using namespace std;
@@ -22,7 +23,7 @@ using namespace std;
 class Root
 {
 private:
-	uint8_t flags = 0; // flags ^
+	uint8_t flags = DEFAULT; // flags ^
 	uint8_t Name = 0; // volume letter
 	uint16_t Ss = 0; // byte/sector
 	uint16_t Sb = 0; // sector/boot
@@ -38,4 +39,5 @@ public:
 
 	void RootCreate(char fileName[]);
 	void RootLoad(char fileName[]);
+	void AddVolumeEntry(Volume& v);
 };

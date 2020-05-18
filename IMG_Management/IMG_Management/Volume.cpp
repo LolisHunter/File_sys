@@ -53,6 +53,7 @@
 #include <fstream>
 #include "img.h"
 #include "Debug.h"
+#include "mask.h"
 using namespace std;
 template<class T>
 void SaveByte(ofstream& fout, T in) {
@@ -101,6 +102,7 @@ bool Volume::Create(vector<uint32_t> &abc,string fileName)
 	this->Nc = 1111111111111; // can tinh
 	this->Sf = ceil((Sc * Nc) / 512) / Nf;
 	this->FAT_len = Sc * Nc / 512;
+	this->startSector = start;
 	ofstream fout(fileName, ios::in | ios::out | ios::binary);
 	seeker pos = start; pos = pos * 512;
 	fout.seekp(pos);
@@ -133,13 +135,13 @@ bool Volume::Create(vector<uint32_t> &abc,string fileName)
 		sizeof(FAT_len) +
 		sizeof(Name) + sizeof(short);
 	for (int i = 0; i < 512 - core; i++) {
-		SaveByte(fout, (uint8_t)0);
+		SaveByte(fout, ZERO);
 	}
 
 	// FAT bool
 	for (seeker i = 0; i < (seeker)this->Sf*512; i++)
 	{
-		SaveByte(fout, (uint8_t)0);
+		SaveByte(fout, ZERO);
 	}
 	//for(uint64_t i=0;i<)
 
@@ -147,4 +149,8 @@ bool Volume::Create(vector<uint32_t> &abc,string fileName)
 	// entry
 	fout.close();
 	return EXIT_SUCCESS;
+}
+
+void Volume::setFlags()
+{
 }
