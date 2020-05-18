@@ -28,6 +28,7 @@ struct Entry {
 	uint16_t ino;			// identify number				2
 	
 	// save at the first sector of the first cluster
+	uint8_t eno;			// entry number
 	uint8_t Namesize;		// Namesize						1
 	string name;			// name							= NameSize
 	// skip first sector 

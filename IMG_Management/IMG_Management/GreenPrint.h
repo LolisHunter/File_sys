@@ -46,6 +46,7 @@ Volume :
 
 /*
     FIRST SECTOR
+        ino  // identify which file this belong to
         Next cluster point
         Name size
         Name

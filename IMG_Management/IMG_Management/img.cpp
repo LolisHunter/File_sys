@@ -10,7 +10,17 @@ static void SaveByte(ofstream& fout, T in) {
 		in = in >> 8;
 	}
 }
-
+template<class T>
+static void LoadByte(ifstream& fin, T& out) {
+	out = 0;
+	char c;
+	for (uint8_t i = 0; i < sizeof(T); i++) {
+		fin.read(c, 1);
+		T temp = c;
+		temp = temp << (8 * i);
+		out += temp;
+	}
+}
 bool CreateImageFile(string& name, uint64_t size) {
 	ofstream fout(name, ios_base::out | ios_base::binary);
 	if (!fout.is_open()) {
