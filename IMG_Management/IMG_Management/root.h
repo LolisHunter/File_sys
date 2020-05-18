@@ -49,13 +49,13 @@ void Root::RootCreate(char fileName[]) {
 		if (choose != 'y')
 			return;
 	}
-	ofstream fout(fileName, ios::in | ios::out | ios::binary);
+	ofstream fout(fileName,  ios::out | ios::binary);
 	if (!fout.is_open()) { DEBUG_PRINT("Create fail"); }
 	cout << "nhap kich thuoc: (GB)";
 	int size;
 	cin >> size;
 	uint64_t byte = size * 1024 * 1024 * 1024;
-	this->Sv =  byte / 512;
+	this->Sv = byte / 512;
 	this->Sb = 8;
 	this->Ss = byte;
 	this->Nf = 1;
