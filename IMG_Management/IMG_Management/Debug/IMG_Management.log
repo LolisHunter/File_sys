@@ -1,33 +1,82 @@
-﻿  root.cpp
-C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\root.cpp(38,16): warning C4244: 'initializing': conversion from 'float' to 'uint64_t', possible loss of data
-C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\root.cpp(39,18): warning C4244: '=': conversion from 'uint64_t' to 'uint32_t', possible loss of data
-C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\root.cpp(44,26): warning C4305: '=': truncation from '__int64' to 'uint32_t'
-C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\root.cpp(44,13): warning C4309: '=': truncation of constant value
-C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\root.cpp(73,20): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\root.cpp(11,7): warning C4244: '=': conversion from 'T' to 'char', possible loss of data
+﻿  DiskImage.cpp
+  Entry.cpp
+  Volume.cpp
+Q:\Homework\Operating System\Project\FileSys\File_sys\IMG_Management\IMG_Management\Volume.cpp(77,11): warning C4018: '<': signed/unsigned mismatch
+Q:\Homework\Operating System\Project\FileSys\File_sys\IMG_Management\IMG_Management\Volume.cpp(92,8): warning C4018: '>': signed/unsigned mismatch
+Q:\Homework\Operating System\Project\FileSys\File_sys\IMG_Management\IMG_Management\Volume.cpp(96,18): warning C4244: '=': conversion from 'uint64_t' to 'uint32_t', possible loss of data
+Q:\Homework\Operating System\Project\FileSys\File_sys\IMG_Management\IMG_Management\Volume.cpp(101,26): warning C4305: '=': truncation from '__int64' to 'uint32_t'
+Q:\Homework\Operating System\Project\FileSys\File_sys\IMG_Management\IMG_Management\Volume.cpp(101,13): warning C4309: '=': truncation of constant value
+Q:\Homework\Operating System\Project\FileSys\File_sys\IMG_Management\IMG_Management\Volume.cpp(102,35): warning C4244: '=': conversion from 'double' to 'uint16_t', possible loss of data
+Q:\Homework\Operating System\Project\FileSys\File_sys\IMG_Management\IMG_Management\Volume.cpp(61,7): warning C4244: '=': conversion from 'T' to 'char', possible loss of data
           with
           [
               T=uint16_t
           ]
-C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\root.cpp(46): message : see reference to function template instantiation 'void SaveByte<uint16_t>(std::ofstream &,T)' being compiled
+Q:\Homework\Operating System\Project\FileSys\File_sys\IMG_Management\IMG_Management\Volume.cpp(113): message : see reference to function template instantiation 'void SaveByte<uint16_t>(std::ofstream &,T)' being compiled
           with
           [
               T=uint16_t
           ]
-C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\root.cpp(13,1): warning C4333: '>>': right shift by too large amount, data loss
-C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\root.cpp(47): message : see reference to function template instantiation 'void SaveByte<uint8_t>(std::ofstream &,T)' being compiled
+Q:\Homework\Operating System\Project\FileSys\File_sys\IMG_Management\IMG_Management\Volume.cpp(63,1): warning C4333: '>>': right shift by too large amount, data loss
+Q:\Homework\Operating System\Project\FileSys\File_sys\IMG_Management\IMG_Management\Volume.cpp(114): message : see reference to function template instantiation 'void SaveByte<uint8_t>(std::ofstream &,T)' being compiled
           with
           [
               T=uint8_t
           ]
-C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\root.cpp(11,7): warning C4244: '=': conversion from 'T' to 'char', possible loss of data
+Q:\Homework\Operating System\Project\FileSys\File_sys\IMG_Management\IMG_Management\Volume.cpp(61,7): warning C4244: '=': conversion from 'T' to 'char', possible loss of data
+          with
+          [
+              T=uint64_t
+          ]
+Q:\Homework\Operating System\Project\FileSys\File_sys\IMG_Management\IMG_Management\Volume.cpp(121): message : see reference to function template instantiation 'void SaveByte<uint64_t>(std::ofstream &,T)' being compiled
+          with
+          [
+              T=uint64_t
+          ]
+Q:\Homework\Operating System\Project\FileSys\File_sys\IMG_Management\IMG_Management\Volume.cpp(61,7): warning C4244: '=': conversion from 'T' to 'char', possible loss of data
           with
           [
               T=short
           ]
-C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\root.cpp(59): message : see reference to function template instantiation 'void SaveByte<short>(std::ofstream &,T)' being compiled
+Q:\Homework\Operating System\Project\FileSys\File_sys\IMG_Management\IMG_Management\Volume.cpp(123): message : see reference to function template instantiation 'void SaveByte<short>(std::ofstream &,T)' being compiled
           with
           [
               T=short
           ]
-  IMG_Management.vcxproj -> C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\Debug\IMG_Management.exe
+  img.cpp
+Q:\Homework\Operating System\Project\FileSys\File_sys\IMG_Management\IMG_Management\img.cpp(31,10): warning C4101: 'buffer': unreferenced local variable
+  main.cpp
+  root.cpp
+Q:\Homework\Operating System\Project\FileSys\File_sys\IMG_Management\IMG_Management\root.cpp(38,16): warning C4244: 'initializing': conversion from 'float' to 'uint64_t', possible loss of data
+Q:\Homework\Operating System\Project\FileSys\File_sys\IMG_Management\IMG_Management\root.cpp(39,18): warning C4244: '=': conversion from 'uint64_t' to 'uint32_t', possible loss of data
+Q:\Homework\Operating System\Project\FileSys\File_sys\IMG_Management\IMG_Management\root.cpp(44,26): warning C4305: '=': truncation from '__int64' to 'uint32_t'
+Q:\Homework\Operating System\Project\FileSys\File_sys\IMG_Management\IMG_Management\root.cpp(44,13): warning C4309: '=': truncation of constant value
+Q:\Homework\Operating System\Project\FileSys\File_sys\IMG_Management\IMG_Management\root.cpp(76,20): warning C4018: '<': signed/unsigned mismatch
+Q:\Homework\Operating System\Project\FileSys\File_sys\IMG_Management\IMG_Management\root.cpp(11,7): warning C4244: '=': conversion from 'T' to 'char', possible loss of data
+          with
+          [
+              T=uint16_t
+          ]
+Q:\Homework\Operating System\Project\FileSys\File_sys\IMG_Management\IMG_Management\root.cpp(46): message : see reference to function template instantiation 'void SaveByte<uint16_t>(std::ofstream &,T)' being compiled
+          with
+          [
+              T=uint16_t
+          ]
+Q:\Homework\Operating System\Project\FileSys\File_sys\IMG_Management\IMG_Management\root.cpp(13,1): warning C4333: '>>': right shift by too large amount, data loss
+Q:\Homework\Operating System\Project\FileSys\File_sys\IMG_Management\IMG_Management\root.cpp(47): message : see reference to function template instantiation 'void SaveByte<uint8_t>(std::ofstream &,T)' being compiled
+          with
+          [
+              T=uint8_t
+          ]
+Q:\Homework\Operating System\Project\FileSys\File_sys\IMG_Management\IMG_Management\root.cpp(11,7): warning C4244: '=': conversion from 'T' to 'char', possible loss of data
+          with
+          [
+              T=short
+          ]
+Q:\Homework\Operating System\Project\FileSys\File_sys\IMG_Management\IMG_Management\root.cpp(59): message : see reference to function template instantiation 'void SaveByte<short>(std::ofstream &,T)' being compiled
+          with
+          [
+              T=short
+          ]
+  Generating Code...
+  IMG_Management.vcxproj -> Q:\Homework\Operating System\Project\FileSys\File_sys\IMG_Management\Debug\IMG_Management.exe

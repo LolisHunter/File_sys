@@ -23,4 +23,5 @@ public:
 
 	void RootCreate(char fileName[]);
 	void RootLoad(char fileName[]);
+	void AddVolume(const Volume& v);
 };

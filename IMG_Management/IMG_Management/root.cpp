@@ -86,3 +86,33 @@ void Root::RootLoad(char fileName[])
 {
 
 }
+
+void Root::AddVolume(const Volume& v)
+{
+	ofstream fout(this->fileName, ios_base::in | ios_base::out | ios_base::binary);
+
+	if (fout.is_open() == false)
+	{
+		throw exception("Can't open disk. Can't add volume!");
+	}
+
+	int startIndex = 512 * 8 + 10 * list.length();
+	fout.seekp(startIndex, ios::beg);
+
+	fout.write((char*)&v.Name, 1);
+
+	fout.write((char*)&v.startSector, 4);
+
+	int endSec = v.startSector + v.Sv;
+	fout.write((char*)&endSec, 4);
+
+	fout << 0; //Is deleted?
+
+	fout.seekp(this->abc[abc.size() - 1], ios::beg);
+	for (int i = 0; i < v.Sv * 512; i++)
+	{
+		fout << 0; //Fill empty volume with 0
+	}
+
+	fout.close();
+}
