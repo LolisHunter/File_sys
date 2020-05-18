@@ -36,7 +36,6 @@ Volume entry :
     name
     Start sector 8bytes
     end sector 8bytes
-    size 
 Volume :
     Boot
     cluster table // bool 

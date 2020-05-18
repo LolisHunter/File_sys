@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 #include <fstream>
+#include "img.h"
 #include "Volume.h"
 #include <vector>
 #define BUFFER 512
@@ -14,8 +15,10 @@ struct Type {
 class Root : protected Volume
 {
 private:
+	string fileName;
 	vector<Volume> list;
 	vector<Type> type;
+	vector<uint64_t> abc; // start end, start end // don vi la sector
 public:
 	Root() {
 		this->Name = '/';
@@ -30,22 +33,35 @@ public:
 	}
 	//~Root() {};
 	void RootCreate(char fileName[]);
+	void RootLoad(char fileName[]);
 };
-
-template<class T>
-void SaveByte(ofstream& fout, T in) {
-	char c;
-	for (uint8_t i = 0; i < sizeof(T); i++) {
-		c = in;
-		fout << c;
-		in = in >> 8;
-	}
-}
 
 void Root::RootCreate(char fileName[]) {
 	// Boot
+	ifstream fin(fileName);
+	if (fin.is_open())
+	{
+		cout << "This file exist, you want overwrite" << endl;
+		cout << "Input (y/other key):";
+		char choose;
+		choose = getchar();
+		fin.close();
+		if (choose != 'y')
+			return;
+	}
 	ofstream fout(fileName, ios::in | ios::out | ios::binary);
 	if (!fout.is_open()) { DEBUG_PRINT("Create fail"); }
+	cout << "nhap kich thuoc: (GB)";
+	int size;
+	cin >> size;
+	uint64_t byte = size * 1024 * 1024 * 1024;
+	this->Sv =  byte / 512;
+	this->Sb = 8;
+	this->Ss = byte;
+	this->Nf = 1;
+	this->Sc = 8;
+	this->Nc = 1111111111111; // can tinh
+	this->Sf = ceil(Sc * Nc / 512) / Nf;
 	SaveByte(fout, this->Ss);
 	SaveByte(fout, this->Sc);
 	SaveByte(fout, this->Sb);
@@ -64,4 +80,9 @@ void Root::RootCreate(char fileName[]) {
 	for (int i = 0; i < 512 - 22 - name.length(); i++) {
 		fout << (uint8_t)0;
 	}
+}
+
+void Root::RootLoad(char fileName[])
+{
+
 }

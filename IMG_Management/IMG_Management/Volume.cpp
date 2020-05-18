@@ -1,4 +1,4 @@
-//#include "Volume.h"
+#include "Volume.h"
 //
 //
 //string Volume::getName16Char(const string& source)
@@ -49,3 +49,55 @@
 //
 //	fout.close();
 //}
+void Volume::Create(vector<uint64_t> &abc,string fileName)
+{
+	cout << "nhap kich thuoc: (GB)";
+	int size;
+	cin >> size;
+	uint64_t byte = size * 1024 * 1024 * 1024;
+	cout << "Nhap volume name";
+	cin.get();
+	int i = 1;
+	uint64_t between;
+	uint64_t start,end;
+	while (i < abc.size())
+	{
+		between = abc[i + 1] - abc[i] - 1;
+		if (between >= byte)
+		{
+			start = abc[i] + 1;
+			end = abc[i + 1] - 1;
+			abc.push_back(abc[i] + 1);
+			abc.push_back(abc[i + 1] - 1);
+			// sort lai
+		}
+	}
+	this->Sv = byte / 512;
+	this->Sb = 1;
+	this->Ss = byte;
+	this->Nf = 1;
+	this->Sc = 8;
+	this->Nc = 1111111111111; // can tinh
+	this->Sf = ceil(Sc * Nc / 512) / Nf;
+	this->FAT_len = Sc * Nc / 512;
+	ofstream fout(fileName, ios::in | ios::out | ios::binary);
+	fout.seekp(start * 512);
+	// luu volume entry
+	SaveByte(fout,this->Name);
+	SaveByte(fout, start);
+	SaveByte(fout, end);
+	// luu volume
+	SaveByte(fout, this->Ss);
+	SaveByte(fout, this->Sc);
+	SaveByte(fout, this->Sb);
+	SaveByte(fout, this->Nf);
+	SaveByte(fout, this->Sf);
+	SaveByte(fout, this->Sv);
+	SaveByte(fout, this->Nc);
+	SaveByte(fout, this->StCluster);
+	for (int i = 0; i < StCluster; i++)
+	{
+		fout <<  (uint8_t) 0;
+	}
+	fout.close();
+}
