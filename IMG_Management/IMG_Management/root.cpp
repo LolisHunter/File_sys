@@ -3,6 +3,7 @@
 #include <iostream>
 #include <fstream>
 #include "Debug.h"
+
 using namespace std;
 template<class T>
 void SaveByte(ofstream& fout, T in) {
@@ -13,12 +14,25 @@ void SaveByte(ofstream& fout, T in) {
 		in = in >> 8;
 	}
 }
+
+template<class T>
+static void LoadByte(ifstream& fin, T& out) {
+	out = 0;
+	char c;
+	for (uint8_t i = 0; i < sizeof(T); i++) {
+		fin >> c;
+		T temp = c;
+		temp = temp << (8 * i);
+		out += temp;
+	}
+}
+
 Root::Root() {
-	this->Name = '/';
 }
 
 void Root::RootCreate(char fileName[]) {
 	// Boot
+	this->fileName = fileName;
 	ifstream fin(fileName);
 	if (fin.is_open())
 	{
@@ -34,31 +48,36 @@ void Root::RootCreate(char fileName[]) {
 	if (!fout.is_open()) { DEBUG_PRINT("Create fail"); }
 	cout << "nhap kich thuoc: (GB)";
 	float size = 0;
-	//cin >> size;
+	cin >> size;
 	uint64_t byte = size; byte = byte * 1024 * 1024 * 1024;
 	this->Sv = byte / 512;
 	this->Sb = 8;
 	this->Ss = BUFFER;
-	this->Nf = 0;
-	this->Sc = 8;
-	this->Nc = 1111111111111; // can tinh
-	this->Sf = 0;//ceil(Sc * Nc / 512) / Nf;
-	SaveByte(fout, this->Ss);
-	SaveByte(fout, this->Sc);
-	SaveByte(fout, this->Sb);
-	SaveByte(fout, this->Nf);
-	SaveByte(fout, this->Sf);
-	SaveByte(fout, this->Sv);
-	SaveByte(fout, this->Nc);
-	SaveByte(fout, this->StCluster);
-	SaveByte(fout, this->Name);
-	//string name = "abcdefgh";
-	//for (auto i : name) {
-	//	SaveByte(fout, i);
-	//}
-	SaveByte(fout, (short)0xA2F7); // end key
+	this->Se = 8;
+	this->Name = '/';
 
-	for (int i = 0; i < 512 - 23; i++) {
+	//this->Sf = 0;//ceil(Sc * Nc / 512) / Nf;
+	SaveByte(fout, this->flags);
+	SaveByte(fout, this->Name);
+	SaveByte(fout, this->Ss);
+	SaveByte(fout, this->Sb);
+	SaveByte(fout, this->Sv);
+	SaveByte(fout, this->Se);
+	SaveByte(fout, this->pwd_sz);
+	for (auto i : this->pwd) {
+		SaveByte(fout, i);
+	}
+	
+	int core = sizeof(this->flags)
+		+ sizeof(this->Name)
+		+ sizeof(this->Ss)
+		+ sizeof(this->Sb)
+		+ sizeof(this->Sv)
+		+ sizeof(this->Se)
+		+ sizeof(this->pwd_sz)
+		+ sizeof(this->pwd);
+
+	for (int i = 0; i < 512 - core; i++) {
 		fout << (uint8_t)0;
 	}
 
@@ -73,7 +92,7 @@ void Root::RootCreate(char fileName[]) {
 	for (auto i : s) {
 		fout << i;
 	}
-	for (int i = 0; i < ((8 * Ss) - s.length());i++) {
+	for (int i = 0; i < ((Se * Ss) - s.length());i++) {
 		SaveByte(fout, (uint8_t)0x00);
 	}
 	DEBUG_PRINT("[CREATE ENTRY] : done\n");
@@ -84,5 +103,10 @@ void Root::RootCreate(char fileName[]) {
 
 void Root::RootLoad(char fileName[])
 {
-
+	ifstream fin(fileName, ios::in | ios::binary);
+	if (!fin.is_open()) {
+		DEBUG_PRINT("[OPEN FAIL] \n");
+		throw("create fail");
+	}
+	LoadByte(fin, this->flags);
 }

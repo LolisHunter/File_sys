@@ -1,5 +1,10 @@
 #include "img.h"
 #include "Debug.h"
+#include <fstream>
+using namespace std;
+#define BUFFER 512
+typedef uint64_t seeker;
+
 
 template<class T>
 static void SaveByte(ofstream& fout, T in) {

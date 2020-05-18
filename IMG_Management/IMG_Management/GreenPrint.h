@@ -33,6 +33,7 @@
 Root : 
     volume entry -> point volume boot sector
 Volume entry : 
+    flags
     name
     Start sector 4bytes
     end sector 4bytes

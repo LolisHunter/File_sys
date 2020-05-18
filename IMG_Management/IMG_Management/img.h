@@ -6,13 +6,22 @@
 #ifdef _IMG_H
 #include <string>
 #include <fstream>
+#include <vector>
 #define BUFFER 512
 typedef uint64_t seeker;
 using namespace std;
 
-template<class T>
+struct Type {
+	uint8_t code;
+	char extension[17];
+};
+static vector<Type> type_list;
+#define TL type_list
 
+template<class T>
 static void SaveByte(ofstream& fout, T in);
+template<class T>
+static void LoadByte(ifstream& fin, T& out);
 static bool CreateImageFile(string& name, uint64_t size);
 static seeker getFileLength(char fileName[]);
 static ifstream InSector(seeker& pos, char fileName[]);
