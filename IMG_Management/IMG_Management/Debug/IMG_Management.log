@@ -1,44 +1,35 @@
-﻿  Volume.cpp
-C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\Volume.cpp(77,11): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\Volume.cpp(92,8): warning C4018: '>': signed/unsigned mismatch
-C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\Volume.cpp(96,18): warning C4244: '=': conversion from 'uint64_t' to 'uint32_t', possible loss of data
-C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\Volume.cpp(101,26): warning C4305: '=': truncation from '__int64' to 'uint32_t'
-C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\Volume.cpp(101,13): warning C4309: '=': truncation of constant value
-C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\Volume.cpp(102,35): warning C4244: '=': conversion from 'double' to 'uint16_t', possible loss of data
-C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\Volume.cpp(61,7): warning C4244: '=': conversion from 'T' to 'char', possible loss of data
+﻿  main.cpp
+  root.cpp
+C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\root.cpp(47,18): warning C4244: '=': conversion from 'uint64_t' to 'uint32_t', possible loss of data
+C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\root.cpp(49,13): warning C4244: '=': conversion from 'uint64_t' to 'uint16_t', possible loss of data
+C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\root.cpp(52,26): warning C4305: '=': truncation from '__int64' to 'uint32_t'
+C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\root.cpp(52,13): warning C4309: '=': truncation of constant value
+C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\root.cpp(53,33): warning C4244: '=': conversion from 'double' to 'uint16_t', possible loss of data
+C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\root.cpp(11,7): warning C4244: '=': conversion from 'T' to 'char', possible loss of data
           with
           [
               T=uint16_t
           ]
-C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\Volume.cpp(113): message : see reference to function template instantiation 'void SaveByte<uint16_t>(std::ofstream &,T)' being compiled
+C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\root.cpp(54): message : see reference to function template instantiation 'void SaveByte<uint16_t>(std::ofstream &,T)' being compiled
           with
           [
               T=uint16_t
           ]
-C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\Volume.cpp(63,1): warning C4333: '>>': right shift by too large amount, data loss
-C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\Volume.cpp(114): message : see reference to function template instantiation 'void SaveByte<uint8_t>(std::ofstream &,T)' being compiled
+C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\root.cpp(13,1): warning C4333: '>>': right shift by too large amount, data loss
+C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\root.cpp(55): message : see reference to function template instantiation 'void SaveByte<uint8_t>(std::ofstream &,T)' being compiled
           with
           [
               T=uint8_t
           ]
-C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\Volume.cpp(61,7): warning C4244: '=': conversion from 'T' to 'char', possible loss of data
-          with
-          [
-              T=uint64_t
-          ]
-C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\Volume.cpp(121): message : see reference to function template instantiation 'void SaveByte<uint64_t>(std::ofstream &,T)' being compiled
-          with
-          [
-              T=uint64_t
-          ]
-C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\Volume.cpp(61,7): warning C4244: '=': conversion from 'T' to 'char', possible loss of data
+C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\root.cpp(11,7): warning C4244: '=': conversion from 'T' to 'char', possible loss of data
           with
           [
               T=short
           ]
-C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\Volume.cpp(123): message : see reference to function template instantiation 'void SaveByte<short>(std::ofstream &,T)' being compiled
+C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\root.cpp(67): message : see reference to function template instantiation 'void SaveByte<short>(std::ofstream &,T)' being compiled
           with
           [
               T=short
           ]
-  IMG_Management.vcxproj -> C:\Users\Blackmoon\source\repos\code\File_SYS\IMG_Management\Debug\IMG_Management.exe
+  Generating Code...
+  IMG_Management.vcxproj -> C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\Debug\IMG_Management.exe

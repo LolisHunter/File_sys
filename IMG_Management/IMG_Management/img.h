@@ -11,6 +11,7 @@ typedef uint64_t seeker;
 using namespace std;
 
 template<class T>
+
 static void SaveByte(ofstream& fout, T in);
 static bool CreateImageFile(string& name, uint64_t size);
 static seeker getFileLength(char fileName[]);
