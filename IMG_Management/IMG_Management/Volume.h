@@ -25,17 +25,14 @@
 //	void InitVolume(const string& diskPath);
 //};
 #pragma once
-#include <iostream>
-#include <fstream>
+
 #include <vector>
-#include "folder.h"
-#include "file.h"
-#include "img.h"
+#include "entry.h"
 using namespace std;
 
 class Volume
 {
-protected:
+public:
 	uint8_t Name = 0; // volume letter // ki tu hay chuoi?
 	uint16_t Ss = 0; // byte/sector
 	uint8_t Sc = 0; // sector/cluster
@@ -46,12 +43,11 @@ protected:
 	uint32_t Nc = 0; // cluster/volume
 	uint32_t StCluster = 0; // start cluster / first entry / entry = 2 cluster
 	uint64_t FAT_len; // Sc * Nc / 512
-	bool * FAT;
+	bool* FAT;
 	uint64_t startSector;
-	vector<File> file;
-	vector<Folder> folder;
+	vector<Entry> entry;
 public:
-	void Create(vector<uint64_t> &abc,string fileName);
+	bool Create(vector<uint32_t>& abc, string fileName);
 	Volume() {};
 	~Volume() {};
 };

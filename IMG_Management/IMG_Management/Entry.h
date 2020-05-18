@@ -1,6 +1,9 @@
 #pragma once
 #include <bitset>
 #include <time.h>
+#include <vector>
+#include <string>
+using namespace std;
 
 /*--------------------------------------------------------
 Flags:
@@ -23,7 +26,12 @@ struct Entry {
 	uint32_t size;			// size							4
 	uint16_t TypeNum;		// type of data					2
 	uint16_t ino;			// identify number				2
-	char name[NameS] = {0};	// name							= NameSize
+	
+	// save at the first sector of the first cluster
+	uint8_t Namesize;		// Namesize						1
+	string name;			// name							= NameSize
+	// skip first sector 
+	vector<Entry> list;
 	Entry() {
 		this->flags = 0;
 		this->ctime = 0;
@@ -32,6 +40,8 @@ struct Entry {
 		this->size = 0;
 		this->TypeNum = 0;
 		this->ino = 0;
+		this->Namesize = 0;
+		this->name = "";
 	}
 	tm cTime(); // out created time
 	tm mTime(); // out last modified time ... 

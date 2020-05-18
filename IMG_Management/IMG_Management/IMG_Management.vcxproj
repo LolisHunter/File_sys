@@ -140,7 +140,9 @@
   <ItemGroup>
     <ClCompile Include="DiskImage.cpp" />
     <ClCompile Include="Entry.cpp" />
+    <ClCompile Include="img.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="root.cpp" />
     <ClCompile Include="Volume.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -148,8 +150,6 @@
     <ClInclude Include="Debug.h" />
     <ClInclude Include="DiskImage.h" />
     <ClInclude Include="Entry.h" />
-    <ClInclude Include="file.h" />
-    <ClInclude Include="folder.h" />
     <ClInclude Include="GreenPrint.h" />
     <ClInclude Include="img.h" />
     <ClInclude Include="root.h" />

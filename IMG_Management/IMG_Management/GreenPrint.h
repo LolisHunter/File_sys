@@ -34,12 +34,19 @@ Root :
     volume entry -> point volume boot sector
 Volume entry : 
     name
-    Start sector 8bytes
-    end sector 8bytes
+    Start sector 4bytes
+    end sector 4bytes
 Volume :
     Boot
     cluster table // bool 
     DATA: 
         entry
         data
+*/
+
+/*
+    FIRST SECTOR
+        Next cluster point
+        Name size
+        Name
 */
