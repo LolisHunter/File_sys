@@ -72,20 +72,19 @@ bool Volume::Create(vector<uint32_t> &abc,string fileName)
 	uint64_t byte = (uint64_t)size * 1024 * 1024 * 1024;
 	cout << "Nhap volume name";
 	cin.get();
-	int i = 1;
+	int i = 3;
 	uint64_t between;
-	uint32_t start{},end;
+	uint32_t start,end;
 	while (i < abc.size())
 	{
-		between = (uint64_t)(abc[i + 1] - abc[i]) * 512;
+		between = (uint64_t)(abc[i + 1] - abc[i] - 1) * 512;
 		if (between >= byte)
 		{
 			start = abc[i] + 1;
 			end = abc[i + 1] - 1;
-			abc.push_back(start);
-			abc.push_back(end);
-			// sort lai
-
+			auto it = abc.begin();
+			abc.insert(it+i,start + size - 1); // push back end vao giua
+			abc.insert(it+i,start); // push back start vao giua
 			break;
 		}
 		i += 2;
@@ -94,7 +93,6 @@ bool Volume::Create(vector<uint32_t> &abc,string fileName)
 		DEBUG_PRINT("CAN NOT CREATE NEW VOLUME");
 		return EXIT_FAILURE;
 	}
-	this->Sv = byte / 512;
 	this->Sb = 1;
 	this->Ss = 512;
 	this->Nf = 1;

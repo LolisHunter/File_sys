@@ -1,6 +1,7 @@
 #pragma once
 #include <bitset>
 #include <time.h>
+#include <ctime>
 #include <vector>
 #include <string>
 using namespace std;
@@ -44,6 +45,34 @@ struct Entry {
 		this->Namesize = 0;
 		this->name = "";
 	}
-	tm cTime(); // out created time
-	tm mTime(); // out last modified time ... 
+	Entry(const Entry &a)
+	{
+		this->flags = a.flags;
+		this->ctime = a.ctime;
+		this->mtime = a.mtime;
+		this->StCluster = a.StCluster;
+		this->size = a.size;
+		this->TypeNum = a.TypeNum;
+		this->ino = a.ino;
+		this->Namesize = a.Namesize;
+		this->name = a.name;
+	}
+	tm cTime() // out created time
+	{
+		time_t a = this->cTime;
+		tm *b = new tm;
+		localtime_s(b, &a);
+		tm c = *b;
+		delete b;
+		return c;
+	}
+	tm mTime() // out last modified time ... 
+	{
+		time_t a = this->mTime;
+		tm *b = new tm;
+		localtime_s(b, &a);
+		tm c = *b;
+		delete b;
+		return c;
+	}
 };

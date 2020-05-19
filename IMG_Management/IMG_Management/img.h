@@ -31,14 +31,20 @@ static ifstream InSector(seeker& pos, char fileName[]);
 //	ifstream fin(path, ios_base::in | ios_base::binary);
 //	if (fin.is_open()) // la file
 //	{
-//		system(("dir" + path + ">file.txt").c_str());
-//		ifstream file("file.txt");
-//		string dir;
-//		for (int i = 0; i < 6; i++)
-//			getline(file, dir);
-//		string ngay = dir.substr(0, 10);
-//		string gio = dir.substr(12, 20);
-//		string name = dir.substr(38, dir.size());
+//		struct stat st;
+//		stat(path.c_str(), &st);
+//		Entry a;
+//		a.ctime = st.st_ctime;
+//		a.mtime = st.st_mtime;
+//		int i = 0; // tim name trong path
+//		int temp = path.find('\\', i);
+//		while (temp > i)
+//		{
+//			i = path.find('\\', i + 1);
+//			temp = path.find('\\', i + 1);
+//		}
+//		a.name = path.substr(i + 1, path.size() - i - 1);
+//		a.flags = 0;
 //		fstream Disk(disk, ios_base::in | ios_base::out | ios_base::binary);
 //		int vtDau, vtCuoi;
 //		int next;
@@ -76,23 +82,10 @@ static ifstream InSector(seeker& pos, char fileName[]);
 //			getline(file, dir);
 //		if (file.eof())
 //			return false; // khong ton tai
-//		vector<string> folder;
-//		int number = 0;
+//
 //		// tao entry table roi add vo (tai a neu a khac 0)
 //		fstream Disk(disk, ios_base::in | ios_base::out | ios_base::binary);
 //		int vtDau, vtCuoi;
-//		while (getline(file, dir) && dir[0] != ' ')
-//		{
-//			string ngay = dir.substr(0, 10);
-//			string gio = dir.substr(12, 20);
-//			string name = dir.substr(38, dir.size());
-//			
-//			// add vo entry table
-//			number++;
-//			int a;
-//			// neu number == max entry table thi tao entry table phu
-//			Import(disk, volume, path + "/" + name, a);
-//		}
 //	}
 //	return 1;
 //}

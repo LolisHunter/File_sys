@@ -29,6 +29,8 @@ void LoadByte(ifstream& fin, T& out) {
 }
 
 Root::Root() {
+	abc.push_back(-1);
+	abc.push_back(-1);
 }
 
 void Root::RootCreate(char fileName[]) {
@@ -56,8 +58,10 @@ void Root::RootCreate(char fileName[]) {
 	this->Ss = BUFFER;
 	this->Se = 5;
 	this->Name = '/';
-
 	//this->Sf = 0;//ceil(Sc * Nc / 512) / Nf;
+	abc.push_back(Sv + 1);
+	abc.push_back(Sv + 1);
+
 	SaveByte(fout, this->flags);
 	SaveByte(fout, this->Name);
 	SaveByte(fout, this->Ss);
