@@ -64,44 +64,35 @@ void SaveByte(ofstream& fout, T in) {
 		in = in >> 8;
 	}
 }
-bool Volume::Create(vector<uint32_t> &scope,string fileName)
+bool Volume::Create(Packg& scope,string fileName)
 {
-	cout << "nhap kich thuoc: (GB)";
-	int size;
-	cin >> size;
-	uint64_t byte = (uint64_t)size * 1024 * 1024 * 1024;
-	cout << "Nhap volume name";
-	cin.get();
-	int i = 3;
-	uint64_t between;
-	uint32_t start = 0;
-	while (i < scope.size())
+	uint64_t max_size = scope.end - scope.strt + 1;
+	max_size *= 512;
+	uint64_t byte;
+	do
 	{
-		between = (uint64_t)(scope[i + 1] - scope[i] - 1) * 512;
-		if (between >= byte){
-			start = scope[i] + 1;
-			auto it = scope.begin();
-			scope.insert(it+i,start + size - 1); // push back end vao giua
-			scope.insert(it+i,start); // push back start vao giua
-			break;
-		}
-		i += 2;
-	}
-	if (i > scope.size()) {
-		DEBUG_PRINT("CAN NOT CREATE NEW VOLUME");
-		return EXIT_FAILURE;
-	}
-	this->Sb = 1;
+		cout << "nhap kich thuoc: (MB)";
+		cin >> byte;
+		byte = byte * 1024 * 1024;
+	} while (byte > max_size && cout << "Bruh!\n");
+	cout << "Nhap volume name";
+	this->Name = getchar();
+	this->setFlags();
 	this->Ss = UNIT_SIZE;
-	this->Nf = 1;
 	this->Sc = 8;
+	this->Sb = 1;
+	this->Nf = 1;
 	this->Nc = 1111111111111; // can tinh
 	this->Sf = ceil((Sc * Nc) / 512) / Nf;
 	this->Sv = byte;
 	this->FAT_len = Sc * Nc / 512;
-	this->startSector = start;
+	this->startSector = scope.strt;
+
 	ofstream fout(fileName, ios::in | ios::out | ios::binary);
-	seeker pos = start; pos = pos * 512;
+	if (!fout.is_open()) {
+		return EXIT_FAILURE;
+	}
+	seeker pos = startSector; pos = pos * 512;
 	fout.seekp(pos);
 	// luu volume entry == > root luu entry neu create success
 	//SaveByte(fout,this->Name);
@@ -118,8 +109,6 @@ bool Volume::Create(vector<uint32_t> &scope,string fileName)
 	SaveByte(fout, this->Nc);
 	SaveByte(fout, this->StCluster);
 	SaveByte(fout, this->FAT_len);
-	SaveByte(fout, this->Name);
-	SaveByte(fout, (short)0xA2F7); // end key
 
 	int core = sizeof(Ss) +
 		sizeof(Sc) +
@@ -129,21 +118,8 @@ bool Volume::Create(vector<uint32_t> &scope,string fileName)
 		sizeof(Sv) +
 		sizeof(Nc) +
 		sizeof(StCluster) +
-		sizeof(FAT_len) +
-		sizeof(Name) + sizeof(short);
-	for (int i = 0; i < 512 - core; i++) {
-		SaveByte(fout, ZERO);
-	}
+		sizeof(FAT_len);
 
-	// FAT bool
-	for (seeker i = 0; i < (seeker)this->Sf*512; i++)
-	{
-		SaveByte(fout, ZERO);
-	}
-	//for(uint64_t i=0;i<)
-
-	// DATA
-	// entry
 	fout.close();
 	return EXIT_SUCCESS;
 }

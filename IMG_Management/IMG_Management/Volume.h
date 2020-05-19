@@ -7,9 +7,9 @@ using namespace std;
 class Volume
 {
 	/*
-			recycle			00000001
-			hidden			00000010
-
+			recycle			10000000
+			using			01000000
+			hidden			00100000
 	*/
 public:
 	uint8_t flags = 0;
@@ -27,7 +27,7 @@ public:
 	uint32_t startSector;
 	vector<Entry> entry;
 public:
-	bool Create(vector<uint32_t>& abc, string fileName);
+	bool Create(Packg& scope, string fileName);
 	Volume() {};
 	~Volume() {};
 	void setFlags();

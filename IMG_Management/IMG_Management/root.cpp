@@ -22,7 +22,7 @@ void LoadByte(ifstream& fin, T& out) {
 	out = 0;
 	char c;
 	for (uint8_t i = 0; i < sizeof(T); i++) {
-		fin >> c;
+		fin.get(c);
 		T temp = c;
 		temp = temp << (8 * i);
 		out += temp;
@@ -30,8 +30,6 @@ void LoadByte(ifstream& fin, T& out) {
 }
 
 Root::Root() {
-	scope.push_back(0);
-	scope.push_back(0);
 }
 
 void Root::RootCreate(char fileName[]) {
@@ -170,6 +168,7 @@ void Root::RootLoad(char fileName[])
 		LoadByte(fin, Vtemp.flags);
 		if (i == 0 && Vtemp.flags == DEFAULT) {
 			DEBUG_PRINT("[NO VOLUME FOUND]");
+			break;
 		}
 		else if (Vtemp.flags == DEFAULT) {
 			break;
@@ -180,11 +179,10 @@ void Root::RootLoad(char fileName[])
 			uint32_t end;
 			LoadByte(fin, end);
 			Vtemp.Sv = end - Vtemp.startSector + 1;
-			scope.push_back(Vtemp.startSector);
-			scope.push_back(end);
+			scopeAdd(Vtemp.startSector);
+			scopeAdd(end);
 		}
 	}
-	this->scopeSort();
 }
 
 void Root::AddVolumeEntry(Volume& v)
@@ -225,12 +223,48 @@ void Root::AddVolumeEntry(Volume& v)
 
 void Root::scopeUpdate()
 {
-	scope.push_back(0);
-	scope.push_back(this->Sv - 1);
+	scope.clear();
+	scopeAdd(0);
+	scopeAdd(this->Sv - 1);
 }
 
-void Root::scopeSort()
+int BinarySearch(vector<uint32_t> arr, int n, int key) {
+	int l = 0;
+	int r = n - 1;
+	int mid = (r - l) / 2 + l;
+
+	while (l <= r) {
+		if (key == arr[mid]) {
+			return mid;
+		}
+		if (key < arr[mid]) {
+			r = mid - 1;
+			mid = (r - l) / 2 + l;
+		}
+		if (key > arr[mid]) {
+			l = mid + 1;
+			mid = (r - l) / 2 + l;
+		}
+	}
+	return l;
+}
+
+void Root::scopeAdd(uint32_t key)
 {
+	if (scope.size() == 0) {
+		scope.push_back(key);
+	}
+	else {
+		int loc = BinarySearch(scope, scope.size(), key);
+		if (loc > scope.size() - 1) {
+			scope.push_back(key);
+		}
+		else {
+			auto i = scope.begin();
+			i += loc;
+			scope.insert(i, key);
+		}
+	}
 }
 
 void Root::status()
@@ -250,4 +284,50 @@ void Root::status()
 	cout << (int)pwd_sz << endl;
 	cout << (string)pwd << endl;
 	cout << fileName << endl;
+}
+
+
+void Root::findUnlocated(vector<Packg>& list_unlocated) {
+	uint32_t pointer = Sb + Se;
+	for (int i = 1; i < scope.size(); i + 2) {
+		if (scope[i] - pointer > 1) {
+			Packg temp;
+			temp.strt = pointer + 1;
+			temp.end = scope[i] - 1;
+			list_unlocated.push_back(temp);
+		}
+		if (i + 1 > scope.size() - 1) {
+			break;
+		}
+		pointer = scope[i + 1];
+	}
+}
+void Root::CreateVolume()
+{
+	vector<Packg> list_unlocated;
+	cout << this->Name << " " << (this->Sv /2 )/1024 << "MB\n";
+	findUnlocated(list_unlocated);
+	if (!list_unlocated.size()) {
+		cout << "All memory had been alocated";
+		DEBUG_PRINT("CREATE VOLUME FAIL");
+	}
+	else {
+		for (int i = 0; i < list_unlocated.size(); i++) {
+			cout << "[" << i + 1 << "] " << "EMPTY MEMORY : "
+				<< (list_unlocated[i].end - list_unlocated[i].strt) / 2 / 1024 << "MB\n";
+		}
+	}
+	int opt;
+	do
+	{
+		cout << "Choose : ";
+		cin >> opt;
+	} while ((opt > list_unlocated.size() || opt < 1) && cout << "Bruh!\n");
+	Volume temp;
+	bool fail = temp.Create(list_unlocated[opt - 1], this->fileName);
+	if (!fail)
+	{
+		list.push_back(temp);
+		this->AddVolumeEntry(temp);
+	}
 }

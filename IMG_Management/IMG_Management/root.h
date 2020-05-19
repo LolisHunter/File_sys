@@ -41,6 +41,8 @@ public:
 	void RootLoad(char fileName[]);
 	void AddVolumeEntry(Volume& v);
 	void scopeUpdate();
-	void scopeSort();
+	void scopeAdd(uint32_t key);
 	void status();
+	void findUnlocated(vector<Packg>& list_unlocated);
+	void CreateVolume();
 };

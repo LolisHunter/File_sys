@@ -10,15 +10,58 @@ using namespace std;
 //#define TEST
 
 #ifdef TEST
+int BinarySearch(vector<uint32_t> arr, int n, int key) {
+	int l = 0;
+	int r = n - 1;
+	int mid = (r - l) / 2 + l;
+
+	while (l <= r) {
+		if (key == arr[mid]) {
+			return mid;
+		}
+		if (key < arr[mid]) {
+			r = mid - 1;
+			mid = (r - l) / 2 + l;
+		}
+		if (key > arr[mid]) {
+			l = mid + 1;
+			mid = (r - l) / 2 + l;
+		}
+	}
+	return l;
+}
+
+void scopeAdd(uint32_t key, vector<uint32_t>& scope)
+{
+	if (scope.size() == 0) {
+		scope.push_back(key);
+	}
+	else {
+		int loc = BinarySearch(scope, scope.size(), key);
+		if (loc > scope.size() - 1) {
+			scope.push_back(key);
+		}
+		else {
+			auto i = scope.begin();
+			i += loc;
+			scope.insert(i, key);
+		}
+	}
+}
 void main() {
-	ifstream fout("test.txt");
-	char extension[15] = "abcdhajskwoakq";
-	fout.read(extension, 15);
-	cout << extension;
-	char ab[15] = "efgh";
-	fout.read(ab, 15);
-	cout << ab;
-	fout.close();
+	vector<uint32_t>scope;
+	scopeAdd(3, scope);
+	scopeAdd(3, scope);
+	scopeAdd(3, scope);
+	scopeAdd(9, scope);
+	scopeAdd(7, scope);
+	scopeAdd(1, scope);
+	scopeAdd(0, scope);
+	scopeAdd(2, scope);
+
+	for (auto j : scope) {
+		cout << j << " ";
+	}
 }
 #endif // TEST
 
@@ -34,9 +77,10 @@ int main(int agrc, char* agrv[])
 		//Volume vol("Vol1", 4, 2, 0);
 		//vol.InitVolume("MyDisk.img");
 		Root root;
-		root.RootCreate((char*)"a.iso");
+		//root.RootCreate((char*)"a.iso");
 		root.RootLoad((char*)"a.iso");
-		root.status();
+		root.CreateVolume();
+		//root.status();
 	}
 	catch (exception& e)
 	{
