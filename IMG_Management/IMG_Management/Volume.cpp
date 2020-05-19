@@ -152,3 +152,27 @@ bool Volume::Create(vector<uint32_t> &abc,string fileName)
 void Volume::setFlags()
 {
 }
+
+void Volume::addFile(Entry file,string path, Entry *&ViTriRDET)
+{
+	// Neu ViTriRDET = -1 thi them tai bang RDET chinh
+	// them file vao bang RDET do
+	// save xuong file img
+}
+
+Entry * Volume::addFolder(Entry folder, string path, Entry *&ViTriRDET)
+{
+	// Neu ViTriRDET = -1 thi them tai bang RDET chinh
+	// tao bang RDET roi return con tro den RDET do
+	// save xuong file img
+	return &Entry();
+}
+
+void Volume::ExportFiLe(string path, Entry *& file)
+{
+	// tao ra file do
+	// toi cho data cua file do
+	// luu ra
+	// dong file
+}
+

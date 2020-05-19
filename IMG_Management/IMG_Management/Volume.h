@@ -57,4 +57,7 @@ public:
 	Volume() {};
 	~Volume() {};
 	void setFlags();
+	void addFile(Entry file, string path, Entry *&ViTriRDET); // ViTriRDET la vi tri bang RDET chua file do
+	Entry * addFolder(Entry folder, string path, Entry *&ViTriRDET); // ViTriRDET nhu tren, ham tra ve bang RDET moi tao
+	void ExportFiLe(string path, Entry *&file);
 };

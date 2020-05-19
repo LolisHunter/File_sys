@@ -7,6 +7,7 @@
 #include <string>
 #include <fstream>
 #include <vector>
+#include <direct.h>
 #define BUFFER 512
 typedef uint64_t seeker;
 using namespace std;
@@ -26,96 +27,91 @@ static bool CreateImageFile(string& name, uint64_t size);
 static seeker getFileLength(char fileName[]);
 static ifstream InSector(seeker& pos, char fileName[]);
 
-//bool Import(string disk, Volume &volume, string path, int vitri)
-//{
-//	ifstream fin(path, ios_base::in | ios_base::binary);
-//	if (fin.is_open()) // la file
-//	{
-//		struct stat st;
-//		stat(path.c_str(), &st);
-//		Entry a;
-//		a.ctime = st.st_ctime;
-//		a.mtime = st.st_mtime;
-//		int i = 0; // tim name trong path
-//		int temp = path.find('\\', i);
-//		while (temp > i)
-//		{
-//			i = path.find('\\', i + 1);
-//			temp = path.find('\\', i + 1);
-//		}
-//		a.name = path.substr(i + 1, path.size() - i - 1);
-//		a.flags = 0;
-//		fstream Disk(disk, ios_base::in | ios_base::out | ios_base::binary);
-//		int vtDau, vtCuoi;
-//		int next;
-//		char data[4092];
-//		//toi vi tri directory trong
-//		string b;
-//		while (!fin.eof())
-//		{
-//			int flag = 1;
-//			while (vtDau != vtCuoi && flag)
-//			{
-//				Disk.seekp(vtDau, Disk.beg());
-//				fin.getline(data, 4092);
-//				b = data;
-//				if (!fin.eof())
-//					Disk.write((char*)&next, sizeof(int));
-//				else
-//				{
-//					next = -1;
-//					Disk.write((char*)&next, sizeof(int));
-//					flag = 0;
-//				}
-//				Disk << b;
-//			}
-//		}
-//	}
-//	else // la thu muc hoac khong ton tai
-//	{
-//		system(("dir" + path + ">folder.txt").c_str());
-//		ifstream file("folder.txt");
-//		if (!file.is_open())
-//			return false;
-//		string dir;
-//		for (int i = 0; i < 7; i++)
-//			getline(file, dir);
-//		if (file.eof())
-//			return false; // khong ton tai
-//
-//		// tao entry table roi add vo (tai a neu a khac 0)
-//		fstream Disk(disk, ios_base::in | ios_base::out | ios_base::binary);
-//		int vtDau, vtCuoi;
-//	}
-//	return 1;
-//}
+bool Import(Volume &volume, string path, Entry *vitri) //luc dau vitri  = -1
+{
+	ifstream fin(path, ios_base::in | ios_base::binary);
+	if (fin.is_open()) // la file
+	{
+		Entry a;
+		int i = 0; // tim name trong path
+		int temp = path.find('\\', i);
+		while (temp > i)
+		{
+			i = path.find('\\', i + 1);
+			temp = path.find('\\', i + 1);
+		}
+		a.name = path.substr(i + 1, path.size() - i - 1);
+		a.Namesize = a.name.size();
+		a.flags = 0;
+		volume.addFile(a, path , vitri);
+	}
+	else // la thu muc hoac khong ton tai
+	{
+		system(("dir /b/a-d-h" + path + ">file.txt").c_str()); // doc cac file
+		ifstream file("file.txt");
+		system(("dir /b/ad-h" + path + ">folder.txt").c_str()); // doc cac file
+		ifstream folder("folder.txt");
+		if (!file.is_open() || !folder.is_open())
+			return false;
 
-//bool Export(string Disk, int STTvolume, string FileName)
-//{
-//	// time volume do
-//	// tim file name trong volume
-//	ifstream fin(Disk, ios_base::in | ios_base::binary);
-//	if (!fin.is_open())
-//		return false;
-//	// di toi entry tim file name
-//	int vt;
-//	int size; // neu la file
-//	fin.seekg(vt, fin.beg());
-//	// neu la thu muc
-//
-//	// neu la file
-//	int next;
-//	char data[4092];
-//	ofstream fout(FileName, ios_base::out | ios_base::binary);
-//	do
-//	{
-//		fin.read((char*)&next, sizeof(int));
-//		fin.getline(data, 4092, 'F'); // chuoi ket thuc
-//		string b = data;
-//		fout.write((char*))
-//			fout << b.c_str();
-//		fin.seekg(next, fin.beg()); // di toi cluster tiep theo
-//	} while (next != 0);
-//	fout.close();
-//}
+		if (file.eof() && folder.eof())
+			return false; // khong ton tai hoac thu muc trong nen khong tao
+
+		Entry a;
+		int i = 0; // tim name trong path
+		int temp = path.find('\\', i);
+		while (temp > i)
+		{
+			i = path.find('\\', i + 1);
+			temp = path.find('\\', i + 1);
+		}
+		a.name = path.substr(i + 1, path.size() - i - 1);
+		a.Namesize = a.name.size();
+		Entry *link = volume.addFolder(a, path, vitri);
+
+		string dir;
+		while (!file.eof())
+		{
+			getline(file, dir);
+			if (!Import(volume, path + "\\" + dir, link))
+				return false;
+		}
+		file.close();
+
+		while (!folder.eof())
+		{
+			getline(folder, dir);
+			if (!Import(volume, path + "\\" + dir, link))
+				return false;
+		}
+		file.close();
+		folder.close();
+	}
+	return 1;
+}
+
+bool Export(Volume &volume,string path, Entry *vitri)
+{
+	string temp;
+	if (path.size() == 0)
+		temp = vitri->name;
+	else
+		temp = path + "\\" + vitri->name;
+	if (vitri->list.size() != 0)
+	{
+		if (_mkdir(temp.c_str()) != 0)
+		{
+			return false; // tao thu muc khong thanh cong
+		}
+		for (int i = 0; i < vitri->list.size(); i++)
+		{
+			Export(volume, temp, &vitri->list[i]);
+		}
+	}
+	else
+	{
+		volume.ExportFiLe(path, vitri);
+	}
+	return true;
+}
 #endif // _IMG_H
