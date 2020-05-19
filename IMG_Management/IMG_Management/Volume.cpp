@@ -64,7 +64,7 @@ void SaveByte(ofstream& fout, T in) {
 		in = in >> 8;
 	}
 }
-bool Volume::Create(vector<uint32_t> &abc,string fileName)
+bool Volume::Create(vector<uint32_t> &scope,string fileName)
 {
 	cout << "nhap kich thuoc: (GB)";
 	int size;
@@ -74,31 +74,30 @@ bool Volume::Create(vector<uint32_t> &abc,string fileName)
 	cin.get();
 	int i = 3;
 	uint64_t between;
-	uint32_t start,end;
-	while (i < abc.size())
+	uint32_t start = 0;
+	while (i < scope.size())
 	{
-		between = (uint64_t)(abc[i + 1] - abc[i] - 1) * 512;
-		if (between >= byte)
-		{
-			start = abc[i] + 1;
-			end = abc[i + 1] - 1;
-			auto it = abc.begin();
-			abc.insert(it+i,start + size - 1); // push back end vao giua
-			abc.insert(it+i,start); // push back start vao giua
+		between = (uint64_t)(scope[i + 1] - scope[i] - 1) * 512;
+		if (between >= byte){
+			start = scope[i] + 1;
+			auto it = scope.begin();
+			scope.insert(it+i,start + size - 1); // push back end vao giua
+			scope.insert(it+i,start); // push back start vao giua
 			break;
 		}
 		i += 2;
 	}
-	if (i > abc.size()) {
+	if (i > scope.size()) {
 		DEBUG_PRINT("CAN NOT CREATE NEW VOLUME");
 		return EXIT_FAILURE;
 	}
 	this->Sb = 1;
-	this->Ss = 512;
+	this->Ss = UNIT_SIZE;
 	this->Nf = 1;
 	this->Sc = 8;
 	this->Nc = 1111111111111; // can tinh
 	this->Sf = ceil((Sc * Nc) / 512) / Nf;
+	this->Sv = byte;
 	this->FAT_len = Sc * Nc / 512;
 	this->startSector = start;
 	ofstream fout(fileName, ios::in | ios::out | ios::binary);

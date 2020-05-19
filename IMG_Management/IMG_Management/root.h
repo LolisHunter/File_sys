@@ -33,11 +33,14 @@ private:
 	string pwd =""; // Vigenere custom
 	string fileName;
 	vector<Volume> list;
-	vector<uint32_t> abc; // start end, start end // don vi la sector //bat dau la {-1, -1, Sv + 1,Sv + 1}
+	vector<uint32_t> scope; // start end, start end // don vi la sector //bat dau la {-1, -1, Sv + 1,Sv + 1}
 public:
 	Root();
 
 	void RootCreate(char fileName[]);
 	void RootLoad(char fileName[]);
 	void AddVolumeEntry(Volume& v);
+	void scopeUpdate();
+	void scopeSort();
+	void status();
 };

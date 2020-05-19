@@ -1,30 +1,4 @@
-﻿//#pragma once
-//#include <string>
-//#include <fstream>
-//using namespace std;
-//
-////+Sector 0
-////offset 00 - 15: Tên
-////offset 16 - 19 : Cluster bắt đầu
-////offset 20 - 23 : Kích thước tổng
-////offset 24 - 27 : Kích thước còn lại
-////+ Sector 1 : RDET và DATA
-//
-//class Volume
-//{
-//private:
-//	string name;
-//	int startCluster;
-//	int size; //(cluster)
-//	int remaining; //(cluster)
-//	int number;
-//
-//	string getName16Char(const string& source);
-//public:
-//	Volume(const string& name, const int& size, const int& startCluster, const int& number = 0);
-//	void InitVolume(const string& diskPath);
-//};
-#pragma once
+﻿#pragma once
 
 #include <vector>
 #include "entry.h"
@@ -50,7 +24,7 @@ public:
 	uint32_t StCluster = 0; // start cluster / first entry / entry = 2 cluster
 	uint64_t FAT_len; // Sc * Nc / 512
 	bool* FAT;
-	uint64_t startSector;
+	uint32_t startSector;
 	vector<Entry> entry;
 public:
 	bool Create(vector<uint32_t>& abc, string fileName);

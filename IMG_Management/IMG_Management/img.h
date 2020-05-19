@@ -14,7 +14,7 @@ using namespace std;
 
 struct Type {
 	uint8_t code;
-	char extension[17];
+	char extension[16]; // 15 char + \0
 };
 static vector<Type> type_list;
 #define TL type_list

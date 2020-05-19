@@ -58,21 +58,23 @@ struct Entry {
 		this->name = a.name;
 	}
 	tm cTime() // out created time
-	{
-		time_t a = this->cTime;
-		tm *b = new tm;
-		localtime_s(b, &a);
-		tm c = *b;
-		delete b;
+	{	// tao lao :V sai het r
+		tm c;
+		//time_t a = this->cTime;
+		//tm *b = new tm;
+		//localtime_s(b, &a);
+		//tm c = *b;
+		//delete b;
 		return c;
 	}
 	tm mTime() // out last modified time ... 
 	{
-		time_t a = this->mTime;
-		tm *b = new tm;
-		localtime_s(b, &a);
-		tm c = *b;
-		delete b;
+		tm c;
+		//time_t a = this->mTime;
+		//tm *b = new tm;
+		//localtime_s(b, &a);
+		//tm c = *b;
+		//delete b;
 		return c;
 	}
 };
