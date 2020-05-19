@@ -11,7 +11,14 @@ using namespace std;
 
 #ifdef TEST
 void main() {
-	cout << sizeof(ZERO);
+	ifstream fout("test.txt");
+	char extension[15] = "abcdhajskwoakq";
+	fout.read(extension, 15);
+	cout << extension;
+	char ab[15] = "efgh";
+	fout.read(ab, 15);
+	cout << ab;
+	fout.close();
 }
 #endif // TEST
 
@@ -28,6 +35,8 @@ int main(int agrc, char* agrv[])
 		//vol.InitVolume("MyDisk.img");
 		Root root;
 		root.RootCreate((char*)"a.iso");
+		root.RootLoad((char*)"a.iso");
+		root.status();
 	}
 	catch (exception& e)
 	{

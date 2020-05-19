@@ -4,11 +4,12 @@
 #include <fstream>
 #include "Debug.h"
 #include "mask.h"
+#include "bitset"
 
 using namespace std;
 template<class T>
 void SaveByte(ofstream& fout, T in) {
-	char c;
+	uint8_t c;
 	for (uint8_t i = 0; i < sizeof(T); i++) {
 		c = in;
 		fout << c;
@@ -29,12 +30,12 @@ void LoadByte(ifstream& fin, T& out) {
 }
 
 Root::Root() {
-	abc.push_back(-1);
-	abc.push_back(-1);
+	scope.push_back(0);
+	scope.push_back(0);
 }
 
 void Root::RootCreate(char fileName[]) {
-	// Boot
+	// Checking
 	this->fileName = fileName;
 	ifstream fin(fileName);
 	if (fin.is_open())
@@ -47,21 +48,38 @@ void Root::RootCreate(char fileName[]) {
 		if (choose != 'y')
 			return;
 	}
+
 	ofstream fout(fileName,ios::binary);
 	if (!fout.is_open()) { DEBUG_PRINT("Create fail"); }
 	cout << "nhap kich thuoc: (GB)";
 	float size = 0;
 	cin >> size;
 	uint64_t byte = size; byte = byte * 1024 * 1024 * 1024;
-	this->Sv = byte / 512;
 	this->Sb = 8;
-	this->Ss = BUFFER;
+	this->Ss = UNIT_SIZE;
 	this->Se = 5;
+	this->Sv = byte / 512;
 	this->Name = '/';
-	//this->Sf = 0;//ceil(Sc * Nc / 512) / Nf;
-	abc.push_back(Sv + 1);
-	abc.push_back(Sv + 1);
 
+	this->scopeUpdate();
+
+	// Create iso
+	uint64_t data_size = this->Sv;
+	data_size *= UNIT_SIZE;
+	char* buffer;
+	buffer = (char*)calloc(data_size, sizeof(char));
+	fout.write(buffer, data_size);
+	free(buffer);
+	fout.close();
+	DEBUG_PRINT("[CREATE ISO] : done\n");
+
+	// ---------------------------------------------------------
+	//                  SAVE INFOMATION
+
+	seeker point;
+
+	fout.open(fileName, ios::in | ios::out | ios::binary);
+// Boot
 	SaveByte(fout, this->flags);
 	SaveByte(fout, this->Name);
 	SaveByte(fout, this->Ss);
@@ -72,53 +90,45 @@ void Root::RootCreate(char fileName[]) {
 	for (auto i : this->pwd) {
 		SaveByte(fout, i);
 	}
-	
-	int core = sizeof(this->flags)
-		+ sizeof(this->Name)
-		+ sizeof(this->Ss)
-		+ sizeof(this->Sb)
-		+ sizeof(this->Sv)
-		+ sizeof(this->Se)
-		+ sizeof(this->pwd_sz)
-		+ this->pwd.length();
-
-	for (int i = 0; i < 512 - core; i++) {
-		fout << ZERO;
-	}
 
 	// Type code here
-	for (int i = 0; i < Ss * (Sb - 1);i++) {
-		fout << ZERO;
+	point = this->Sb - 5;
+	point *= UNIT_SIZE;
+	for (int i = 0; i < type_list.size();i++) {
+		fout.seekp(point);
+		SaveByte(fout,type_list[i].code);
+		fout.write(type_list[i].extension, 15);
+		point = point + 16;
 	}
 
 	DEBUG_PRINT("[CREATE BOOT] : done\n");
-	// volume entry
-	//string s("This is entry...");
-	//for (auto i : s) {
-	//	fout << i;
-	//}
-	//for (int i = 0; i < ((Se * Ss) - s.length());i++) {
-	//	SaveByte(fout, ZERO);
-	//}
-	for (int i = 0; i < (this->Se*512)/vENTRY_SIZE; i++) {
+
+// volume entry
+	point = this->Sb;
+	point *= UNIT_SIZE;
+	fout.seekp(point);
+	for (int i = 0; i < (this->Se * UNIT_SIZE) / vENTRY_SIZE; i++) {
 		fout << DEFAULT;
-		for (int i = 0; i < vENTRY_SIZE - 1; i++) {
-			fout << ZERO;
-		}
+		point += 10;
+		fout.seekp(point);
 	}
 	DEBUG_PRINT("[CREATE ENTRY] : done\n");
 
-	// DATA ... ...
+// DATA ... ...
 	fout.close();
 }
 
 void Root::RootLoad(char fileName[])
 {
-	ifstream fin(fileName, ios::in | ios::binary);
+	ifstream fin(fileName, ios::in);
 	if (!fin.is_open()) {
 		DEBUG_PRINT("[OPEN FAIL] \n");
 		throw exception("Load disk fail");
 	}
+
+	this->fileName = fileName;
+	seeker point;
+	fin.seekg(ios::beg);
 	// boot load
 	LoadByte(fin, this->flags);
 	LoadByte(fin, this->Name);
@@ -133,10 +143,48 @@ void Root::RootLoad(char fileName[])
 		this->pwd.push_back(c);
 	}
 
+	this->scopeUpdate();
+
 	// type load
+	Type Ttemp;
+	point = this->Sb - 5;
+	point *= UNIT_SIZE;
+	fin.seekg(point);
+	// 160 = 5 * UNIT_SIZE / 16
+	for (int i = 0; i < 160; i++) {
+		LoadByte(fin, Ttemp.code);
+		if (Ttemp.code == 0) {
+			break;
+		}
+		fin.read(Ttemp.extension, 15);
+		type_list.push_back(Ttemp);
+	}
 
-	// volume load
-
+	// load volume dir entry
+	Volume Vtemp;
+	point = this->Sb;
+	point *= UNIT_SIZE;
+	fin.seekg(point);
+	// 256 = Se * UNIT_SIZE / vENTRY_SIZE
+	for (int i = 0; i < 256; i++) {
+		LoadByte(fin, Vtemp.flags);
+		if (i == 0 && Vtemp.flags == DEFAULT) {
+			DEBUG_PRINT("[NO VOLUME FOUND]");
+		}
+		else if (Vtemp.flags == DEFAULT) {
+			break;
+		}
+		else if ((Vtemp.flags ^ RECYCLE) > Vtemp.flags) {
+			LoadByte(fin, Vtemp.Name);
+			LoadByte(fin, Vtemp.startSector);
+			uint32_t end;
+			LoadByte(fin, end);
+			Vtemp.Sv = end - Vtemp.startSector + 1;
+			scope.push_back(Vtemp.startSector);
+			scope.push_back(end);
+		}
+	}
+	this->scopeSort();
 }
 
 void Root::AddVolumeEntry(Volume& v)
@@ -169,8 +217,37 @@ void Root::AddVolumeEntry(Volume& v)
 	SaveByte(fout, v.flags);
 	SaveByte(fout, v.Name);
 	SaveByte(fout, v.startSector);
-	int endSec = v.startSector + v.Sv -1;
+	uint32_t endSec = v.startSector + v.Sv -1;
 	SaveByte(fout, endSec);
 
 	fout.close();
+}
+
+void Root::scopeUpdate()
+{
+	scope.push_back(0);
+	scope.push_back(this->Sv - 1);
+}
+
+void Root::scopeSort()
+{
+}
+
+void Root::status()
+{
+	for (int i = 0; i < sizeof(flags) * 8; i++) {
+		cout << bitset<sizeof(flags)*8>(flags)[sizeof(Name) * 8 -1-i];
+	}
+	cout <<  (uint8_t)flags << endl;
+	cout  << (char)Name;
+	for (int i = 0; i < sizeof(Name) * 8; i++) {
+		cout << bitset<sizeof(Name) * 8>(Name)[sizeof(Name) * 8 -1 - i];
+	}
+	cout << endl << (int)Ss << endl;
+	cout << (int)Sb << endl;
+	cout << (int)Sv << endl;
+	cout << (int)Se << endl;
+	cout << (int)pwd_sz << endl;
+	cout << (string)pwd << endl;
+	cout << fileName << endl;
 }
