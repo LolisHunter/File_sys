@@ -32,20 +32,16 @@ public:
 public:
 	bool Create(Packg& scope, string fileName);
 	Volume() {};
-	~Volume() {};
+	~Volume() { if (FAT) delete []FAT; };
 	void setFlags();
-	void addFile(Entry file, string path, Entry *&ViTriRDET); // ViTriRDET la vi tri bang RDET chua file do
-	Entry * addFolder(Entry folder, string path, Entry *&ViTriRDET); // ViTriRDET nhu tren, ham tra ve bang RDET moi tao
-	void ExportFiLe(string path, Entry *&file);
-	void AddEntry(const Entry& entry, const string& disk);
+	void ExportFiLe(string path,const Entry *file);
+	void AddEntry(const Entry& entry);
 	uint64_t ViTriCluster(int i);
 	uint32_t FreeInFAT();
 	uint32_t FreeInFAT(int i);
-	void addEntrySt(Entry &file, Entry *ViTriRDET); 
-	seeker AddTable(seeker seek, bool End);
-	void AddEntry(const Entry& entry);
+	void addEntrySt(Entry *file, Entry *ViTriRDET); 
+	seeker AddTable(seeker seek, bool End, int &i);
 	void AddData(fstream &file, Entry *&f);
-	void ExportFiLe(string path,const Entry *file);
 	bool Import(string pathFile, Entry *vitri); // luc dau de vitri = NULL
 	bool Export(string path, Entry *vitri); // luc dau de path = ""
 };

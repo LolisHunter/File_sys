@@ -325,6 +325,7 @@ void Root::CreateVolume()
 		cin >> opt;
 	} while ((opt > list_unlocated.size() || opt < 1) && cout << "Bruh!\n");
 	Volume temp;
+	temp.disk = fileName;
 	bool fail = temp.Create(list_unlocated[opt - 1], this->fileName);
 	if (!fail)
 	{
