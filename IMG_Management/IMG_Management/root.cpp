@@ -7,7 +7,27 @@
 #include "bitset"
 
 using namespace std;
+template<class T>
+void SaveByte(ofstream& fout, T in) {
+	uint8_t c;
+	for (uint8_t i = 0; i < sizeof(T); i++) {
+		c = in;
+		fout << c;
+		in = in >> 8;
+	}
+}
 
+template<class T>
+void LoadByte(ifstream& fin, T& out) {
+	out = 0;
+	char c;
+	for (uint8_t i = 0; i < sizeof(T); i++) {
+		fin.get(c);
+		T temp = c;
+		temp = temp << (8 * i);
+		out += temp;
+	}
+}
 
 Root::Root() {
 }
@@ -155,6 +175,7 @@ void Root::RootLoad(char fileName[])
 		}
 		else if ((Vtemp.flags ^ RECYCLE) > Vtemp.flags) {
 			LoadByte(fin, Vtemp.Name);
+			Vname[Vtemp.Name - 'A'] = 1;
 			LoadByte(fin, Vtemp.startSector);
 			uint32_t end;
 			LoadByte(fin, end);

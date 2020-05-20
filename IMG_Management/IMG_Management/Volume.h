@@ -1,5 +1,5 @@
 ﻿#pragma once
-
+#include "img.h" 
 #include <vector>
 #include "entry.h"
 #include "img.h"
@@ -34,10 +34,13 @@ public:
 	Volume() {};
 	~Volume() {};
 	void setFlags();
+	void addFile(Entry file, string path, Entry *&ViTriRDET); // ViTriRDET la vi tri bang RDET chua file do
+	Entry * addFolder(Entry folder, string path, Entry *&ViTriRDET); // ViTriRDET nhu tren, ham tra ve bang RDET moi tao
+	void ExportFiLe(string path, Entry *&file);
+	void AddEntry(const Entry& entry, const string& disk);
 	uint64_t ViTriCluster(int i);
 	uint32_t FreeInFAT();
 	uint32_t FreeInFAT(int i);
-
 	void addEntrySt(Entry &file, Entry *ViTriRDET); 
 	seeker AddTable(seeker seek, bool End);
 	void AddEntry(const Entry& entry);

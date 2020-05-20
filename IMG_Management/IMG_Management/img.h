@@ -22,6 +22,7 @@ struct Type {
 	char extension[16]; // 15 char + \0
 };
 static vector<Type> type_list;
+static bool Vname[26] = {0};
 #define TL type_list
 
 template<class T>
@@ -33,25 +34,3 @@ static seeker getFileLength(char fileName[]);
 static ifstream InSector(seeker& pos, char fileName[]);
 
 #endif // _IMG_H
-
-template<class T>
-void SaveByte(ofstream& fout, T in) {
-	uint8_t c;
-	for (uint8_t i = 0; i < sizeof(T); i++) {
-		c = in;
-		fout << c;
-		in = in >> 8;
-	}
-}
-
-template<class T>
-void LoadByte(ifstream& fin, T& out) {
-	out = 0;
-	char c;
-	for (uint8_t i = 0; i < sizeof(T); i++) {
-		fin.get(c);
-		T temp = c;
-		temp = temp << (8 * i);
-		out += temp;
-	}
-}
