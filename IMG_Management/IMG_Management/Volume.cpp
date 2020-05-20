@@ -180,10 +180,24 @@ seeker Volume::AddTable(seeker seek, bool End, int&i)
 
 void Volume::ExportFiLe(string path,const Entry * file)
 {
-	// tao ra file do
-	// toi cho data cua file do
-	// luu ra
-	// dong file
+	ifstream fin(disk, ios::binary | ios::in);
+	ofstream fout(path,ios::binary | ios::out);
+	if (!fin.is_open())
+		throw exception("Can't open disk when export file");
+	uint32_t curCluster = file->StCluster;
+	uint32_t nextCluster;
+	while (nextCluster != 123456) // dau hieu ket thuc
+	{
+		fin.seekg(ViTriCluster(curCluster) + 2, ios::beg);
+		LoadByte(fin, nextCluster);
+		fin.seekg(ViTriCluster(curCluster) + Ss, ios::beg);
+		char * data = new char[(Sc - 1) * Ss + 1];
+		fin.read(data, (Sc - 1) * Ss);
+		fout.write(data, (Sc - 1) * Ss);
+		curCluster = nextCluster;
+	}
+	fin.close();
+	fout.close();
 }
 
 void Volume::AddEntry(const Entry& entry)
@@ -233,12 +247,12 @@ void Volume::AddEntry(const Entry& entry)
 	fout.close();
 }
 
-uint64_t Volume::ViTriCluster(int i) // vi tri la thu tu sector trong disk
+uint64_t Volume::ViTriCluster(int i) // tra ve vi tri byte trong disk
 {
-	return uint64_t();
+	return (startSector + Sb + Sf * Nf + 8 + i * 8) * Ss;
 }
 
-void Volume::AddData(fstream &file, Entry *&f)
+void Volume::AddData(fstream &file, Entry *f)
 {
 	ofstream log("log.txt");
 	ifstream log1("log.txt");
@@ -251,9 +265,8 @@ void Volume::AddData(fstream &file, Entry *&f)
 	seeker vt1 = ViTriCluster(i);
 	seeker vt2;
 	Disk.seekp(vt1, ios::beg);
-	do
+	while (file.getline(temp, (Sc - 1) * Ss))
 	{
-		file.getline(temp, (Sc - 1) * Ss);
 		SaveByte(Disk, f->ino);
 		i = FreeInFAT(i);
 		SaveByte(Disk,(uint32_t) i);
@@ -266,7 +279,8 @@ void Volume::AddData(fstream &file, Entry *&f)
 		log << " ";
 		Disk.seekp(vt2 - vt1, ios::cur);
 		vt1 = vt2;
-	} while (!file.eof());
+	}
+	delete []temp;
 	log.close();
 	log1 >> i;
 	f->StCluster = i;
@@ -300,6 +314,7 @@ bool Volume::Import(string pathFile, Entry *vitri) //luc dau vitri = NULL
 		stat(pathFile.c_str(), &st);
 		a.ctime = ConvertTimeUnixToFAT(st.st_ctime);
 		a.mtime = ConvertTimeUnixToFAT(st.st_mtime);
+		AddData(fin, &a);
 		addEntrySt(&a, vitri);  // o dia
 		fin.close();
 	}
