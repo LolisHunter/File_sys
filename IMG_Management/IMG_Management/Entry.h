@@ -8,18 +8,20 @@ using namespace std;
 
 /*--------------------------------------------------------
 Flags:
-	delete		00000001	1
+	writable	00000000	0
+	deleted		00000001	1
 	hidden		00000010	2
 	password	00000100	4
 	Read-only	00001000	8
 	sub-entry	00010000	16
 	root		00100000	32
-				01000000	64
+	end			01000000	64
 				10000000	128
+			
 --------------------------------------------------------*/
 #define NameS 20 // name size-1
 struct Entry {
-//  Define						Info						Byte
+//  Define						Info						Byte (32)
 	uint8_t flags;			// flag ^						1
 	uint16_t ctime;			// created time					2
 	uint16_t mtime;			// last modifed time			2
@@ -27,6 +29,7 @@ struct Entry {
 	uint32_t size;			// size							4
 	uint16_t TypeNum;		// type of data					2
 	uint16_t ino;			// identify number				2
+	uint32_t entryStCluster // start cluster of entry area	4
 	
 	// save at the first sector of the first cluster
 	uint8_t eno;			// entry number

@@ -85,7 +85,7 @@ bool Volume::Create(Packg& scope,string fileName)
 	this->Nc = 1111111111111; // can tinh
 	this->Sf = ceil((Sc * Nc) / 512) / Nf;
 	this->Sv = byte;
-	this->FAT_len = Sc * Nc / 512;
+	this->FAT_len = Nc;
 	this->startSector = scope.strt;
 
 	ofstream fout(fileName, ios::in | ios::out | ios::binary);
@@ -149,5 +149,50 @@ void Volume::ExportFiLe(string path, Entry *& file)
 	// toi cho data cua file do
 	// luu ra
 	// dong file
+}
+
+void Volume::AddEntry(const Entry& entry, const string& disk)
+{
+	fstream fout(disk, ios_base:: in | ios_base::out | ios_base:: binary);
+	if(fout.is_open() == false)
+	{
+		throw exception("Can't open disk. Can't add entry!");
+	}
+
+	seeker sker = entry.entryStCluster * this->Sc * this->Ss;
+	fout.seekp(sker, ios::beg);
+
+	uint8_t flag;
+	do
+	{
+		LoadByte(fout, flag);
+		//Check if(flag = END)
+		if(flag ^ END < flag)
+		{
+			//sker = SomeFuntion(sker);
+			break; 
+		}
+
+		if(flag == 0 || (flag^DELETED < flag))
+		{
+			break;
+		}
+		else
+		{
+			sker += 32;
+		}
+	} while(true);
+	
+	fout.seekp(sker);
+	fout.write((char*)&entry.flags, 1);
+	fout.write((char*)&entry.ctime, 2);
+	fout.write((char*)&entry.mtime, 2);
+	fout.write((char*)&entry.StCluster, 4);
+	fout.write((char*)&entry.size, 4);
+	fout.write((char*)&entry.TypeNum, 2);
+	fout.write((char*)&entry.ino, 2);
+	fout.write((char*)&entry.entryStCluster, 4);
+
+	fout.close();
 }
 
