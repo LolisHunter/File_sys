@@ -22,7 +22,7 @@ public:
 	uint16_t Sf = 0; // sector/FAT  Sf * Nf =  ceil (Sc * Nc / 512)
 	uint32_t Sv = 0; // sector/volume
 	uint32_t Nc = 0; // cluster/volume
-	uint32_t StCluster = 0; // start cluster / first entry / entry = 2 cluster
+	uint32_t StCluster = 0; // start cluster /
 	uint64_t FAT_len; // Sc * Nc / 512
 	bool* FAT;
 	uint32_t startSector;
@@ -30,6 +30,7 @@ public:
 
 	string disk;
 public:
+	void _list(string tab);
 	bool Create(Packg& scope, string fileName, bool Vname[26]);
 	Volume() {};
 	~Volume() {};
@@ -43,7 +44,7 @@ public:
 	uint32_t FreeInFAT(int i);
 	void addEntrySt(Entry &file, Entry *ViTriRDET); 
 	seeker AddTable(seeker seek, bool End);
-	void AddEntry(const Entry& entry);
+	void AddEntry(Entry& entry);
 	void AddData(fstream &file, Entry *&f);
 	void ExportFiLe(string path,const Entry *file);
 	bool Import(string pathFile, Entry *vitri); // luc dau de vitri = NULL

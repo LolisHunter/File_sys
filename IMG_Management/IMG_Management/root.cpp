@@ -32,6 +32,14 @@ void LoadByte(ifstream& fin, T& out) {
 Root::Root() {
 }
 
+void Root::_list()
+{
+	cout << this->Name << endl;
+	for (auto i : list) {
+		i._list("   ");
+	}
+}
+
 void Root::RootCreate(char fileName[]) {
 	// Checking
 	this->fileName = fileName;
@@ -331,5 +339,30 @@ void Root::CreateVolume()
 	{
 		list.push_back(temp);
 		this->AddVolumeEntry(temp);
+	}
+}
+
+void Root::DeleteVolume(char Name){
+	for (auto i : list) {
+		if (i.Name == Name) {
+			ifstream fin(this->fileName);
+			if (!fin.is_open()) {
+				DEBUG_PRINT("[CAN NOT OPEN DISK]");
+			}
+			seeker point = this->Sb;
+			point *= UNIT_SIZE;
+			point += 1;
+			do
+			{
+				fin.seekg(point);
+				char c;
+				LoadByte(fin, c);
+				if (c == Name) {
+					point = point - 1;
+				}
+				point = point + 10;
+			} while (true);
+			break;
+		}
 	}
 }

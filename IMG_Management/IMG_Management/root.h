@@ -38,6 +38,7 @@ public:
 	vector<Type> type_list;
 	bool Vname[26] = {0};
 	Root();
+	void _list();
 	void RootCreate(char fileName[]);
 	void RootLoad(char fileName[]);
 	void AddVolumeEntry(Volume& v);
@@ -46,4 +47,5 @@ public:
 	void status();
 	void findUnlocated(vector<Packg>& list_unlocated);
 	void CreateVolume();
+	void DeleteVolume(char Name);
 };

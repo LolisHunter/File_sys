@@ -43,6 +43,15 @@ uint32_t ConvertTimeUnixToFAT(time_t a)
 	return (uint32_t)day ^ (time << 16);
 }
 
+void Volume::_list(string tab)
+{
+	cout << tab;
+	cout << ">" << this->Name << endl;
+	for (auto i : entry) {
+		i._list(tab + "   ");
+	}
+}
+
 bool Volume::Create(Packg& scope,string fileName, bool Vname[26])
 {
 	uint64_t max_size = ((uint64_t)(scope.end - scope.strt) + 1);
@@ -74,6 +83,7 @@ bool Volume::Create(Packg& scope,string fileName, bool Vname[26])
 	this->setFlags();
 
 	this->Sv = Sb + Sf*Nf + Nc*Sc;
+	this->StCluster = this->Sb + this->Sf * this->Nf + scope.strt;
 	this->FAT_len = (Sv - Nc)/8;
 	this->startSector = scope.strt;
 
@@ -186,7 +196,7 @@ void Volume::ExportFiLe(string path,const Entry * file)
 	// dong file
 }
 
-void Volume::AddEntry(const Entry& entry)
+void Volume::AddEntry(Entry& entry)
 {
 	ifstream fin;
 	ofstream fout;
@@ -196,19 +206,20 @@ void Volume::AddEntry(const Entry& entry)
 		throw exception("Can't open disk. Can't add entry!");
 	}
 
-	seeker sker = (entry.entryStCluster); sker *= this->Ss; sker *= this->Sc;
+	seeker sker = StCluster;
+	sker *= UNIT_SIZE;
 	fin.seekg(sker, ios::beg);
 
 	uint8_t flag;
 	do{
 		LoadByte(fin, flag);
 		//Check if(flag = END)
-		if(flag ^ END < flag)
+		if((flag ^ END) < flag)
 		{
 			sker = AddTable(sker,NULL);
 			break; 
 		}
-		if(flag == 0 || (flag^DELETED < flag))
+		if(flag == 0 || (flag^DELETED) < flag)
 		{
 			break;
 		}
