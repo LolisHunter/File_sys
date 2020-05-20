@@ -55,26 +55,6 @@
 #include "Debug.h"
 #include "mask.h"
 using namespace std;
-template<class T>
-void SaveByte(fstream& fout, T in) {
-	char c;
-	for (uint8_t i = 0; i < sizeof(T); i++) {
-		c = in;
-		fout << c;
-		in = in >> 8;
-	}
-}
-template<class T>
-void LoadByte(fstream& fin, T& out) {
-	out = 0;
-	char c;
-	for (uint8_t i = 0; i < sizeof(T); i++) {
-		fin.get(c);
-		T temp = c;
-		temp = temp << (8 * i);
-		out += temp;
-	}
-}
 
 uint32_t ConvertTimeUnixToFAT(time_t a)
 {
