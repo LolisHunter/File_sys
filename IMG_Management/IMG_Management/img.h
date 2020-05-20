@@ -35,7 +35,7 @@ static ifstream InSector(seeker& pos, char fileName[]);
 #endif // _IMG_H
 
 template<class T>
-void SaveByte(fstream& fout, T in) {
+void SaveByte(ofstream& fout, T in) {
 	uint8_t c;
 	for (uint8_t i = 0; i < sizeof(T); i++) {
 		c = in;
@@ -45,7 +45,7 @@ void SaveByte(fstream& fout, T in) {
 }
 
 template<class T>
-void LoadByte(fstream& fin, T& out) {
+void LoadByte(ifstream& fin, T& out) {
 	out = 0;
 	char c;
 	for (uint8_t i = 0; i < sizeof(T); i++) {

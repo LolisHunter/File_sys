@@ -175,7 +175,7 @@ void Volume::addEntrySt(Entry &file,Entry *ViTriRDET)
 
 seeker Volume::AddTable(seeker seek, bool End)
 {
-	fstream fout(disk, ios_base::in | ios_base::out | ios_base::binary);
+	ofstream fout(disk, ios_base::in | ios_base::out | ios_base::binary);
 	if (fout.is_open() == false)
 	{
 		throw exception("Can't open disk. Can't add table!");
@@ -205,7 +205,7 @@ void Volume::ExportFiLe(string path,const Entry * file)
 
 void Volume::AddEntry(const Entry& entry)
 {
-	fstream fout(disk, ios_base:: in | ios_base::out | ios_base:: binary);
+	ofstream fout(disk, ios_base:: in | ios_base::out | ios_base:: binary);
 	if(fout.is_open() == false)
 	{
 		throw exception("Can't open disk. Can't add entry!");
