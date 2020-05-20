@@ -23,13 +23,13 @@ Flags:
 struct Entry {
 //  Define						Info						Byte (32)
 	uint8_t flags;			// flag ^						1
-	uint16_t ctime;			// created time					2
-	uint16_t mtime;			// last modifed time			2
+	uint32_t ctime;			// created time					2
+	uint32_t mtime;			// last modifed time			2
 	uint32_t StCluster;		// start cluster				4
 	uint32_t size;			// size							4
 	uint16_t TypeNum;		// type of data					2
 	uint16_t ino;			// identify number				2
-	uint32_t entryStCluster // start cluster of entry area	4
+	uint32_t entryStCluster; // start cluster of entry area	4
 	
 	// save at the first sector of the first cluster
 	uint8_t eno;			// entry number
@@ -61,23 +61,11 @@ struct Entry {
 		this->name = a.name;
 	}
 	tm cTime() // out created time
-	{	// tao lao :V sai het r
-		tm c;
-		//time_t a = this->cTime;
-		//tm *b = new tm;
-		//localtime_s(b, &a);
-		//tm c = *b;
-		//delete b;
-		return c;
+	{	
+		return tm();
 	}
 	tm mTime() // out last modified time ... 
 	{
-		tm c;
-		//time_t a = this->mTime;
-		//tm *b = new tm;
-		//localtime_s(b, &a);
-		//tm c = *b;
-		//delete b;
-		return c;
+		return tm();
 	}
 };
