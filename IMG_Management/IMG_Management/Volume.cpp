@@ -43,7 +43,7 @@ uint32_t ConvertTimeUnixToFAT(time_t a)
 	return (uint32_t)day ^ (time << 16);
 }
 
-bool Volume::Create(Packg& scope,string fileName)
+bool Volume::Create(Packg& scope,string fileName, bool Vname[26])
 {
 	uint64_t max_size = ((uint64_t)(scope.end - scope.strt) + 1);
 	max_size *= 512;
@@ -65,9 +65,9 @@ bool Volume::Create(Packg& scope,string fileName)
 	this->Nc = (byte - this->Sf) / this->Sc;
 
 	for (int i = 0; i < 26; i++) {
-		if (Vname[i] == 0) {
+		if (!Vname[i]) {
 			this->Name = 'A' + i;
-			Vname[i] = 1;
+			Vname[i] = true;
 			break;
 		}
 	}
@@ -115,7 +115,7 @@ bool Volume::Create(Packg& scope,string fileName)
 
 void Volume::setFlags()
 {
-	this->flags += USING;
+	this->flags = USING;
 }
 
 uint32_t Volume::FreeInFAT() // tra ve don vi cluster

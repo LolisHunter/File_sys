@@ -33,15 +33,16 @@ int main(int agrc, char* agrv[])
 		//vol.InitVolume("MyDisk.img");
 		Root root;
 		root.RootCreate((char*)"ab.iso");
-		//root.RootLoad((char*)"ab.iso");
-		//root.CreateVolume();
-		Volume a;
-		a.Ss = 512;
-		a.Sb = 1;
-		a.Sv = 100;
-		a.Sc = 8;
-		a.Nc = (a.Sv - a.Sb - a.Sf * a.Nf) / a.Sc; 
-		a.Sf = ceil((a.Sc * a.Nc) / 512) / a.Nf;
+		root.RootLoad((char*)"ab.iso");
+		root.CreateVolume();
+
+		//Volume a;
+		//a.Ss = 512;
+		//a.Sb = 1;
+		//a.Sv = 100;
+		//a.Sc = 8;
+		//a.Nc = (a.Sv - a.Sb - a.Sf * a.Nf) / a.Sc; 
+		//a.Sf = ceil((a.Sc * a.Nc) / 512) / a.Nf;
 		//root.CreateVolume();
 		//root.status();
 	}
