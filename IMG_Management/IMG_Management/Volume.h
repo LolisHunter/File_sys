@@ -25,12 +25,12 @@ public:
 	uint32_t StCluster = 0; // start cluster / first entry / entry = 2 cluster
 	uint64_t FAT_len; // Sc * Nc / 512
 	bool* FAT;
-	uint64_t startSector;
+	uint32_t startSector;
 	vector<Entry> entry;
 
 	string disk;
 public:
-	bool Create(Packg& scope, string fileName);
+	bool Create(Packg& scope, string fileName, bool Vname[26]);
 	Volume() {};
 	~Volume() { if (FAT) delete []FAT; };
 	void setFlags();

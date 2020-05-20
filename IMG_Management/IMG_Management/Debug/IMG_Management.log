@@ -1,31 +1,39 @@
-﻿  root.cpp
-C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\root.cpp(53,16): warning C4244: 'initializing': conversion from 'float' to 'uint64_t', possible loss of data
-C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\root.cpp(54,18): warning C4244: '=': conversion from 'uint64_t' to 'uint32_t', possible loss of data
-C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\root.cpp(168,13): warning C4244: 'initializing': conversion from 'uint64_t' to 'int', possible loss of data
-C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\root.cpp(15,1): warning C4333: '>>': right shift by too large amount, data loss
-C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\root.cpp(61): message : see reference to function template instantiation 'void SaveByte<uint8_t>(std::ofstream &,T)' being compiled
+﻿  main.cpp
+C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\mask.h(23,1): warning C4005: 'HIDDEN': macro redefinition
+C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\mask.h(15): message : see previous definition of 'HIDDEN'
+C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\mask.h(24,1): warning C4005: 'PASSWORD': macro redefinition
+C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\mask.h(14): message : see previous definition of 'PASSWORD'
+  root.cpp
+C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\mask.h(23,1): warning C4005: 'HIDDEN': macro redefinition
+C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\mask.h(15): message : see previous definition of 'HIDDEN'
+C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\mask.h(24,1): warning C4005: 'PASSWORD': macro redefinition
+C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\mask.h(14): message : see previous definition of 'PASSWORD'
+C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\root.cpp(55,16): warning C4244: 'initializing': conversion from 'float' to 'uint64_t', possible loss of data
+C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\root.cpp(59,18): warning C4244: '=': conversion from 'uint64_t' to 'uint32_t', possible loss of data
+C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\root.cpp(68,25): warning C4244: 'argument': conversion from 'uint64_t' to 'size_t', possible loss of data
+C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\root.cpp(95,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\root.cpp(242,11): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\root.cpp(246,11): warning C4018: '>': signed/unsigned mismatch
+C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\root.cpp(261,11): warning C4018: '>': signed/unsigned mismatch
+C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\root.cpp(294,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\root.cpp(301,13): warning C4018: '>': signed/unsigned mismatch
+C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\root.cpp(317,21): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\root.cpp(327,16): warning C4018: '>': signed/unsigned mismatch
+C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\root.cpp(16,1): warning C4333: '>>': right shift by too large amount, data loss
+C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\root.cpp(81): message : see reference to function template instantiation 'void SaveByte<uint8_t>(std::ofstream &,T)' being compiled
           with
           [
               T=uint8_t
           ]
-C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\root.cpp(13,7): warning C4244: '=': conversion from 'T' to 'char', possible loss of data
+C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\root.cpp(14,7): warning C4244: '=': conversion from 'T' to 'uint8_t', possible loss of data
           with
           [
               T=uint16_t
           ]
-C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\root.cpp(63): message : see reference to function template instantiation 'void SaveByte<uint16_t>(std::ofstream &,T)' being compiled
+C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\root.cpp(83): message : see reference to function template instantiation 'void SaveByte<uint16_t>(std::ofstream &,T)' being compiled
           with
           [
               T=uint16_t
           ]
-C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\root.cpp(13,7): warning C4244: '=': conversion from 'T' to 'char', possible loss of data
-          with
-          [
-              T=uint64_t
-          ]
-C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\root.cpp(167): message : see reference to function template instantiation 'void SaveByte<uint64_t>(std::ofstream &,T)' being compiled
-          with
-          [
-              T=uint64_t
-          ]
+  Generating Code...
   IMG_Management.vcxproj -> C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\Debug\IMG_Management.exe

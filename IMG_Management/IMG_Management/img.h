@@ -21,9 +21,9 @@ struct Type {
 	uint8_t code;
 	char extension[16]; // 15 char + \0
 };
-static vector<Type> type_list;
-static bool Vname[26] = {0};
+
 #define TL type_list
+
 
 template<class T>
 static void SaveByte(ofstream& fout, T in);
