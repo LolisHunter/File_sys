@@ -42,7 +42,7 @@ public:
 	uint32_t FreeInFAT(int i);
 	void addEntrySt(Entry *file, Entry *ViTriRDET); 
 	seeker AddTable(seeker seek, bool End, int &i);
-	void AddData(fstream &file, Entry *&f);
+	void AddData(fstream &file, Entry *f);
 	bool Import(string pathFile, Entry *vitri); // luc dau de vitri = NULL
 	bool Export(string path, Entry *vitri); // luc dau de path = ""
 };

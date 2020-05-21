@@ -168,6 +168,7 @@ void Root::RootLoad(char fileName[])
 
 	// load volume dir entry
 	Volume Vtemp;
+	Vtemp.disk = fileName;
 	point = this->Sb;
 	point *= UNIT_SIZE;
 	fin.seekg(point);
