@@ -30,7 +30,7 @@ struct Entry {
 	uint32_t size;			// size							4
 	uint8_t TypeNum;		// type of data					1
 	uint16_t ino;			// identify number				2
-	uint64_t entryStSector;// start cluster of entry area	8
+	uint64_t entryStSector;// start sector of entry area	8
 	
 	// save at the first sector of the first cluster
 	uint8_t eno;			// entry number
