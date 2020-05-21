@@ -50,4 +50,5 @@ public:
 	bool Import(string pathFile, Entry* vitri, vector<Type>& type_list); // luc dau de vitri = NULL
 	bool Export(string path, Entry* vitri); // luc dau de path = ""
 	Entry* getEntry(string Name);
+	void DeleteEntry(const string& diskPath, const Entry& entry);
 };
