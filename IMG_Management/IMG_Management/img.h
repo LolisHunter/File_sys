@@ -19,7 +19,7 @@ struct Packg {
 
 struct Type {
 	uint8_t code;
-	char extension[16]; // 15 char + \0
+	char extension[15]; // 15 char + \0
 };
 
 #define TL type_list

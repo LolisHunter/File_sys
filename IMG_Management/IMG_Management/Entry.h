@@ -28,9 +28,9 @@ struct Entry {
 	uint32_t mtime;			// last modifed time			2
 	uint32_t StCluster;		// start cluster				4
 	uint32_t size;			// size							4
-	uint16_t TypeNum;		// type of data					2
+	uint8_t TypeNum;		// type of data					1
 	uint16_t ino;			// identify number				2
-	uint32_t entryStCluster;// start cluster of entry area	4
+	uint64_t entryStSector;// start cluster of entry area	8
 	
 	// save at the first sector of the first cluster
 	uint8_t eno;			// entry number

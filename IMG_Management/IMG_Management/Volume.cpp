@@ -35,6 +35,42 @@ void Volume::_list(string tab) {
 		i._list(tab + "   ");
 	}
 }
+void Volume::LoadFolder(string disk,Entry *entry)
+{
+	ifstream fin(disk, ios::binary | ios::in);
+	seeker point = entry->StCluster * 8 + Sb + Nf * Sf;
+	point *= 512;
+	fin.seekg(point, ios::beg);
+	Entry a;
+	do {
+		LoadByte(fin, a.flags);
+		if (a.flags ^ END < a.flags)
+		{
+			break;
+		}
+		if (a.flags == 0 || (a.flags^DELETED < a.flags))
+		{
+			fin.seekg(31, ios::cur);
+			continue;
+		}
+		LoadByte(fin, a.ctime);
+		if (a.ctime == 0)
+			return;
+		LoadByte(fin, a.mtime);
+		LoadByte(fin, a.StCluster);
+		LoadByte(fin, a.size);
+		LoadByte(fin, a.TypeNum);
+		LoadByte(fin, a.ino);
+		LoadByte(fin, a.entryStSector);
+		if (a.flags ^ SUB_ENTRY < a.flags)
+		{
+			fin.seekg(a.entryStSector, ios::cur);
+		}
+		entry->list.push_back(a);
+		if (a.size == 0)
+			LoadFolder(disk, &entry->list[entry->list.size() - 1]);
+	} while (true);
+}
 void Volume::Load(char fileName[])
 {
 	ifstream fin(fileName, ios::in | ios::out | ios::binary);
@@ -51,8 +87,48 @@ void Volume::Load(char fileName[])
 	LoadByte(fin, this->Nc);
 	LoadByte(fin, this->StCluster);
 	LoadByte(fin, this->FAT_len);
-	
+	// load FAT
+	bool b;
+	point = startSector + Sb;
+	fin.seekg(point, ios::beg);
+	for (int i = 0; i < FAT_len; i++)
+	{
+		LoadByte(fin, b);
+		FAT.push_back(b);
+	}
 	// load entry
+	point = startSector + Sb + Sf * Nf;
+	point *= UNIT_SIZE;
+	fin.seekg(point, ios::beg);
+	Entry a;
+	do {
+		LoadByte(fin, a.flags);
+		if (a.flags ^ END < a.flags)
+		{
+			break;
+		}
+		if (a.flags^DELETED < a.flags)
+		{
+			fin.seekg(31, ios::cur);
+			continue;
+		}
+		LoadByte(fin, a.ctime);
+		if (a.ctime == 0)
+			return;
+		LoadByte(fin, a.mtime);
+		LoadByte(fin, a.StCluster);
+		LoadByte(fin, a.size);
+		LoadByte(fin, a.TypeNum);
+		LoadByte(fin, a.ino);
+		LoadByte(fin, a.entryStSector);
+		if (a.flags ^ SUB_ENTRY < a.flags)
+		{
+			fin.seekg(a.entryStSector, ios::cur);
+		}
+		entry.push_back(a);
+		if (a.size == 0)
+			LoadFolder(disk,&entry[entry.size() - 1]);
+	} while (true);
 }
 uint32_t ConvertTimeUnixToFAT(time_t a)
 {
@@ -99,10 +175,11 @@ bool Volume::Create(Packg& scope,string fileName, bool Vname[26])
 		}
 	}
 	this->setFlags();
-
 	this->Sv = Sb + Sf*Nf + Nc*Sc;
 	this->FAT_len = (Sv - Nc)/8;
 	this->startSector = scope.strt;
+	for (int i = 0; i < this->FAT_len; i++)
+		FAT.push_back(0);
 
 	ofstream fout(fileName, ios::in | ios::out | ios::binary);
 	if (!fout.is_open()) {
@@ -171,13 +248,19 @@ void Volume::addEntrySt(Entry *file,Entry *ViTriRDET)
 {
 	if (ViTriRDET == NULL)
 	{
-		file->entryStCluster = (startSector + Sb + Sf * Nf) / 8; // vi tri RDET chinh
+		file->entryStSector = startSector + Sb + Sf * Nf; // vi tri RDET chinh
 		AddEntry(*file);
 	}
 	else
 	{
 		ViTriRDET->list.push_back(*file);
-		file->entryStCluster = ViTriRDET->StCluster;
+		if (ViTriRDET->list.size() == int((8 * Ss) / 32) - 1)
+		{
+			Entry a;
+			a.flags = END;
+			ViTriRDET->list.push_back(a);
+		}
+		file->entryStSector = ViTriRDET->StCluster;
 		AddEntry(*file);
 	}
 }
@@ -185,7 +268,7 @@ void Volume::addEntrySt(Entry *file,Entry *ViTriRDET)
 
 seeker Volume::AddTable(seeker seek, bool End, int&i)
 {
-	ofstream fout(disk, ios_base::in | ios_base::out | ios_base::binary);
+	ofstream fout(disk, ios_base::app | ios_base::out | ios_base::binary);
 	if (fout.is_open() == false)
 	{
 		throw exception("Can't open disk. Can't add table!");
@@ -197,7 +280,7 @@ seeker Volume::AddTable(seeker seek, bool End, int&i)
 	{
 		SaveByte(fout, SUB_ENTRY);
 		SaveByte(fout, (uint8_t)0);
-		fout.seekp(16, ios::cur);
+		fout.seekp(15, ios::cur);
 		SaveByte(fout, (uint64_t)sker);
 	}
 	fout.close();
@@ -208,7 +291,7 @@ seeker Volume::AddTable(seeker seek, bool End, int&i)
 void Volume::ExportFiLe(string path,const Entry * file)
 {
 	ifstream fin(disk, ios::binary | ios::in);
-	ofstream fout(path,ios::binary | ios::out);
+	ofstream fout(path,ios::binary | ios::out | ios::in);
 	if (!fin.is_open())
 		throw exception("Can't open disk when export file");
 	uint32_t curCluster = file->StCluster;
@@ -230,24 +313,23 @@ void Volume::ExportFiLe(string path,const Entry * file)
 
 void Volume::AddEntry( Entry& entry)
 {
-	ifstream fin;
-	ofstream fout;
+	ifstream fin(disk,ios::in | ios::binary);
+	
 
-	fin.open(disk);
 	if(fin.is_open() == false){
 		throw exception("Can't open disk. Can't add entry!");
 	}
 
-	seeker sker = startSector + entry.entryStCluster * 8;  //(entry.entryStCluster); sker *= this->Ss; sker *= this->Sc;
+	seeker sker = entry.entryStSector;  //(entry.entryStCluster); sker *= this->Ss; sker *= this->Sc;
+	sker *= UNIT_SIZE;
 	fin.seekg(sker, ios::beg);
-
+	int i = 0;
 	uint8_t flag;
 	do{
 		LoadByte(fin, flag);
 		//Check if(flag = END)
 		if(flag ^ END < flag)
 		{
-			int i = 0;
 			sker = AddTable(sker,NULL, i);
 			break; 
 		}
@@ -259,9 +341,8 @@ void Volume::AddEntry( Entry& entry)
 			sker += 32;
 		}
 	} while(true);
-
-	fout.open(disk, ios::in | ios::out | ios::binary);
-	fout.seekp(sker);
+	ofstream fout(disk, ios::in |ios::binary);
+	fout.seekp(sker,ios::beg);
 	SaveByte(fout,entry.flags);
 	SaveByte(fout,entry.ctime);
 	SaveByte(fout,entry.mtime);
@@ -269,9 +350,8 @@ void Volume::AddEntry( Entry& entry)
 	SaveByte(fout,entry.size);
 	SaveByte(fout,entry.TypeNum);
 	SaveByte(fout,entry.ino);
-	SaveByte(fout,entry.entryStCluster);
-
-
+	SaveByte(fout,entry.entryStSector);
+	FAT[i] = 1;
 	fout.close();
 }
 
@@ -280,52 +360,82 @@ uint64_t Volume::ViTriCluster(int i) // tra ve vi tri byte trong disk
 	return (startSector + Sb + Sf * Nf + 8 + i * 8) * Ss;
 }
 
-void Volume::AddData(fstream &file, Entry *f)
+void Volume::AddData(ifstream &file, Entry *f)
 {
-	ofstream log("log.txt");
-	ifstream log1("log.txt");
-	ofstream Disk(disk);
+	ofstream Disk(disk, ios::out |ios::binary | ios::in);
 	if(!Disk.is_open())
 		throw exception("Can't open disk. Can't add data!");
-	char *temp = new char[(Sc - 1) * Ss + 1];
+	uint8_t temp;
 	int i = FreeInFAT();
-	log << i;
 	seeker vt1 = ViTriCluster(i);
 	seeker vt2;
 	Disk.seekp(vt1, ios::beg);
-	while (file.getline(temp, (Sc - 1) * Ss))
+	while (!file.eof())
 	{
 		SaveByte(Disk, f->ino);
 		i = FreeInFAT(i);
-		if (strlen(temp) == (Sc - 1) * Ss)
-			i = FreeInFAT(i);
-		SaveByte(Disk,(uint32_t) i);
+		SaveByte(Disk, (uint32_t)i);
 		SaveByte(Disk, f->Namesize);
 		Disk.write(f->name.c_str(), sizeof(f->name.c_str()));
+		Disk.seekp(vt1 + Ss, ios::beg);
+		for (int i = 0; i < (Sc - 1) * Ss; i++)
+		{
+			LoadByte(file, temp);
+			SaveByte(Disk, temp);
+		}
 		Disk.seekp(vt1 + 512, ios::beg);
-		Disk.write(temp, (Sc - 1) * Ss);
 		vt2 = ViTriCluster(i);
-		log << i;
-		log << " ";
 		Disk.seekp(vt2 - vt1, ios::cur);
 		vt1 = vt2;
 	}
-	delete []temp;
-	log.close();
-	log1 >> i;
-	f->StCluster = i;
-	FAT[i] = 1;
-	while (log1 >> i)
-	{
-		log1.get();
-		FAT[i] = 1;
-	}
-	log1.close();
+	file.close();
 }
 
-bool Volume::Import(string pathFile, Entry *vitri) //luc dau vitri = NULL
+uint8_t Volume::CheckType(string type, vector<Type> &type_list)
 {
-	fstream fin(pathFile, ios_base::in | ios_base::binary);
+	if (type.size() > 15)
+		return 0;
+	for (auto it : type_list)
+	{
+		if (strcmp(it.extension, type.c_str()) == 0)
+		{
+			return it.code;
+		}
+	}
+	Type a;
+	a.code = type_list.size() + 1;
+	for (int i = 0; i < type.size(); i++)
+		a.extension[i] = type[i];
+	type_list.push_back(a);
+	ofstream fout(disk, ios::out | ios::binary | ios::in);
+	seeker point = 3;
+	point *= UNIT_SIZE;
+	fout.seekp(point);
+	SaveByte(fout, a.code);
+	for (auto i : a.extension) {
+		SaveByte(fout, i);
+	}
+	fout.close();
+	return a.code;
+}
+
+string TakeType(string fileName)
+{
+	int i = 0;
+	int temp = fileName.find('.', i);
+	if (temp < 0)
+		return "";
+	while (temp > i)
+	{
+		i = fileName.find('.', i + 1);
+		temp = fileName.find('.', i + 1);
+	}
+	return fileName.substr(i + 1, fileName.size() - i - 1);
+}
+
+bool Volume::Import(string pathFile, Entry *vitri, vector<Type> &type_list) //luc dau vitri = NULL
+{
+	ifstream fin(pathFile, ios_base::in | ios_base::binary);
 	if (fin.is_open()) // la file
 	{
 		Entry a;
@@ -339,6 +449,7 @@ bool Volume::Import(string pathFile, Entry *vitri) //luc dau vitri = NULL
 		a.size = 1; 
 		a.name = pathFile.substr(i + 1, pathFile.size() - i - 1);
 		a.Namesize = a.name.size();
+		a.TypeNum = CheckType(TakeType(a.name), type_list);
 		a.flags = 0;
 		struct stat st;
 		stat(pathFile.c_str(), &st);
@@ -365,6 +476,7 @@ bool Volume::Import(string pathFile, Entry *vitri) //luc dau vitri = NULL
 		stat(pathFile.c_str(), &st);
 		a.ctime = ConvertTimeUnixToFAT(st.st_ctime);
 		a.mtime = ConvertTimeUnixToFAT(st.st_mtime);
+		a.TypeNum = 0;
 		int i = 0; // tim name trong path
 		int temp = pathFile.find('\\', i);
 		while (temp > i)
@@ -375,7 +487,8 @@ bool Volume::Import(string pathFile, Entry *vitri) //luc dau vitri = NULL
 		a.name = pathFile.substr(i + 1, pathFile.size() - i - 1);
 		a.Namesize = a.name.size();
 		a.size = 0;
-		a.StCluster = AddTable(0, 0, i);
+		AddTable(0, 0, i);
+		a.StCluster = i;
 		FAT[i] = 1;
 		addEntrySt(&a, vitri); // o dia
 		Entry *link;
@@ -397,7 +510,7 @@ bool Volume::Import(string pathFile, Entry *vitri) //luc dau vitri = NULL
 			getline(file, dir);
 			if (dir.size() == 0)
 				break;
-			if (!Import(pathFile + "\\" + dir, link))
+			if (!Import(pathFile + "\\" + dir, link,type_list))
 				return false;
 		}
 		file.close();
@@ -407,28 +520,16 @@ bool Volume::Import(string pathFile, Entry *vitri) //luc dau vitri = NULL
 			getline(folder, dir);
 			if (dir.size() == 0)
 				break;
-			if (!Import(pathFile + "\\" + dir, link))
+			if (!Import(pathFile + "\\" + dir, link,type_list))
 				return false;
 		}
 		file.close();
 		folder.close();
+		fin.close();
 	}
 	return 1;
 }
 
-string Type(string fileName)
-{
-	int i = 0;
-	int temp = fileName.find('.', i);
-	if (temp < 0)
-		return "";
-	while (temp > i)
-	{
-		i = fileName.find('\\', i + 1);
-		temp = fileName.find('\\', i + 1);
-	}
-	return fileName.substr(i + 1, fileName.size() - i - 1);
-}
 bool Volume::Export(string path, Entry *vitri)
 {
 	string temp;
