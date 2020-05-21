@@ -1,4 +1,46 @@
-﻿  main.cpp
+﻿  Entry.cpp
+  Volume.cpp
+C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\mask.h(23,1): warning C4005: 'HIDDEN': macro redefinition
+C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\mask.h(15): message : see previous definition of 'HIDDEN'
+C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\mask.h(24,1): warning C4005: 'PASSWORD': macro redefinition
+C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\mask.h(14): message : see previous definition of 'PASSWORD'
+C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\Volume.cpp(169,17): warning C4244: '=': conversion from 'double' to 'uint16_t', possible loss of data
+C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\Volume.cpp(170,31): warning C4244: '=': conversion from 'uint64_t' to 'uint32_t', possible loss of data
+C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\Volume.cpp(380,31): warning C4267: '=': conversion from 'size_t' to 'uint8_t', possible loss of data
+C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\Volume.cpp(381,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\Volume.cpp(425,12): warning C4244: '=': conversion from 'seeker' to 'uint32_t', possible loss of data
+C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\Volume.cpp(474,29): warning C4267: '=': conversion from 'size_t' to 'uint8_t', possible loss of data
+C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\Volume.cpp(511,29): warning C4267: '=': conversion from 'size_t' to 'uint8_t', possible loss of data
+C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\Volume.cpp(570,21): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\Volume.cpp(14,7): warning C4244: '=': conversion from 'T' to 'uint8_t', possible loss of data
+          with
+          [
+              T=uint16_t
+          ]
+C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\Volume.cpp(197): message : see reference to function template instantiation 'void SaveByte<uint16_t>(std::ofstream &,T)' being compiled
+          with
+          [
+              T=uint16_t
+          ]
+C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\Volume.cpp(16,1): warning C4333: '>>': right shift by too large amount, data loss
+C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\Volume.cpp(198): message : see reference to function template instantiation 'void SaveByte<uint8_t>(std::ofstream &,T)' being compiled
+          with
+          [
+              T=uint8_t
+          ]
+C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\Volume.cpp(14,7): warning C4244: '=': conversion from 'T' to 'uint8_t', possible loss of data
+          with
+          [
+              T=uint64_t
+          ]
+C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\Volume.cpp(205): message : see reference to function template instantiation 'void SaveByte<uint64_t>(std::ofstream &,T)' being compiled
+          with
+          [
+              T=uint64_t
+          ]
+  img.cpp
+C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\img.cpp(36,10): warning C4101: 'buffer': unreferenced local variable
+  main.cpp
 C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\mask.h(23,1): warning C4005: 'HIDDEN': macro redefinition
 C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\mask.h(15): message : see previous definition of 'HIDDEN'
 C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\mask.h(24,1): warning C4005: 'PASSWORD': macro redefinition
@@ -35,45 +77,6 @@ C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\root
           with
           [
               T=uint16_t
-          ]
-  Volume.cpp
-C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\mask.h(23,1): warning C4005: 'HIDDEN': macro redefinition
-C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\mask.h(15): message : see previous definition of 'HIDDEN'
-C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\mask.h(24,1): warning C4005: 'PASSWORD': macro redefinition
-C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\mask.h(14): message : see previous definition of 'PASSWORD'
-C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\Volume.cpp(91,17): warning C4244: '=': conversion from 'double' to 'uint16_t', possible loss of data
-C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\Volume.cpp(92,31): warning C4244: '=': conversion from 'uint64_t' to 'uint32_t', possible loss of data
-C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\Volume.cpp(302,31): warning C4267: '=': conversion from 'size_t' to 'uint8_t', possible loss of data
-C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\Volume.cpp(303,20): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\Volume.cpp(347,12): warning C4244: '=': conversion from 'seeker' to 'uint32_t', possible loss of data
-C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\Volume.cpp(396,29): warning C4267: '=': conversion from 'size_t' to 'uint8_t', possible loss of data
-C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\Volume.cpp(433,29): warning C4267: '=': conversion from 'size_t' to 'uint8_t', possible loss of data
-C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\Volume.cpp(492,21): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\Volume.cpp(14,7): warning C4244: '=': conversion from 'T' to 'uint8_t', possible loss of data
-          with
-          [
-              T=uint16_t
-          ]
-C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\Volume.cpp(119): message : see reference to function template instantiation 'void SaveByte<uint16_t>(std::ofstream &,T)' being compiled
-          with
-          [
-              T=uint16_t
-          ]
-C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\Volume.cpp(16,1): warning C4333: '>>': right shift by too large amount, data loss
-C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\Volume.cpp(120): message : see reference to function template instantiation 'void SaveByte<uint8_t>(std::ofstream &,T)' being compiled
-          with
-          [
-              T=uint8_t
-          ]
-C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\Volume.cpp(14,7): warning C4244: '=': conversion from 'T' to 'uint8_t', possible loss of data
-          with
-          [
-              T=uint64_t
-          ]
-C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\Volume.cpp(127): message : see reference to function template instantiation 'void SaveByte<uint64_t>(std::ofstream &,T)' being compiled
-          with
-          [
-              T=uint64_t
           ]
   Generating Code...
   IMG_Management.vcxproj -> C:\Users\Blackmoon\source\repos\code\File_SYS\IMG_Management\Debug\IMG_Management.exe

@@ -38,17 +38,17 @@ void Volume::_list(string tab) {
 void Volume::LoadFolder(string disk, Entry *entry)
 {
 	ifstream fin(disk, ios::binary | ios::in);
-	seeker point = entry->StCluster * 8 + Sb + Nf * Sf;
+	seeker point = (seeker)entry->StCluster * 8 + Sb + Nf * Sf;
 	point *= 512;
 	fin.seekg(point, ios::beg);
 	Entry a;
 	do {
 		LoadByte(fin, a.flags);
-		if (a.flags ^ END < a.flags)
+		if ((a.flags ^ END) < a.flags)
 		{
 			break;
 		}
-		if (a.flags == 0 || (a.flags^DELETED < a.flags))
+		if (a.flags == 0 || ((a.flags^DELETED) < a.flags))
 		{
 			fin.seekg(31, ios::cur);
 			continue;
@@ -62,7 +62,7 @@ void Volume::LoadFolder(string disk, Entry *entry)
 		LoadByte(fin, a.TypeNum);
 		LoadByte(fin, a.ino);
 		LoadByte(fin, a.entryStSector);
-		if (a.flags ^ SUB_ENTRY < a.flags)
+		if ((a.flags ^ SUB_ENTRY) < a.flags)
 		{
 			fin.seekg(a.entryStSector, ios::cur);
 		}
@@ -90,7 +90,7 @@ void Volume::Load(string fileName)
 	LoadByte(fin, this->FAT_len);
 	// load FAT
 	bool b;
-	point = startSector + Sb;
+	point = (uint64_t)startSector + Sb;
 	fin.seekg(point, ios::beg);
 	for (int i = 0; i < FAT_len; i++)
 	{
@@ -98,17 +98,17 @@ void Volume::Load(string fileName)
 		FAT.push_back(b);
 	}
 	// load entry
-	point = startSector + Sb + Sf * Nf;
+	point = (uint64_t)startSector + Sb + (uint64_t)Sf * Nf;
 	point *= UNIT_SIZE;
 	fin.seekg(point, ios::beg);
 	Entry a;
 	do {
 		LoadByte(fin, a.flags);
-		if (a.flags ^ END < a.flags)
+		if ((a.flags ^ END) < a.flags)
 		{
 			break;
 		}
-		if (a.flags^DELETED < a.flags)
+		if ((a.flags^DELETED) < a.flags)
 		{
 			fin.seekg(31, ios::cur);
 			continue;
@@ -122,7 +122,7 @@ void Volume::Load(string fileName)
 		LoadByte(fin, a.TypeNum);
 		LoadByte(fin, a.ino);
 		LoadByte(fin, a.entryStSector);
-		if (a.flags ^ SUB_ENTRY < a.flags)
+		if ((a.flags ^ SUB_ENTRY) < a.flags)
 		{
 			fin.seekg(a.entryStSector, ios::cur);
 		}
@@ -166,7 +166,7 @@ bool Volume::Create(Packg& scope,string fileName, bool Vname[26])
 	this->Nf = 1;
 
 	byte = byte/512 - this->Sb;
-	this->Sf = ceil((double)byte / (this->Ss * this->Sc - 1));
+	this->Sf = ceil((double)byte / ((uint32_t)this->Ss * this->Sc - 1));
 	this->Nc = (byte - this->Sf) / this->Sc;
 
 	for (int i = 0; i < 26; i++) {
@@ -249,7 +249,7 @@ void Volume::addEntrySt(Entry* file, Entry* ViTriRDET)
 {
 	if (ViTriRDET == NULL)
 	{
-		file->entryStSector = startSector + Sb + Sf * Nf; // vi tri RDET chinh
+		file->entryStSector = (seeker)startSector + Sb + Sf * Nf; // vi tri RDET chinh
 		entry.push_back(*file);
 		AddEntry(*file);
 	}
@@ -262,7 +262,7 @@ void Volume::addEntrySt(Entry* file, Entry* ViTriRDET)
 			a.flags = END;
 			ViTriRDET->list.push_back(a);
 		}
-		file->entryStSector = startSector + Sb + ViTriRDET->StCluster * Sc;
+		file->entryStSector = (seeker)startSector + Sb + ViTriRDET->StCluster * Sc;
 		AddEntry(*file);
 	}
 }
@@ -277,7 +277,7 @@ seeker Volume::AddTable(seeker seek, bool End, int& i)
 	}
 	fout.seekp(seek, ios::beg);
 	i = FreeInFAT();
-	seeker sker = (startSector + Sb + Sf * Nf) * Ss + i * Sc * Ss;
+	seeker sker = ((seeker)startSector + Sb + Sf * Nf) * Ss + i * Sc * Ss;
 	if (End) // neu la flag end
 	{
 		SaveByte(fout, SUB_ENTRY);
@@ -362,7 +362,7 @@ void Volume::AddEntry(Entry& entry)
 
 uint64_t Volume::ViTriCluster(int i) // tra ve vi tri byte trong disk
 {
-	return (startSector + Sb + Sf * Nf + 8 + i * 8) * Ss;
+	return ((seeker)startSector + Sb + Sf * Nf + 8 + i * 8) * Ss;
 }
 
 uint8_t Volume::CheckType(string type, vector<Type>& type_list)
@@ -433,13 +433,13 @@ void Volume::AddData(ifstream& file, Entry* f)
 		for (auto i : f->name)
 			SaveByte(Disk, i);
 		Disk.seekp(vt1 + Ss, ios::beg);
-		seeker Length = (Sc - 1) * Ss;
-		if (fileLength <= ((Sc - 1) * Ss))
+		seeker Length = ((seeker)Sc - 1) * Ss;
+		if (fileLength <= (((seeker)Sc - 1) * Ss))
 			Length = fileLength;
 		else
 		{
-			Length = (Sc - 1) * Ss;
-			fileLength -= (Sc - 1) * Ss;
+			Length = ((seeker)Sc - 1) * Ss;
+			fileLength -= ((seeker)Sc - 1) * Ss;
 		}
 		for (int i = 0; i < Length; i++)
 		{
