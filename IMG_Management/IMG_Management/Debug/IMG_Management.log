@@ -1,37 +1,32 @@
-﻿  main.cpp
+﻿  Volume.cpp
 C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\entry.h(81,21): warning C4018: '<': signed/unsigned mismatch
 C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\entry.h(83,20): warning C4018: '<': signed/unsigned mismatch
 C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\entry.h(84,20): warning C4018: '<': signed/unsigned mismatch
 C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\entry.h(94,21): warning C4018: '<': signed/unsigned mismatch
-  Volume.cpp
-C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\entry.h(81,21): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\entry.h(83,20): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\entry.h(84,20): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\entry.h(94,21): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\Volume.cpp(40,20): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\Volume.cpp(42,19): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\Volume.cpp(43,19): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\Volume.cpp(177,17): warning C4244: '=': conversion from 'double' to 'uint16_t', possible loss of data
-C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\Volume.cpp(178,31): warning C4244: '=': conversion from 'uint64_t' to 'uint32_t', possible loss of data
-C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\Volume.cpp(388,31): warning C4267: '=': conversion from 'size_t' to 'uint8_t', possible loss of data
-C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\Volume.cpp(389,20): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\Volume.cpp(433,12): warning C4244: '=': conversion from 'seeker' to 'uint32_t', possible loss of data
-C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\Volume.cpp(482,29): warning C4267: '=': conversion from 'size_t' to 'uint8_t', possible loss of data
-C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\Volume.cpp(519,29): warning C4267: '=': conversion from 'size_t' to 'uint8_t', possible loss of data
-C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\Volume.cpp(578,21): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\Volume.cpp(595,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\Volume.cpp(58,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\Volume.cpp(60,19): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\Volume.cpp(61,19): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\Volume.cpp(205,17): warning C4244: '=': conversion from 'double' to 'uint16_t', possible loss of data
+C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\Volume.cpp(206,31): warning C4244: '=': conversion from 'uint64_t' to 'uint32_t', possible loss of data
+C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\Volume.cpp(418,31): warning C4267: '=': conversion from 'size_t' to 'uint8_t', possible loss of data
+C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\Volume.cpp(419,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\Volume.cpp(463,12): warning C4244: '=': conversion from 'seeker' to 'uint32_t', possible loss of data
+C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\Volume.cpp(524,29): warning C4267: '=': conversion from 'size_t' to 'uint8_t', possible loss of data
+C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\Volume.cpp(561,29): warning C4267: '=': conversion from 'size_t' to 'uint8_t', possible loss of data
+C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\Volume.cpp(617,21): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\Volume.cpp(634,20): warning C4018: '<': signed/unsigned mismatch
 C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\Volume.cpp(14,7): warning C4244: '=': conversion from 'T' to 'uint8_t', possible loss of data
           with
           [
               T=uint16_t
           ]
-C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\Volume.cpp(205): message : see reference to function template instantiation 'void SaveByte<uint16_t>(std::ofstream &,T)' being compiled
+C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\Volume.cpp(235): message : see reference to function template instantiation 'void SaveByte<uint16_t>(std::ofstream &,T)' being compiled
           with
           [
               T=uint16_t
           ]
 C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\Volume.cpp(16,1): warning C4333: '>>': right shift by too large amount, data loss
-C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\Volume.cpp(206): message : see reference to function template instantiation 'void SaveByte<uint8_t>(std::ofstream &,T)' being compiled
+C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\Volume.cpp(236): message : see reference to function template instantiation 'void SaveByte<uint8_t>(std::ofstream &,T)' being compiled
           with
           [
               T=uint8_t
@@ -41,10 +36,51 @@ C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\Volu
           [
               T=uint64_t
           ]
-C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\Volume.cpp(213): message : see reference to function template instantiation 'void SaveByte<uint64_t>(std::ofstream &,T)' being compiled
+C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\Volume.cpp(243): message : see reference to function template instantiation 'void SaveByte<uint64_t>(std::ofstream &,T)' being compiled
           with
           [
               T=uint64_t
           ]
+  main.cpp
+C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\entry.h(81,21): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\entry.h(83,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\entry.h(84,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\entry.h(94,21): warning C4018: '<': signed/unsigned mismatch
+  root.cpp
+C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\entry.h(81,21): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\entry.h(83,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\entry.h(84,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\entry.h(94,21): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\root.cpp(73,16): warning C4244: 'initializing': conversion from 'float' to 'uint64_t', possible loss of data
+C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\root.cpp(77,18): warning C4244: '=': conversion from 'uint64_t' to 'uint32_t', possible loss of data
+C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\root.cpp(86,25): warning C4244: 'argument': conversion from 'uint64_t' to 'size_t', possible loss of data
+C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\root.cpp(113,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\root.cpp(264,11): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\root.cpp(268,11): warning C4018: '>': signed/unsigned mismatch
+C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\root.cpp(283,11): warning C4018: '>': signed/unsigned mismatch
+C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\root.cpp(316,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\root.cpp(323,13): warning C4018: '>': signed/unsigned mismatch
+C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\root.cpp(342,21): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\root.cpp(352,16): warning C4018: '>': signed/unsigned mismatch
+C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\root.cpp(367,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\root.cpp(410,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\root.cpp(433,28): warning C4267: '=': conversion from 'size_t' to 'uint16_t', possible loss of data
+C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\root.cpp(491,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\root.cpp(16,1): warning C4333: '>>': right shift by too large amount, data loss
+C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\root.cpp(99): message : see reference to function template instantiation 'void SaveByte<uint8_t>(std::ofstream &,T)' being compiled
+          with
+          [
+              T=uint8_t
+          ]
+C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\root.cpp(14,7): warning C4244: '=': conversion from 'T' to 'uint8_t', possible loss of data
+          with
+          [
+              T=uint16_t
+          ]
+C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\root.cpp(101): message : see reference to function template instantiation 'void SaveByte<uint16_t>(std::ofstream &,T)' being compiled
+          with
+          [
+              T=uint16_t
+          ]
   Generating Code...
-  IMG_Management.vcxproj -> C:\Users\Blackmoon\source\repos\code\File_SYS\IMG_Management\Debug\IMG_Management.exe
+  IMG_Management.vcxproj -> C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\Debug\IMG_Management.exe

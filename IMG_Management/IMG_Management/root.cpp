@@ -429,8 +429,8 @@ start:;
 	cin >> temp;
 	if (sha1(pwd) == sha1(temp)) {
 		this->flags = flags | PASSWORD;
-		this->pwd = pwd;
-		this->pwd_sz = pwd.size();
+		this->pwd = sha1(pwd);
+		this->pwd_sz = this->pwd.size();
 	}
 	else {
 		char c;
