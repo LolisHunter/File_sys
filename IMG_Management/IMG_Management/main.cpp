@@ -29,6 +29,8 @@ void DeleteVolume(Root& root, char Name);
 void help();
 void setPwd(Root& root);
 void Import(Root& root);
+void hide_show_Vol(Root& root, char Name);
+void createP(Root& root);
 
 int main(int agrc, char* agrv[]) 
 {
@@ -73,6 +75,9 @@ int main(int agrc, char* agrv[])
 				string file = cmd.substr(found);
 				root = open(file);
 				here = 0;
+			}
+			else if (prefx == "help" || prefx == "?") {
+				help();
 			}
 			else if (prefx == "cls") {
 				system("cls");
@@ -194,6 +199,9 @@ int main(int agrc, char* agrv[])
 			else if (prefx == "import") {
 				Import(root);
 			}
+			else if (prefx == "pwd") {
+				createP(root);
+			}
 			else if (prefx == "hide" || prefx == "show") {
 				if (found == string::npos) {
 					help();
@@ -237,7 +245,19 @@ void DeleteVolume(Root& root, char Name) {
 	root.DeleteVolume(Name);
 }
 void help() {
-
+	cout << "type help/? to see this doc\n";
+	cout << " open			open disk\n";
+	cout << " createRoot	create iso disk\n";
+	cout << " createVol		create volume\n";
+	cout << " delVol		delete volume\n";
+	cout << " cd			change directory\n";
+	cout << " ls			listing the contents of a directory\n";
+	cout << " tree			print volume tree\n";
+	cout << " import		import file\n";
+	cout << " export		export file\n";
+	cout << " hide/show		hide or show a volume\n";
+	cout << " home			go to root\n";
+	cout << " pwd			set password\n";
 }
 void setPwd(Root& root) {
 	root.createPassword();
@@ -282,5 +302,8 @@ choose_vol:;
 }
 void hide_show_Vol(Root& root, char Name) {
 	root.hide_show_Vol(Name);
+}
+void createP(Root& root) {
+	root.createPassword();
 }
 #endif // MAIN
