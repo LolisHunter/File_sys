@@ -185,8 +185,8 @@ void Volume::ExportFiLe(string path,const Entry * file)
 	if (!fin.is_open())
 		throw exception("Can't open disk when export file");
 	uint32_t curCluster = file->StCluster;
-	uint32_t nextCluster;
-	while (nextCluster != 123456) // dau hieu ket thuc
+	uint32_t nextCluster = 0;
+	while (nextCluster != nextCluster) // dau hieu ket thuc
 	{
 		fin.seekg(ViTriCluster(curCluster) + 2, ios::beg);
 		LoadByte(fin, nextCluster);
@@ -210,7 +210,7 @@ void Volume::AddEntry(const Entry& entry)
 		throw exception("Can't open disk. Can't add entry!");
 	}
 
-	seeker sker = (entry.entryStCluster); sker *= this->Ss; sker *= this->Sc;
+	seeker sker = startSector + entry.entryStCluster * 8;  //(entry.entryStCluster); sker *= this->Ss; sker *= this->Sc;
 	fin.seekg(sker, ios::beg);
 
 	uint8_t flag;
@@ -269,6 +269,8 @@ void Volume::AddData(fstream &file, Entry *f)
 	{
 		SaveByte(Disk, f->ino);
 		i = FreeInFAT(i);
+		if (strlen(temp) == (Sc - 1) * Ss)
+			i = FreeInFAT(i);
 		SaveByte(Disk,(uint32_t) i);
 		SaveByte(Disk, f->Namesize);
 		Disk.write(f->name.c_str(), sizeof(f->name.c_str()));
@@ -386,6 +388,19 @@ bool Volume::Import(string pathFile, Entry *vitri) //luc dau vitri = NULL
 	return 1;
 }
 
+string Type(string fileName)
+{
+	int i = 0;
+	int temp = fileName.find('.', i);
+	if (temp < 0)
+		return "";
+	while (temp > i)
+	{
+		i = fileName.find('\\', i + 1);
+		temp = fileName.find('\\', i + 1);
+	}
+	return fileName.substr(i + 1, fileName.size() - i - 1);
+}
 bool Volume::Export(string path, Entry *vitri)
 {
 	string temp;
