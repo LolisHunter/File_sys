@@ -35,6 +35,24 @@ void Volume::_list(string tab) {
 		i._list(tab + "---");
 	}
 }
+
+void Volume::GetEntryName(Entry *entry)
+{
+	ifstream fin(disk, ios::in || ios::binary);
+	seeker point = ViTriCluster(entry->StCluster);
+	fin.seekg(point, ios::beg);
+	LoadByte(fin, entry->ino);
+	uint32_t i;
+	LoadByte(fin, i);
+	LoadByte(fin, entry->Namesize);
+	for (int i = 0; i < entry->Namesize; i++)
+	{
+		char a;
+		LoadByte(fin, a);
+		entry->name.push_back(a);
+	}
+	fin.close();
+}
 void Volume::ls()
 {
 	for (int i = 0; i < entry.size(); i += 3) {
@@ -46,8 +64,7 @@ void Volume::ls()
 void Volume::LoadFolder(string disk, Entry *entry)
 {
 	ifstream fin(disk, ios::binary | ios::in);
-	seeker point = (seeker)entry->StCluster * 8 + Sb + Nf * Sf;
-	point *= 512;
+	seeker point = ViTriCluster(entry->StCluster);
 	fin.seekg(point, ios::beg);
 	Entry a;
 	do {
@@ -56,7 +73,9 @@ void Volume::LoadFolder(string disk, Entry *entry)
 		{
 			break;
 		}
-		if (a.flags == 0 || ((a.flags^DELETED) < a.flags))
+		if (a.flags == 0)
+			return;
+		if ( ((a.flags^DELETED) < a.flags))
 		{
 			fin.seekg(31, ios::cur);
 			continue;
@@ -70,6 +89,10 @@ void Volume::LoadFolder(string disk, Entry *entry)
 		LoadByte(fin, a.TypeNum);
 		LoadByte(fin, a.ino);
 		LoadByte(fin, a.entryStSector);
+		fin.seekg(4, ios::cur);
+		GetEntryName(&a);
+		if (a.size == 0)
+			a.name = "Thu Muc";
 		if ((a.flags ^ SUB_ENTRY) < a.flags)
 		{
 			fin.seekg(a.entryStSector, ios::cur);
@@ -78,6 +101,7 @@ void Volume::LoadFolder(string disk, Entry *entry)
 		if (a.size == 0)
 			LoadFolder(disk, &entry->list[entry->list.size() - 1]);
 	} while (true);
+	fin.close();
 }
 
 void Volume::Load(string fileName)
@@ -99,6 +123,7 @@ void Volume::Load(string fileName)
 	// load FAT
 	bool b;
 	point = (uint64_t)startSector + Sb;
+	point *= UNIT_SIZE;
 	fin.seekg(point, ios::beg);
 	for (int i = 0; i < FAT_len; i++)
 	{
@@ -130,6 +155,9 @@ void Volume::Load(string fileName)
 		LoadByte(fin, a.TypeNum);
 		LoadByte(fin, a.ino);
 		LoadByte(fin, a.entryStSector);
+		fin.seekg(4, ios::cur);
+		if (a.size == 0)
+			a.name = "Thu Muc";
 		if ((a.flags ^ SUB_ENTRY) < a.flags)
 		{
 			fin.seekg(a.entryStSector, ios::cur);
@@ -189,6 +217,8 @@ bool Volume::Create(Packg& scope,string fileName, bool Vname[26])
 	this->Sv = Sb + Sf*Nf + Nc*Sc;
 	this->FAT_len = (Sv - Nc)/8;
 	this->startSector = scope.strt;
+	for (int i=0;i<FAT_len;i++)
+		FAT.push_back(0);
 
 	ofstream fout(fileName, ios::in | ios::out | ios::binary);
 	if (!fout.is_open()) {
@@ -270,7 +300,7 @@ void Volume::addEntrySt(Entry* file, Entry* ViTriRDET)
 			a.flags = END;
 			ViTriRDET->list.push_back(a);
 		}
-		file->entryStSector = (seeker)startSector + Sb + ViTriRDET->StCluster * Sc;
+		file->entryStSector = ViTriCluster(ViTriRDET->StCluster) / Ss;
 		AddEntry(*file);
 	}
 }
@@ -433,6 +463,7 @@ void Volume::AddData(ifstream& file, Entry* f)
 	f->size = fileLength;
 	while (!file.eof())
 	{
+		SetFAT(i, 1);
 		SaveByte(Disk, f->ino);
 		if (!file.eof())
 			i = FreeInFAT(i);
@@ -464,6 +495,17 @@ void Volume::AddData(ifstream& file, Entry* f)
 	file.close();
 }
 
+void Volume::SetFAT(uint32_t cluster, bool value)
+{
+	FAT[cluster] = 1;
+	seeker temp = startSector + Sb + cluster;
+	temp *= UNIT_SIZE;
+	ofstream fout(disk, ios::out | ios::binary | ios::in);
+	fout.seekp(temp);
+	SaveByte(fout, value);
+	fout.close();
+}
+
 bool Volume::Import(string pathFile, Entry* vitri, vector<Type>& type_list) //luc dau vitri = NULL
 {
 	ifstream fin(pathFile, ios_base::in | ios_base::binary);
@@ -481,7 +523,7 @@ bool Volume::Import(string pathFile, Entry* vitri, vector<Type>& type_list) //lu
 		a.name = pathFile.substr(i + 1, pathFile.size() - i - 1);
 		a.Namesize = a.name.size();
 		a.TypeNum = CheckType(TakeType(a.name), type_list);
-		a.flags = USING;
+		a.flags = ENTRYUSING;
 		struct stat st;
 		stat(pathFile.c_str(), &st);
 		a.ctime = ConvertTimeUnixToFAT(st.st_ctime);
@@ -518,10 +560,10 @@ bool Volume::Import(string pathFile, Entry* vitri, vector<Type>& type_list) //lu
 		a.name = pathFile.substr(i + 1, pathFile.size() - i - 1);
 		a.Namesize = a.name.size();
 		a.size = 0;
-		a.flags = USING;
+		a.flags = ENTRYUSING;
 		AddTable(0, 0, i);
 		a.StCluster = i;
-		FAT[i] = 1;
+		SetFAT(i, 1);
 		addEntrySt(&a, vitri); // o dia
 		Entry* link;
 		if (vitri)
@@ -571,10 +613,7 @@ bool Volume::Export(string path, Entry* vitri)
 		temp = path + "\\" + vitri->name;
 	if (vitri->list.size() != 0)
 	{
-		if (_mkdir(temp.c_str()) != 0)
-		{
-			return false; // tao thu muc khong thanh cong
-		}
+		_mkdir(temp.c_str());
 		for (int i = 0; i < vitri->list.size(); i++)
 		{
 			Export(temp, &vitri->list[i]);

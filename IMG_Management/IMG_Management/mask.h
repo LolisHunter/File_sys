@@ -26,3 +26,5 @@ const uint8_t deflt = 0b10000000;
 #define SUB_ENTRY   0b00000100
 #define ROOT        0b00000010
 #define END         0b01000000
+
+#define ENTRYUSING  0b10000000

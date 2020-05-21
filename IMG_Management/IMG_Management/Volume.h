@@ -49,6 +49,8 @@ public:
 	void AddData(ifstream& file, Entry* f);
 	bool Import(string pathFile, Entry* vitri, vector<Type>& type_list); // luc dau de vitri = NULL
 	bool Export(string path, Entry* vitri); // luc dau de path = ""
+	void SetFAT(uint32_t cluster, bool value);
+	void GetEntryName(Entry *entry);
 	Entry* getEntry(string Name);
 	void DeleteEntry(const string& diskPath, const Entry& entry);
 };
