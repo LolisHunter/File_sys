@@ -193,6 +193,7 @@ void Root::RootLoad(string fileName)
 			scopeAdd(end);
 			Vtemp.Load(fileName);
 			list.push_back(Vtemp);
+			list[list.size() - 1].entry = Vtemp.entry;
 		}
 		point += 10;
 	}

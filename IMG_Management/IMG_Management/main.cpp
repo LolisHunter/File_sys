@@ -11,11 +11,16 @@ using namespace std;
 
 #ifdef TEST
 void main() {
-	Root root;
+	/*Root root;
 	root.RootCreate("ab.iso");
-	root.RootLoad("ab.iso");
 	cout << root.scope.size();
 	root.CreateVolume();
+	Volume *a = &root.list[0];
+	a->Import("E:\\Ham",NULL,root.type_list);*/
+	Root root1;
+	root1.RootLoad("ab.iso");
+	Volume *a = &root1.list[0];
+	a->Export("", &a->entry[0]);
 }
 #endif // TEST
 
