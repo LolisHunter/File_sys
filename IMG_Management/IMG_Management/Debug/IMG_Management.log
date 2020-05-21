@@ -6,16 +6,36 @@ C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\mask
 C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\mask.h(14): message : see previous definition of 'PASSWORD'
 C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\Volume.cpp(73,17): warning C4244: '=': conversion from 'double' to 'uint16_t', possible loss of data
 C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\Volume.cpp(74,31): warning C4244: '=': conversion from 'uint64_t' to 'uint32_t', possible loss of data
-C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\Volume.cpp(86,18): error C2039: 'StCluster': is not a member of 'Volume'
-C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\Volume.h(8): message : see declaration of 'Volume'
-C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\Volume.cpp(109,32): error C2039: 'StCluster': is not a member of 'Volume'
-C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\Volume.h(8): message : see declaration of 'Volume'
-C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\Volume.cpp(109,2): error C2672: 'SaveByte': no matching overloaded function found
-C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\Volume.cpp(109,32): error C2780: 'void SaveByte(std::ofstream &,T)': expects 2 arguments - 1 provided
-C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\img.h(29): message : see declaration of 'SaveByte'
-C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\Volume.cpp(119,10): error C2065: 'StCluster': undeclared identifier
-C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\Volume.cpp(209,16): error C2065: 'StCluster': undeclared identifier
-C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\Volume.cpp(222,5): warning C4554: '^': check operator precedence for possible error; use parentheses to clarify precedence
+C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\Volume.cpp(308,29): warning C4267: '=': conversion from 'size_t' to 'uint8_t', possible loss of data
+C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\Volume.cpp(342,29): warning C4267: '=': conversion from 'size_t' to 'uint8_t', possible loss of data
+C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\Volume.cpp(344,25): warning C4244: '=': conversion from 'seeker' to 'uint32_t', possible loss of data
+C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\Volume.cpp(398,21): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\Volume.cpp(13,7): warning C4244: '=': conversion from 'T' to 'uint8_t', possible loss of data
+          with
+          [
+              T=uint16_t
+          ]
+C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\Volume.cpp(102): message : see reference to function template instantiation 'void SaveByte<uint16_t>(std::ofstream &,T)' being compiled
+          with
+          [
+              T=uint16_t
+          ]
+C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\Volume.cpp(15,1): warning C4333: '>>': right shift by too large amount, data loss
+C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\Volume.cpp(103): message : see reference to function template instantiation 'void SaveByte<uint8_t>(std::ofstream &,T)' being compiled
+          with
+          [
+              T=uint8_t
+          ]
+C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\Volume.cpp(13,7): warning C4244: '=': conversion from 'T' to 'uint8_t', possible loss of data
+          with
+          [
+              T=uint64_t
+          ]
+C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\Volume.cpp(110): message : see reference to function template instantiation 'void SaveByte<uint64_t>(std::ofstream &,T)' being compiled
+          with
+          [
+              T=uint64_t
+          ]
   main.cpp
 C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\mask.h(23,1): warning C4005: 'HIDDEN': macro redefinition
 C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\mask.h(15): message : see previous definition of 'HIDDEN'
@@ -30,13 +50,14 @@ C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\root
 C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\root.cpp(67,18): warning C4244: '=': conversion from 'uint64_t' to 'uint32_t', possible loss of data
 C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\root.cpp(76,25): warning C4244: 'argument': conversion from 'uint64_t' to 'size_t', possible loss of data
 C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\root.cpp(103,20): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\root.cpp(250,11): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\root.cpp(254,11): warning C4018: '>': signed/unsigned mismatch
-C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\root.cpp(269,11): warning C4018: '>': signed/unsigned mismatch
-C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\root.cpp(302,20): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\root.cpp(309,13): warning C4018: '>': signed/unsigned mismatch
-C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\root.cpp(325,21): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\root.cpp(335,16): warning C4018: '>': signed/unsigned mismatch
+C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\root.cpp(249,11): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\root.cpp(253,11): warning C4018: '>': signed/unsigned mismatch
+C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\root.cpp(268,11): warning C4018: '>': signed/unsigned mismatch
+C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\root.cpp(301,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\root.cpp(301,38): warning C4552: '+': result of expression not used
+C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\root.cpp(308,13): warning C4018: '>': signed/unsigned mismatch
+C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\root.cpp(324,21): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\root.cpp(334,16): warning C4018: '>': signed/unsigned mismatch
 C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\root.cpp(16,1): warning C4333: '>>': right shift by too large amount, data loss
 C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\root.cpp(89): message : see reference to function template instantiation 'void SaveByte<uint8_t>(std::ofstream &,T)' being compiled
           with
@@ -54,3 +75,4 @@ C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\root
               T=uint16_t
           ]
   Generating Code...
+  IMG_Management.vcxproj -> C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\Debug\IMG_Management.exe
