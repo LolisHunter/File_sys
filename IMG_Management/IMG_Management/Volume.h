@@ -31,6 +31,7 @@ public:
 	string disk;
 public:
 	void _list(string tab);
+	void ls();
 	void Load(string fileName);
 	bool Create(Packg& scope, string fileName, bool Vname[26]);
 	Volume() {};
@@ -48,4 +49,5 @@ public:
 	void AddData(ifstream& file, Entry* f);
 	bool Import(string pathFile, Entry* vitri, vector<Type>& type_list); // luc dau de vitri = NULL
 	bool Export(string path, Entry* vitri); // luc dau de path = ""
+	Entry* getEntry(string Name);
 };

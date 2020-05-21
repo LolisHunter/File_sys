@@ -76,4 +76,26 @@ struct Entry {
 			i._list(tab + "---");
 		}
 	}
+	void ls()
+	{
+		for (int i = 0; i < list.size(); i += 3) {
+			cout << list[i].name << "\t\t";
+			cout << ((i + 1 < list.size()) ? list[i + 1].name : "") << "\t\t";
+			cout << ((i + 2 < list.size()) ? list[i + 2].name : "") << "\n";
+		}
+	}
+	bool isFolder() {
+		if (size == 0) {
+			return true;
+		}
+		return false;
+	}
+	Entry* getEntry(string Name) {
+		for (int i = 0; i < list.size(); i++) {
+			if (list[i].name == Name) {
+				return &list[i];
+			}
+		}
+		return NULL;
+	}
 };

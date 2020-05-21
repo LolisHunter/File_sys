@@ -5,6 +5,7 @@
 #include "img.h"
 #include "mask.h"
 #define BUFFER 512
+#include "sha1.h"
 
 using namespace std;
 
@@ -40,6 +41,7 @@ public:
 	bool Vname[26] = {0};
 	Root();
 	void _list();
+	void ls();
 	void RootCreate(string fileName);
 	void RootLoad(string fileName);
 	void AddVolumeEntry(Volume& v);
@@ -50,4 +52,9 @@ public:
 	void CreateVolume();
 	void DeleteVolume(char Name);
 	bool is_open();
+	Volume* getVolume(char Name);
+	void createPassword();
+	bool Auth();
+	bool checkPWD();
+	void hide_show_Vol(char Name);
 };

@@ -7,7 +7,7 @@
 #include "img.h"
 using namespace std;
 #include "mask.h"
-#define TEST
+//#define TEST
 
 #ifdef TEST
 void main() {
@@ -25,14 +25,37 @@ void tree(Root& root);
 Root open(string fileName);
 Root Create(string fileName);
 void CreateVolume(Root& root);
+void DeleteVolume(Root& root, char Name);
+void help();
+void setPwd(Root& root);
+void Import(Root& root);
+
 int main(int agrc, char* agrv[]) 
 {
 	string cmd;
 	Root root;
+	Volume* vol = NULL;
+	vector<Entry*> entr;
+	int here = -1;
 	do
 	{
-		cout << "\n>";
-		getline(cin, cmd);
+		if (here == -1) {
+			cout << "~";
+		}
+		else if (here == 0) {
+			cout << "/";
+		}
+		else if (here == 1) {
+			cout << (char)vol->Name;
+		}
+		else {
+			cout << entr[here - 3]->name;
+		}
+		cout << " > ";
+		do
+		{
+			getline(cin, cmd);
+		} while (cmd == "");
 		try
 		{
 
@@ -44,11 +67,15 @@ int main(int agrc, char* agrv[])
 			else {
 				prefx = cmd.substr(0, found);
 			}
-			
-			if ( prefx == "open") {
+
+			if (prefx == "open") {
 				found++;
 				string file = cmd.substr(found);
 				root = open(file);
+				here = 0;
+			}
+			else if (prefx == "cls") {
+				system("cls");
 			}
 			else if (prefx == "tree") {
 				if (root.is_open()) {
@@ -58,12 +85,28 @@ int main(int agrc, char* agrv[])
 					cout << "You did not open disk or create yet." << endl;
 				}
 			}
-			else if (prefx == "create") {
-				found++;
-				string file = cmd.substr(found);
-				root = Create(file);
+			else if (prefx == "createRoot") {
+				if (here > 0) {
+					here = 0;
+					vol = NULL;
+					entr.clear();
+				}
+				if (found == string::npos) {
+					help();
+				}
+				else {
+					found++;
+					string file = cmd.substr(found);
+					root = Create(file);
+					here = 0;
+				}
 			}
 			else if (prefx == "createVol") {
+				if (here > 0) {
+					here = 0;
+					vol = NULL;
+					entr.clear();
+				}
 				if (root.is_open()) {
 					CreateVolume(root);
 				}
@@ -71,6 +114,100 @@ int main(int agrc, char* agrv[])
 					cout << "You did not open disk or create yet." << endl;
 				}
 			}
+			else if (prefx == "ls") {
+				if (here == 0) {
+					root.ls();
+				}
+				else if (here == 1) {
+					vol->ls();
+				}
+				else {
+					entr[here - 3]->ls();
+				}
+			}
+			else if (prefx == "cd") {
+				if (found == string::npos) {
+				}
+				else {
+					found++;
+					string dir = cmd.substr(found);
+					if (dir == "..") {
+						if (here > 0) {
+							if (here == 1) {
+								vol = NULL;
+								here--;
+							}
+							else {
+								entr.pop_back();
+								here--;
+							}
+						}
+					}
+					if (here == 0) {
+						vol = root.getVolume(dir[0]);
+						if (vol) { here++; }
+					}
+					else if (here == 1) {
+						Entry* temp = vol->getEntry(dir);
+						if (temp) {
+							if (!temp->isFolder()) {
+								cout << "  [This is a file]\n";
+							}
+							else {
+								entr.push_back(temp);
+								here++;
+							}
+						}
+					}
+					else {
+						Entry* temp = entr[here - 3]->getEntry(dir);
+						if (temp) {
+							if (!temp->isFolder()) {
+								cout << "  [This is a file]\n";
+							}
+							else {
+								entr.push_back(temp);
+								here++;
+							}
+						}
+					}
+				}
+			}
+			else if (prefx == "home") {
+				here = 0;
+				vol = NULL;
+				entr.clear();
+			}
+			else if (prefx == "delVol") {
+				if (found == string::npos) {
+					help();
+				}
+				else {
+					found++;
+					string v = cmd.substr(found);
+					DeleteVolume(root, v[0]);
+					here = 0;
+					vol = NULL;
+					entr.clear();
+				}
+			}
+			else if (prefx == "import") {
+				Import(root);
+			}
+			else if (prefx == "hide" || prefx == "show") {
+				if (found == string::npos) {
+					help();
+				}
+				else {
+					found++;
+					string v = cmd.substr(found);
+					hide_show_Vol(root, v[0]);
+					here = 0;
+					vol = NULL;
+					entr.clear();
+				}
+			}
+			
 		}
 		catch (exception& e)
 		{
@@ -96,7 +233,54 @@ Root Create(string fileName) {
 void CreateVolume(Root& root) {
 	root.CreateVolume();
 }
-void DeleteVolume(Root& root) {
-	
+void DeleteVolume(Root& root, char Name) {
+	root.DeleteVolume(Name);
+}
+void help() {
+
+}
+void setPwd(Root& root) {
+	root.createPassword();
+}
+void Import(Root& root) {
+	string s;
+choose_vol:;
+	root.ls();
+	cout << "choose volume : ";
+	cin >> s;
+	if (s == "exit") {
+		return;
+	}
+	Volume* v = root.getVolume(s[0]);
+	if (v) {
+		cout << "Enter file path";
+		cin >> s;
+		v->Import(s, NULL, root.type_list);
+	}
+	else {
+		goto choose_vol;
+	}
+}
+void Export(Root& root) {
+	string s;
+choose_vol:;
+	root.ls();
+	cout << "choose volume : ";
+	cin >> s;
+	if (s == "exit") {
+		return;
+	}
+	Volume* v = root.getVolume(s[0]);
+	if (v) {
+		cout << "Enter file path";
+		cin >> s;
+		v->Export(s, NULL);
+	}
+	else {
+		goto choose_vol;
+	}
+}
+void hide_show_Vol(Root& root, char Name) {
+	root.hide_show_Vol(Name);
 }
 #endif // MAIN

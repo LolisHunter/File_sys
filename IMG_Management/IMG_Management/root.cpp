@@ -40,6 +40,16 @@ void Root::_list()
 	}
 }
 
+void Root::ls()
+{
+	for (auto i : list) {
+		if ((i.flags ^ HIDDEN) > i.flags) {
+			cout << '\\' << i.Name << "  ";
+		}
+	}
+	cout << endl;
+}
+
 void Root::RootCreate(string fileName) {
 	// Checking
 	this->fileName = fileName;
@@ -317,6 +327,9 @@ void Root::findUnlocated(vector<Packg>& list_unlocated) {
 }
 void Root::CreateVolume()
 {
+	if (!checkPWD()) {
+		return;
+	}
 	vector<Packg> list_unlocated;
 	cout << this->Name << " " << (this->Sv /2 )/1024 << "MB\n";
 	findUnlocated(list_unlocated);
@@ -347,8 +360,11 @@ void Root::CreateVolume()
 }
 
 void Root::DeleteVolume(char Name){
-	for (auto i : list) {
-		if (i.Name == Name) {
+	if (!checkPWD()) {
+		return;
+	}
+	for (int i = 0; i < list.size();i++) {
+		if (list[i].Name == Name) {
 			ifstream fin(this->fileName);
 			if (!fin.is_open()) {
 				DEBUG_PRINT("[CAN NOT OPEN DISK]");
@@ -370,10 +386,14 @@ void Root::DeleteVolume(char Name){
 
 			ofstream fout(fileName, ios::in | ios::out | ios::binary);
 			fout.seekp(point);
-			i.flags = i.flags ^ RECYCLE;
-			SaveByte(fout, i.flags);
+			list[i].flags = list[i].flags ^ RECYCLE;
+			SaveByte(fout, list[i].flags);
+			list.erase(list.begin() + i);
+			fout.close();
+			return;
 		}
 	}
+	cout << "VOLUME CAN NOT FOUND\n";
 }
 
 bool Root::is_open()
@@ -382,4 +402,119 @@ bool Root::is_open()
 		return 0;
 	}
 	return 1;
+}
+
+Volume* Root::getVolume(char Name)
+{
+	for (int i = 0; i < list.size();i++) {
+		if (list[i].Name == Name) {
+			return &list[i];
+		}
+	}
+	return NULL;
+}
+
+void Root::createPassword()
+{
+	if (!checkPWD()) {
+		return;
+	}
+start:;
+	string pwd;
+	cout << "Enter password : ";
+	cin >> pwd;
+	string temp;
+	cout << "Confirm password : ";
+	cin >> temp;
+	if (sha1(pwd) == sha1(temp)) {
+		this->flags = flags | PASSWORD;
+		this->pwd = pwd;
+		this->pwd_sz = pwd.size();
+	}
+	else {
+		char c;
+		cout << "Confirm password does not match!\n";
+		cout << "Do you want to continue? <y/n>\n";
+		c = getchar();
+		if (c == 'y') {
+			goto start;
+		}
+	}
+
+	ofstream fout(this->fileName, ios::in | ios::out | ios::binary);
+	fout.seekp(12);
+	SaveByte(fout, this->pwd_sz);
+	for (auto i : this->pwd) {
+		SaveByte(fout, i);
+	}
+	fout.close();
+}
+
+bool Root::Auth()
+{
+	string temp;
+	cout << "Enter password : ";
+	cin >> temp;
+	temp = sha1(temp);
+	if (temp == this->pwd) {
+		return true;
+	}
+	return false;
+}
+
+bool Root::checkPWD()
+{
+	if ((flags ^ PASSWORD) < flags) {
+		char c = 0;
+		do
+		{
+			if (!Auth()) {
+				cout << "Wrong password\n";
+				cout << "Do you want to continue? <y/n>\n";
+				c = getchar();
+			}
+			else {
+				return true;
+			}
+		} while (c == 'y');
+		return false;
+	}
+	return true;
+}
+
+void Root::hide_show_Vol(char Name)
+{
+	if (!checkPWD()) {
+		return;
+	}
+	for (int i = 0; i < list.size(); i++) {
+		if (list[i].Name == Name) {
+			ifstream fin(this->fileName);
+			if (!fin.is_open()) {
+				DEBUG_PRINT("[CAN NOT OPEN DISK]");
+			}
+			seeker point = this->Sb;
+			point *= UNIT_SIZE;
+			point += 1;
+			do
+			{
+				fin.seekg(point);
+				char c;
+				LoadByte(fin, c);
+				if (c == Name) {
+					point = point - 1;
+					break;
+				}
+				point = point + 10;
+			} while (point < (seeker)(13) * UNIT_SIZE);
+
+			ofstream fout(fileName, ios::in | ios::out | ios::binary);
+			fout.seekp(point);
+			list[i].flags = list[i].flags ^ HIDDEN;
+			SaveByte(fout, list[i].flags);
+			fout.close();
+			return;
+		}
+	}
+	cout << "VOLUME CAN NOT FOUND\n";
 }

@@ -35,6 +35,14 @@ void Volume::_list(string tab) {
 		i._list(tab + "---");
 	}
 }
+void Volume::ls()
+{
+	for (int i = 0; i < entry.size(); i += 3) {
+		cout << entry[i].name << "\t\t";
+		cout << ((i + 1 < entry.size()) ? entry[i + 1].name : "") << "\t\t";
+		cout << ((i + 2 < entry.size()) ? entry[i + 2].name : "") << "\n";
+	}
+}
 void Volume::LoadFolder(string disk, Entry *entry)
 {
 	ifstream fin(disk, ios::binary | ios::in);
@@ -577,4 +585,17 @@ bool Volume::Export(string path, Entry* vitri)
 		ExportFiLe(temp, vitri);
 	}
 	return true;
+}
+
+Entry* Volume::getEntry(string Name)
+{
+	if (!entry.size()) {
+		return NULL;
+	}
+	for (int i = 0; i < entry.size();i++) {
+		if (entry[i].name == Name) {
+			return &entry[i];
+		}
+	}
+	return NULL;
 }

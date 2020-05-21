@@ -142,6 +142,7 @@
     <ClCompile Include="img.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="root.cpp" />
+    <ClCompile Include="sha1.cpp" />
     <ClCompile Include="Volume.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -152,6 +153,7 @@
     <ClInclude Include="img.h" />
     <ClInclude Include="mask.h" />
     <ClInclude Include="root.h" />
+    <ClInclude Include="sha1.h" />
     <ClInclude Include="Volume.h" />
   </ItemGroup>
   <ItemGroup>
