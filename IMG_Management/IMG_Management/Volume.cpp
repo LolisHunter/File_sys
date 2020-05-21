@@ -6,9 +6,10 @@
 #include "mask.h"
 using namespace std;
 
+using namespace std;
 template<class T>
 void SaveByte(ofstream& fout, T in) {
-	uint8_t c =0;
+	uint8_t c;
 	for (uint8_t i = 0; i < sizeof(T); i++) {
 		c = in;
 		fout << c;
@@ -22,9 +23,9 @@ void LoadByte(ifstream& fin, T& out) {
 	char c;
 	for (uint8_t i = 0; i < sizeof(T); i++) {
 		fin.get(c);
-		T temp = c;
+		T temp = (uint8_t)c;
 		temp = temp << (8 * i);
-		out += temp;
+		out = out | temp;
 	}
 }
 void Volume::_list(string tab) {
@@ -33,6 +34,25 @@ void Volume::_list(string tab) {
 	for (auto i : entry) {
 		i._list(tab + "   ");
 	}
+}
+void Volume::Load(char fileName[])
+{
+	ifstream fin(fileName, ios::in | ios::out | ios::binary);
+	seeker point = startSector;
+	point *= UNIT_SIZE;
+	fin.seekg(point);
+
+	LoadByte(fin, this->Ss);
+	LoadByte(fin, this->Sc);
+	LoadByte(fin, this->Sb);
+	LoadByte(fin, this->Nf);
+	LoadByte(fin, this->Sf);
+	LoadByte(fin, this->Sv);
+	LoadByte(fin, this->Nc);
+	LoadByte(fin, this->StCluster);
+	LoadByte(fin, this->FAT_len);
+	
+	// load entry
 }
 uint32_t ConvertTimeUnixToFAT(time_t a)
 {

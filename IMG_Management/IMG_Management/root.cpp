@@ -191,6 +191,7 @@ void Root::RootLoad(char fileName[])
 			Vtemp.Sv = end - Vtemp.startSector + 1;
 			scopeAdd(Vtemp.startSector);
 			scopeAdd(end);
+			Vtemp.Load(fileName);
 			list.push_back(Vtemp);
 		}
 		point += 10;
