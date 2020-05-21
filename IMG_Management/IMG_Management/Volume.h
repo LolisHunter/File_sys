@@ -24,7 +24,7 @@ public:
 	uint32_t Nc = 0; // cluster/volume
 	uint32_t StCluster = 0; // start cluster /
 	uint64_t FAT_len; // Sc * Nc / 512
-	bool* FAT;
+	vector<bool> FAT;
 	uint32_t startSector;
 	vector<Entry> entry;
 

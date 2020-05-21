@@ -35,6 +35,43 @@ void Volume::_list(string tab) {
 		i._list(tab + "---");
 	}
 }
+void Volume::LoadFolder(string disk, Entry *entry)
+{
+	ifstream fin(disk, ios::binary | ios::in);
+	seeker point = entry->StCluster * 8 + Sb + Nf * Sf;
+	point *= 512;
+	fin.seekg(point, ios::beg);
+	Entry a;
+	do {
+		LoadByte(fin, a.flags);
+		if (a.flags ^ END < a.flags)
+		{
+			break;
+		}
+		if (a.flags == 0 || (a.flags^DELETED < a.flags))
+		{
+			fin.seekg(31, ios::cur);
+			continue;
+		}
+		LoadByte(fin, a.ctime);
+		if (a.ctime == 0)
+			return;
+		LoadByte(fin, a.mtime);
+		LoadByte(fin, a.StCluster);
+		LoadByte(fin, a.size);
+		LoadByte(fin, a.TypeNum);
+		LoadByte(fin, a.ino);
+		LoadByte(fin, a.entryStSector);
+		if (a.flags ^ SUB_ENTRY < a.flags)
+		{
+			fin.seekg(a.entryStSector, ios::cur);
+		}
+		entry->list.push_back(a);
+		if (a.size == 0)
+			LoadFolder(disk, &entry->list[entry->list.size() - 1]);
+	} while (true);
+}
+
 void Volume::Load(string fileName)
 {
 	ifstream fin(fileName, ios::in | ios::out | ios::binary);
@@ -51,9 +88,50 @@ void Volume::Load(string fileName)
 	LoadByte(fin, this->Nc);
 	LoadByte(fin, this->StCluster);
 	LoadByte(fin, this->FAT_len);
-	
+	// load FAT
+	bool b;
+	point = startSector + Sb;
+	fin.seekg(point, ios::beg);
+	for (int i = 0; i < FAT_len; i++)
+	{
+		LoadByte(fin, b);
+		FAT.push_back(b);
+	}
 	// load entry
+	point = startSector + Sb + Sf * Nf;
+	point *= UNIT_SIZE;
+	fin.seekg(point, ios::beg);
+	Entry a;
+	do {
+		LoadByte(fin, a.flags);
+		if (a.flags ^ END < a.flags)
+		{
+			break;
+		}
+		if (a.flags^DELETED < a.flags)
+		{
+			fin.seekg(31, ios::cur);
+			continue;
+		}
+		LoadByte(fin, a.ctime);
+		if (a.ctime == 0)
+			return;
+		LoadByte(fin, a.mtime);
+		LoadByte(fin, a.StCluster);
+		LoadByte(fin, a.size);
+		LoadByte(fin, a.TypeNum);
+		LoadByte(fin, a.ino);
+		LoadByte(fin, a.entryStSector);
+		if (a.flags ^ SUB_ENTRY < a.flags)
+		{
+			fin.seekg(a.entryStSector, ios::cur);
+		}
+		entry.push_back(a);
+		if (a.size == 0)
+			LoadFolder(disk, &entry[entry.size() - 1]);
+	} while (true);
 }
+
 uint32_t ConvertTimeUnixToFAT(time_t a)
 {
 	tm *b = new tm;
