@@ -196,16 +196,17 @@ void Volume::ExportFiLe(string path,const Entry * file)
 		throw exception("Can't open disk when export file");
 	uint32_t curCluster = file->StCluster;
 	uint32_t nextCluster;
-	while (nextCluster != 123456) // dau hieu ket thuc
+	do	
 	{
-		fin.seekg(ViTriCluster(curCluster) + 2, ios::beg);
-		LoadByte(fin, nextCluster);
-		fin.seekg(ViTriCluster(curCluster) + Ss, ios::beg);
-		char * data = new char[(Sc - 1) * Ss + 1];
-		fin.read(data, (Sc - 1) * Ss);
-		fout.write(data, (Sc - 1) * Ss);
-		curCluster = nextCluster;
-	}
+			fin.seekg(ViTriCluster(curCluster) + 2, ios::beg);
+			LoadByte(fin, nextCluster);
+			fin.seekg(ViTriCluster(curCluster) + Ss, ios::beg);
+			char * data = new char[(Sc - 1) * Ss + 1];
+			uint32_t buffer = (Sc - 1) * Ss;
+			fin.read(data, buffer);
+			fout.write(data, buffer);
+			curCluster = nextCluster;
+	} while (nextCluster != 123456); // dau hieu ket thuc
 	fin.close();
 	fout.close();
 }

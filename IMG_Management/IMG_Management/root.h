@@ -32,6 +32,7 @@ private:
 	uint16_t pwd_sz = 0; //password size
 	string pwd =""; // Vigenere custom
 	string fileName;
+public:
 	vector<Volume> list;
 	vector<uint32_t> scope; // start end, start end // don vi la sector 
 public:

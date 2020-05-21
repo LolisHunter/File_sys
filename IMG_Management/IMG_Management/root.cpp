@@ -23,9 +23,9 @@ void LoadByte(ifstream& fin, T& out) {
 	char c;
 	for (uint8_t i = 0; i < sizeof(T); i++) {
 		fin.get(c);
-		T temp = c;
+		T temp = (uint8_t)c;
 		temp = temp << (8 * i);
-		out += temp;
+		out = out | temp;
 	}
 }
 
@@ -171,9 +171,9 @@ void Root::RootLoad(char fileName[])
 	Vtemp.disk = fileName;
 	point = this->Sb;
 	point *= UNIT_SIZE;
-	fin.seekg(point);
 	// 256 = Se * UNIT_SIZE / vENTRY_SIZE
 	for (int i = 0; i < 256; i++) {
+		fin.seekg(point);
 		LoadByte(fin, Vtemp.flags);
 		if (i == 0 && Vtemp.flags == DEFAULT) {
 			DEBUG_PRINT("[NO VOLUME FOUND]");
@@ -191,7 +191,9 @@ void Root::RootLoad(char fileName[])
 			Vtemp.Sv = end - Vtemp.startSector + 1;
 			scopeAdd(Vtemp.startSector);
 			scopeAdd(end);
+			list.push_back(Vtemp);
 		}
+		point += 10;
 	}
 }
 
@@ -360,10 +362,15 @@ void Root::DeleteVolume(char Name){
 				LoadByte(fin, c);
 				if (c == Name) {
 					point = point - 1;
+					break;
 				}
 				point = point + 10;
-			} while (true);
-			break;
+			} while (point < (seeker)(13)*UNIT_SIZE);
+
+			ofstream fout(fileName, ios::in | ios::out | ios::binary);
+			fout.seekp(point);
+			i.flags = i.flags ^ RECYCLE;
+			SaveByte(fout, i.flags);
 		}
 	}
 }
