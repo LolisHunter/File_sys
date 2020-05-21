@@ -23,9 +23,9 @@ void LoadByte(ifstream& fin, T& out) {
 	char c;
 	for (uint8_t i = 0; i < sizeof(T); i++) {
 		fin.get(c);
-		T temp = (uint8_t)c;
+		T temp = c;
 		temp = temp << (8 * i);
-		out = out + temp;
+		out += temp;
 	}
 }
 
@@ -183,14 +183,13 @@ void Root::RootLoad(char fileName[])
 		}
 		else if ((Vtemp.flags ^ RECYCLE) > Vtemp.flags) {
 			LoadByte(fin, Vtemp.Name);
-			Vname[Vtemp.Name - 'A'] = true;
+			Vname[Vtemp.Name - 'A'] = 1;
 			LoadByte(fin, Vtemp.startSector);
 			uint32_t end;
 			LoadByte(fin, end);
 			Vtemp.Sv = end - Vtemp.startSector + 1;
 			scopeAdd(Vtemp.startSector);
 			scopeAdd(end);
-			list.push_back(Vtemp);
 		}
 	}
 }
@@ -298,8 +297,8 @@ void Root::status()
 
 
 void Root::findUnlocated(vector<Packg>& list_unlocated) {
-	uint32_t pointer = Sb + Se - 1;
-	for (int i = 1; i < scope.size(); i = i + 2) {
+	uint32_t pointer = Sb + Se;
+	for (int i = 1; i < scope.size(); i + 2) {
 		if (scope[i] - pointer > 1) {
 			Packg temp;
 			temp.strt = pointer + 1;
@@ -334,7 +333,8 @@ void Root::CreateVolume()
 		cin >> opt;
 	} while ((opt > list_unlocated.size() || opt < 1) && cout << "Bruh!\n");
 	Volume temp;
-	bool fail = temp.Create(list_unlocated[opt - 1], this->fileName,this->Vname);
+	temp.disk = fileName;
+	bool fail = temp.Create(list_unlocated[opt - 1], this->fileName);
 	if (!fail)
 	{
 		list.push_back(temp);
