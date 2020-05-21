@@ -40,8 +40,8 @@ public:
 	bool Vname[26] = {0};
 	Root();
 	void _list();
-	void RootCreate(char fileName[]);
-	void RootLoad(char fileName[]);
+	void RootCreate(string fileName);
+	void RootLoad(string fileName);
 	void AddVolumeEntry(Volume& v);
 	void scopeUpdate();
 	void scopeAdd(uint32_t key);
@@ -49,4 +49,5 @@ public:
 	void findUnlocated(vector<Packg>& list_unlocated);
 	void CreateVolume();
 	void DeleteVolume(char Name);
+	bool is_open();
 };

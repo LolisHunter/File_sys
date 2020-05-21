@@ -36,11 +36,11 @@ void Root::_list()
 {
 	cout << this->Name << endl;
 	for (auto i : list) {
-		i._list("   ");
+		i._list("---");
 	}
 }
 
-void Root::RootCreate(char fileName[]) {
+void Root::RootCreate(string fileName) {
 	// Checking
 	this->fileName = fileName;
 	ifstream fin(fileName);
@@ -124,7 +124,7 @@ void Root::RootCreate(char fileName[]) {
 	fout.close();
 }
 
-void Root::RootLoad(char fileName[])
+void Root::RootLoad(string fileName)
 {
 	ifstream fin(fileName, ios::in);
 	if (!fin.is_open()) {
@@ -301,8 +301,8 @@ void Root::status()
 
 
 void Root::findUnlocated(vector<Packg>& list_unlocated) {
-	uint32_t pointer = Sb + Se;
-	for (int i = 1; i < scope.size(); i + 2) {
+	uint32_t pointer = Sb + Se - 1;
+	for (int i = 1; i < scope.size(); i = i + 2) {
 		if (scope[i] - pointer > 1) {
 			Packg temp;
 			temp.strt = pointer + 1;
@@ -374,4 +374,12 @@ void Root::DeleteVolume(char Name){
 			SaveByte(fout, i.flags);
 		}
 	}
+}
+
+bool Root::is_open()
+{
+	if (!this->fileName.length()) {
+		return 0;
+	}
+	return 1;
 }

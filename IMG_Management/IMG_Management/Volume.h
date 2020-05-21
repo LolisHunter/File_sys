@@ -24,18 +24,17 @@ public:
 	uint32_t Nc = 0; // cluster/volume
 	uint32_t StCluster = 0; // start cluster /
 	uint64_t FAT_len; // Sc * Nc / 512
-	vector<bool> FAT;
+	bool* FAT;
 	uint32_t startSector;
 	vector<Entry> entry;
 
 	string disk;
 public:
 	void _list(string tab);
-	void Load(char fileName[]);
-	void LoadFolder(string disk, Entry *entry);
+	void Load(string fileName);
 	bool Create(Packg& scope, string fileName, bool Vname[26]);
 	Volume() {};
-	~Volume() {};
+	~Volume() { if (FAT) delete []FAT; };
 	void setFlags();
 	void ExportFiLe(string path,const Entry *file);
 	void AddEntry(Entry& entry);
@@ -44,9 +43,7 @@ public:
 	uint32_t FreeInFAT(int i);
 	void addEntrySt(Entry *file, Entry *ViTriRDET); 
 	seeker AddTable(seeker seek, bool End, int &i);
-	void AddData(ifstream &file, Entry *f);
-	bool Import(string pathFile, Entry *vitri, vector<Type> &type_list); // luc dau de vitri = NULL
+	void AddData(fstream &file, Entry *f);
+	bool Import(string pathFile, Entry *vitri); // luc dau de vitri = NULL
 	bool Export(string path, Entry *vitri); // luc dau de path = ""
-	uint8_t CheckType(string type, vector<Type> &type_list);
-	
 };
