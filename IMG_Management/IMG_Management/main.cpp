@@ -37,7 +37,6 @@ int main(int agrc, char* agrv[])
 		root.RootLoad((char*)"ab.iso");
 		//root.CreateVolume();
 		tree(root);
-		cout << root.list.size();
 		//root.DeleteVolume('B');
 		//Volume a;
 		//a.Ss = 512;

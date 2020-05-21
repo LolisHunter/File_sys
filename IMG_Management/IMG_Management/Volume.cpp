@@ -27,6 +27,13 @@ void LoadByte(ifstream& fin, T& out) {
 		out += temp;
 	}
 }
+void Volume::_list(string tab) {
+	cout << tab;
+	cout << ">" << this->Name << endl;
+	for (auto i : entry) {
+		i._list(tab + "   ");
+	}
+}
 uint32_t ConvertTimeUnixToFAT(time_t a)
 {
 	tm *b = new tm;
@@ -41,15 +48,6 @@ uint32_t ConvertTimeUnixToFAT(time_t a)
 	time = time ^ ((b->tm_hour) << 11);
 	delete b;
 	return (uint32_t)day ^ (time << 16);
-}
-
-void Volume::_list(string tab)
-{
-	cout << tab;
-	cout << ">" << this->Name << endl;
-	for (auto i : entry) {
-		i._list(tab + "   ");
-	}
 }
 
 bool Volume::Create(Packg& scope,string fileName, bool Vname[26])
@@ -83,7 +81,6 @@ bool Volume::Create(Packg& scope,string fileName, bool Vname[26])
 	this->setFlags();
 
 	this->Sv = Sb + Sf*Nf + Nc*Sc;
-	this->StCluster = this->Sb + this->Sf * this->Nf + scope.strt;
 	this->FAT_len = (Sv - Nc)/8;
 	this->startSector = scope.strt;
 
@@ -196,7 +193,7 @@ void Volume::ExportFiLe(string path,const Entry * file)
 		throw exception("Can't open disk when export file");
 	uint32_t curCluster = file->StCluster;
 	uint32_t nextCluster;
-	do	
+	do
 	{
 			fin.seekg(ViTriCluster(curCluster) + 2, ios::beg);
 			LoadByte(fin, nextCluster);
@@ -211,7 +208,7 @@ void Volume::ExportFiLe(string path,const Entry * file)
 	fout.close();
 }
 
-void Volume::AddEntry(Entry& entry)
+void Volume::AddEntry( Entry& entry)
 {
 	ifstream fin;
 	ofstream fout;
@@ -221,21 +218,20 @@ void Volume::AddEntry(Entry& entry)
 		throw exception("Can't open disk. Can't add entry!");
 	}
 
-	seeker sker = StCluster;
-	sker *= UNIT_SIZE;
+	seeker sker = startSector + entry.entryStCluster * 8;  //(entry.entryStCluster); sker *= this->Ss; sker *= this->Sc;
 	fin.seekg(sker, ios::beg);
 
 	uint8_t flag;
 	do{
 		LoadByte(fin, flag);
 		//Check if(flag = END)
-		if((flag ^ END) < flag)
+		if(flag ^ END < flag)
 		{
 			int i = 0;
 			sker = AddTable(sker,NULL, i);
 			break; 
 		}
-		if(flag == 0 || (flag^DELETED) < flag)
+		if(flag == 0 || (flag^DELETED < flag))
 		{
 			break;
 		}
@@ -281,6 +277,8 @@ void Volume::AddData(fstream &file, Entry *f)
 	{
 		SaveByte(Disk, f->ino);
 		i = FreeInFAT(i);
+		if (strlen(temp) == (Sc - 1) * Ss)
+			i = FreeInFAT(i);
 		SaveByte(Disk,(uint32_t) i);
 		SaveByte(Disk, f->Namesize);
 		Disk.write(f->name.c_str(), sizeof(f->name.c_str()));
@@ -398,6 +396,19 @@ bool Volume::Import(string pathFile, Entry *vitri) //luc dau vitri = NULL
 	return 1;
 }
 
+string Type(string fileName)
+{
+	int i = 0;
+	int temp = fileName.find('.', i);
+	if (temp < 0)
+		return "";
+	while (temp > i)
+	{
+		i = fileName.find('\\', i + 1);
+		temp = fileName.find('\\', i + 1);
+	}
+	return fileName.substr(i + 1, fileName.size() - i - 1);
+}
 bool Volume::Export(string path, Entry *vitri)
 {
 	string temp;
