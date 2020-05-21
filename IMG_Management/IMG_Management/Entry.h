@@ -4,6 +4,7 @@
 #include <ctime>
 #include <vector>
 #include <string>
+#include <iostream>
 using namespace std;
 
 /*--------------------------------------------------------
@@ -67,5 +68,12 @@ struct Entry {
 	tm mTime() // out last modified time ... 
 	{
 		return tm();
+	}
+	void _list(string tab) {
+		cout << tab;
+		cout << "_" << this->name << endl;
+		for (auto i : list) {
+			i._list(tab + "   ");
+		}
 	}
 };

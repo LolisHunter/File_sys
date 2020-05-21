@@ -22,6 +22,7 @@ void main() {
 
 
 #ifndef TEST
+void tree(Root& root);
 int main(int agrc, char* agrv[]) 
 {
 	try
@@ -33,13 +34,17 @@ int main(int agrc, char* agrv[])
 		//vol.InitVolume("MyDisk.img");
 		Root root;
 		//root.RootCreate((char*)"ab.iso");
-		/*root.RootLoad((char*)"ab.iso");
-		root.CreateVolume();
-		Volume *a = root.GetVolume();
-		a->FAT = new bool[a->FAT_len];
-		for (int i = 0; i < a->FAT_len; i++)
-			a->FAT[i] = 0;
-		a->Import("E:\\ham", NULL);*/
+		root.RootLoad((char*)"ab.iso");
+		//root.CreateVolume();
+		tree(root);
+		//root.DeleteVolume('B');
+		//Volume a;
+		//a.Ss = 512;
+		//a.Sb = 1;
+		//a.Sv = 100;
+		//a.Sc = 8;
+		//a.Nc = (a.Sv - a.Sb - a.Sf * a.Nf) / a.Sc; 
+		//a.Sf = ceil((a.Sc * a.Nc) / 512) / a.Nf;
 		//root.CreateVolume();
 		//root.status();
 	}
@@ -47,5 +52,9 @@ int main(int agrc, char* agrv[])
 	{
 		cout << e.what();
 	}
+}
+
+void tree(Root& root) {
+	root._list();
 }
 #endif // MAIN
