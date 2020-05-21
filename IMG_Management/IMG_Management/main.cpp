@@ -12,7 +12,7 @@ using namespace std;
 #ifdef TEST
 void main() {
 	Root root;
-	//root.RootCreate("ab.iso");
+	root.RootCreate("ab.iso");
 	root.RootLoad("ab.iso");
 	cout << root.scope.size();
 	root.CreateVolume();

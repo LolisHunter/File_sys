@@ -34,16 +34,18 @@ public:
 	void Load(string fileName);
 	bool Create(Packg& scope, string fileName, bool Vname[26]);
 	Volume() {};
-	~Volume() { if (FAT) delete []FAT; };
+	~Volume() {};
 	void setFlags();
-	void ExportFiLe(string path,const Entry *file);
+	void ExportFiLe(string path, const Entry* file);
 	void AddEntry(Entry& entry);
+	void LoadFolder(string disk, Entry* entry);
 	uint64_t ViTriCluster(int i);
+	uint8_t CheckType(string type, vector<Type>& type_list);
 	uint32_t FreeInFAT();
 	uint32_t FreeInFAT(int i);
-	void addEntrySt(Entry *file, Entry *ViTriRDET); 
-	seeker AddTable(seeker seek, bool End, int &i);
-	void AddData(fstream &file, Entry *f);
-	bool Import(string pathFile, Entry *vitri); // luc dau de vitri = NULL
-	bool Export(string path, Entry *vitri); // luc dau de path = ""
+	void addEntrySt(Entry* file, Entry* ViTriRDET);
+	seeker AddTable(seeker seek, bool End, int& i);
+	void AddData(ifstream& file, Entry* f);
+	bool Import(string pathFile, Entry* vitri, vector<Type>& type_list); // luc dau de vitri = NULL
+	bool Export(string path, Entry* vitri); // luc dau de path = ""
 };
