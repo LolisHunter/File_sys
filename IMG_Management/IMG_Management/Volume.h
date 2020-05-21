@@ -31,7 +31,7 @@ public:
 	string disk;
 public:
 	void _list(string tab);
-	void Load(char fileName[]);
+	void Load(string fileName);
 	bool Create(Packg& scope, string fileName, bool Vname[26]);
 	Volume() {};
 	~Volume() { if (FAT) delete []FAT; };

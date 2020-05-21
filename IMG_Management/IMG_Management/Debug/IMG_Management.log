@@ -11,7 +11,6 @@ C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\root
 C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\root.cpp(257,11): warning C4018: '>': signed/unsigned mismatch
 C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\root.cpp(272,11): warning C4018: '>': signed/unsigned mismatch
 C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\root.cpp(305,20): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\root.cpp(305,38): warning C4552: '+': result of expression not used
 C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\root.cpp(312,13): warning C4018: '>': signed/unsigned mismatch
 C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\root.cpp(328,21): warning C4018: '<': signed/unsigned mismatch
 C:\Users\Blackmoon\source\repos\code\File_sys\IMG_Management\IMG_Management\root.cpp(338,16): warning C4018: '>': signed/unsigned mismatch

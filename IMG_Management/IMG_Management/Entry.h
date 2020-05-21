@@ -71,9 +71,9 @@ struct Entry {
 	}
 	void _list(string tab) {
 		cout << tab;
-		cout << "_" << this->name << endl;
+		cout << "\\" << this->name << endl;
 		for (auto i : list) {
-			i._list(tab + "   ");
+			i._list(tab + "---");
 		}
 	}
 };

@@ -32,10 +32,10 @@ void Volume::_list(string tab) {
 	cout << tab;
 	cout << ">" << this->Name << endl;
 	for (auto i : entry) {
-		i._list(tab + "   ");
+		i._list(tab + "---");
 	}
 }
-void Volume::Load(char fileName[])
+void Volume::Load(string fileName)
 {
 	ifstream fin(fileName, ios::in | ios::out | ios::binary);
 	seeker point = startSector;
