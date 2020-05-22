@@ -33,7 +33,8 @@ void CreateVolume(Root& root);
 void DeleteVolume(Root& root, char Name);
 void help();
 void setPwd(Root& root);
-void Import(Root& root);
+void Import(Root& root,Entry * temp);
+void Export(Root& root, Entry * temp);
 void hide_show_Vol(Root& root, char Name);
 void createP(Root& root);
 
@@ -202,11 +203,19 @@ int main(int agrc, char* agrv[])
 				}
 			}
 			else if (prefx == "import") {
-				Entry* temp = entr[here - 3];
-				if (temp != NULL && temp->size == 0)
-					Import(root, temp);
+				if (here == 1)
+				{
+					Import(root, NULL);
+				}
 				else
-					cout << "Khong the import vao file" << endl;
+				{
+					Entry* temp;
+					temp = entr[here - 3];
+					if (temp->size == 0)
+						Import(root, temp);
+					else
+						cout << "Khong the import vao file" << endl;
+				}
 			}
 			else if (prefx == "export") {
 				Entry * temp = entr[here - 3];
@@ -305,7 +314,7 @@ choose_vol:;
 	}
 	Volume* v = root.getVolume(s[0]);
 	if (v) {
-		cout << "Enter file path"; // nhap duong dan muon chua file
+		cout << "Enter file path"; // nhap duong dan muon chua file (duong dan tuyet doi) hoac "" (duong dan tuong doi)
 		cin >> s;
 		v->Export(s, temp);
 	}
