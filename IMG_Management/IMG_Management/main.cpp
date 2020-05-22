@@ -202,7 +202,15 @@ int main(int agrc, char* agrv[])
 				}
 			}
 			else if (prefx == "import") {
-				Import(root);
+				Entry* temp = entr[here - 3];
+				if (temp != NULL || temp->size == 0)
+					Import(root, temp);
+				else
+					cout << "Khong the import vao file" << endl;
+			}
+			else if (prefx == "export") {
+				Entry * temp = entr[here - 3];
+				Export(root, temp);
 			}
 			else if (prefx == "pwd") {
 				createP(root);
@@ -267,7 +275,7 @@ void help() {
 void setPwd(Root& root) {
 	root.createPassword();
 }
-void Import(Root& root) {
+void Import(Root& root,Entry * temp) {
 	string s;
 choose_vol:;
 	root.ls();
@@ -280,13 +288,13 @@ choose_vol:;
 	if (v) {
 		cout << "Enter file path";
 		cin >> s;
-		v->Import(s, NULL, root.type_list);
+		v->Import(s, temp, root.type_list);
 	}
 	else {
 		goto choose_vol;
 	}
 }
-void Export(Root& root) {
+void Export(Root& root,Entry * temp) {
 	string s;
 choose_vol:;
 	root.ls();
@@ -297,9 +305,9 @@ choose_vol:;
 	}
 	Volume* v = root.getVolume(s[0]);
 	if (v) {
-		cout << "Enter file path";
+		cout << "Enter file path"; // nhap duong dan muon chua file
 		cin >> s;
-		v->Export(s, NULL);
+		v->Export(s, temp);
 	}
 	else {
 		goto choose_vol;
