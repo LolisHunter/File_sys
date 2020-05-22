@@ -203,7 +203,7 @@ int main(int agrc, char* agrv[])
 			}
 			else if (prefx == "import") {
 				Entry* temp = entr[here - 3];
-				if (temp != NULL || temp->size == 0)
+				if (temp != NULL && temp->size == 0)
 					Import(root, temp);
 				else
 					cout << "Khong the import vao file" << endl;
