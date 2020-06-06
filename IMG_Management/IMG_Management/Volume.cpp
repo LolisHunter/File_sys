@@ -632,10 +632,11 @@ Entry* Volume::getEntry(string Name)
 	if (!entry.size()) {
 		return NULL;
 	}
+	Entry* a = NULL;
 	for (int i = 0; i < entry.size();i++) {
 		if (entry[i].name == Name) {
-			return &entry[i];
+			a = &entry[i];
 		}
 	}
-	return NULL;
+	return a;
 }
