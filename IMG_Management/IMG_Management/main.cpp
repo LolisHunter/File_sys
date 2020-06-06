@@ -33,8 +33,8 @@ void CreateVolume(Root& root);
 void DeleteVolume(Root& root, char Name);
 void help();
 void setPwd(Root& root);
-void Import(Root& root,Entry * temp);
-void Export(Root& root, Entry * temp);
+void Import(Root& root,Entry * temp,Volume *temp1);
+void Export(Root& root, Entry * temp, Volume *temp1);
 void hide_show_Vol(Root& root, char Name);
 void createP(Root& root);
 
@@ -57,7 +57,7 @@ int main(int agrc, char* agrv[])
 			cout << (char)vol->Name;
 		}
 		else {
-			cout << entr[here - 3]->name;
+			cout << entr[here - 2]->name;
 		}
 		cout << " > ";
 		do
@@ -133,7 +133,7 @@ int main(int agrc, char* agrv[])
 					vol->ls();
 				}
 				else {
-					entr[here - 3]->ls();
+					entr[here - 2]->ls();
 				}
 			}
 			else if (prefx == "cd") {
@@ -171,7 +171,7 @@ int main(int agrc, char* agrv[])
 						}
 					}
 					else {
-						Entry* temp = entr[here - 3]->getEntry(dir);
+						Entry* temp = entr[here - 2]->getEntry(dir);
 						if (temp) {
 							if (!temp->isFolder()) {
 								cout << "  [This is a file]\n";
@@ -205,21 +205,37 @@ int main(int agrc, char* agrv[])
 			else if (prefx == "import") {
 				if (here == 1)
 				{
-					Import(root, NULL);
+					Import(root, NULL, vol);
 				}
 				else
 				{
 					Entry* temp;
-					temp = entr[here - 3];
+					if (here - 2 < 0)
+						cout << "Vui long cd" << endl;
+					temp = entr[here - 2];
 					if (temp->size == 0)
-						Import(root, temp);
+						Import(root, temp,vol);
 					else
 						cout << "Khong the import vao file" << endl;
 				}
 			}
 			else if (prefx == "export") {
-				Entry * temp = entr[here - 3];
-				Export(root, temp);
+				if (here == 1)
+				{
+					string a;
+					cout << "Nhap ten file:";
+					getline(cin, a);
+					Entry* temp = vol->getEntry(a);
+					if (temp)
+						Export(root, temp, vol);
+					else
+						cout << "Khong thay entry do" << endl;
+				}
+				else
+				{
+					Entry* temp = entr[here - 2];
+					Export(root, temp, vol);
+				}
 			}
 			else if (prefx == "pwd") {
 				createP(root);
@@ -284,42 +300,25 @@ void help() {
 void setPwd(Root& root) {
 	root.createPassword();
 }
-void Import(Root& root,Entry * temp) {
+void Import(Root& root,Entry * temp, Volume * temp1) {
 	string s;
-choose_vol:;
 	root.ls();
-	cout << "choose volume : ";
-	cin >> s;
 	if (s == "exit") {
 		return;
 	}
-	Volume* v = root.getVolume(s[0]);
-	if (v) {
-		cout << "Enter file path";
-		cin >> s;
-		v->Import(s, temp, root.type_list);
-	}
-	else {
-		goto choose_vol;
+	if (temp1) {
+		cout << "Enter file path"; // NULL neu duong dan tuong doi
+		getline(cin, s);
+		temp1->Import(s, temp, root.type_list);
 	}
 }
-void Export(Root& root,Entry * temp) {
+void Export(Root& root,Entry * temp,Volume * temp1) {
 	string s;
-choose_vol:;
 	root.ls();
-	cout << "choose volume : ";
-	cin >> s;
-	if (s == "exit") {
-		return;
-	}
-	Volume* v = root.getVolume(s[0]);
-	if (v) {
+	if (temp1) {
 		cout << "Enter file path"; // nhap duong dan muon chua file (duong dan tuyet doi) hoac "" (duong dan tuong doi)
-		cin >> s;
-		v->Export(s, temp);
-	}
-	else {
-		goto choose_vol;
+		getline(cin,s);
+		temp1->Export(s, temp);
 	}
 }
 void hide_show_Vol(Root& root, char Name) {

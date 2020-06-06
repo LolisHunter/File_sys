@@ -162,6 +162,7 @@ void Volume::Load(string fileName)
 		{
 			fin.seekg(a.entryStSector, ios::cur);
 		}
+		GetEntryName(&a);
 		entry.push_back(a);
 		if (a.size == 0)
 			LoadFolder(disk, &entry[entry.size() - 1]);
